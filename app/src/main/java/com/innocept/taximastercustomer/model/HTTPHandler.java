@@ -27,11 +27,12 @@ import java.util.Map;
  */
 public class HTTPHandler {
 
-    public static JSONObject sendGET(String urlString, ContentValues values){
-        JSONObject jsonObject = null;
+    public static String sendGET(String urlString, ContentValues values){
+        String json = null;
         if (HTTPHandler.isOnline()) {
             try {
                 URL url = new URL(urlString + "?" + getQuery(values));
+                Log.i("sendGET", url.toString());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setDoInput(true);
@@ -45,9 +46,9 @@ public class HTTPHandler {
                     sb.append(line + "\n");
                 }
                 is.close();
-                String json = sb.toString();
+                json = sb.toString();
                 Log.i("sendGET", json);
-                jsonObject = new JSONObject(json);
+//                jsonObject = new JSONObject(json);
             } catch (Exception e) {
                 Log.e("sendGET", "Error in makeHttpRequest " + e.toString());
             }
@@ -55,11 +56,11 @@ public class HTTPHandler {
             // If not connected to internet
             Log.w("sendGET", "No internet connection");
         }
-        return jsonObject;
+        return json;
     }
 
-    public static JSONObject sendPOST(String urlString, ContentValues values){
-        JSONObject jsonObject = null;
+    public static String sendPOST(String urlString, ContentValues values){
+        String json = null;
         if (HTTPHandler.isOnline()) {
             try {
                 URL url = new URL(urlString);
@@ -85,9 +86,9 @@ public class HTTPHandler {
                     sb.append(line + "\n");
                 }
                 is.close();
-                String json = sb.toString();
+                json = sb.toString();
                 Log.i("sendPOST", json);
-                jsonObject = new JSONObject(json);
+//                jsonObject = new JSONObject(json);
             } catch (Exception e) {
                 Log.e("sendPOST", "Error in makeHttpRequest " + e.toString());
             }
@@ -95,7 +96,7 @@ public class HTTPHandler {
             // If not connected to internet
             Log.w("sendPOST", "No internet connection");
         }
-        return jsonObject;
+        return json;
     }
 
     private static String getQuery(ContentValues values) throws UnsupportedEncodingException {

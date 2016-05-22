@@ -8,9 +8,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -29,6 +34,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.innocept.taximastercustomer.R;
+import com.innocept.taximastercustomer.model.foundation.TaxiType;
 import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 import com.innocept.taximastercustomer.ui.fragment.CarFragment;
 import com.innocept.taximastercustomer.ui.fragment.NanoCabFragment;
@@ -65,6 +71,8 @@ public class NewOrderActivity extends LocationActivity {
     LatLng latLngFrom;
     LatLng latLngTo;
 
+    public NanoCabFragment nanoCabFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +108,9 @@ public class NewOrderActivity extends LocationActivity {
                 searchPlace(PLACE_AUTOCOMPLETE_REQUEST_CODE_TO);
             }
         });
+
+        textViewFrom.addTextChangedListener(fromToTextWatcher);
+        textViewTo.addTextChangedListener(fromToTextWatcher);
 
         imageButtonMyLocationFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +205,44 @@ public class NewOrderActivity extends LocationActivity {
         }
     }
 
+    TextWatcher fromToTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            submit();
+        }
+    };
+
+    private void submit() {
+        String from = textViewFrom.getText().toString();
+        String to = textViewTo.getText().toString();
+
+        if(from!=null && to!=null && from.length()>0 && to.length()>0){
+            TaxiType taxiType = null;
+            if(tabLayout.getSelectedTabPosition()==0)
+                taxiType = TaxiType.NANO;
+            else if(tabLayout.getSelectedTabPosition()==1)
+                taxiType = TaxiType.CAR;
+            else if(tabLayout.getSelectedTabPosition()==2)
+                taxiType = TaxiType.VAN;
+
+            newOrderPresenter.getAvailableTaxis(latLngFrom, taxiType);
+        }
+    }
+
+    public void showTaxis(){
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM) {
@@ -248,9 +297,10 @@ public class NewOrderActivity extends LocationActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new NanoCabFragment(), "NANO");
-        adapter.addFragment(new CarFragment(), "CAR");
-        adapter.addFragment(new VanFragment(), "VAN");
+        nanoCabFragment = new NanoCabFragment();
+        adapter.addFragment(nanoCabFragment, "NANO");
+        adapter.addFragment(new NanoCabFragment(), "CAR");
+        adapter.addFragment(new NanoCabFragment(), "VAN");
         viewPager.setAdapter(adapter);
     }
 

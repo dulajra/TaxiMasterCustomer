@@ -6,9 +6,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
+import com.innocept.taximastercustomer.model.foundation.TaxiType;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +25,7 @@ import java.util.List;
 
 public class Communicator{
 
-    private final String TAG = Communicator.class.getSimpleName();
+    private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
     private final String URL_ROOT = "http://33f42da1.ngrok.io";
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
@@ -29,17 +33,26 @@ public class Communicator{
     public Communicator() {
     }
 
-    public List<Taxi> getAvailableTaxis(Location location, int taxiTypeId) {
+    public List<Taxi> getAvailableTaxis(Location location, TaxiType taxiType) {
         ContentValues values = new ContentValues();
-        values.put("taxiTypeId", taxiTypeId);
+        values.put("taxiTypeId", taxiType.getValue());
         values.put("latitude", location.getLatitude());
-        values.put("longitude", location.getLatitude());
-        JSONObject response = HTTPHandler.sendPOST(URL_GET_AVAILABLE_TAXIS, values);
-
+        values.put("longitude", location.getLongitude());
+        String response = HTTPHandler.sendGET(URL_GET_AVAILABLE_TAXIS, values);
         List<Taxi> taxiList = new ArrayList<Taxi>();
-        if (response != null) {
-            Log.i(TAG, response.toString());
+
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for(int i=0; i<jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Taxi taxi = new Gson().fromJson(jsonObject.toString(), Taxi.class);
+                taxiList.add(taxi);
+            }
+        } catch (JSONException e) {
+            Log.e(DEBUG_TAG, "Error converting to json array " + e.toString());
         }
+
         return taxiList;
     }
 }
