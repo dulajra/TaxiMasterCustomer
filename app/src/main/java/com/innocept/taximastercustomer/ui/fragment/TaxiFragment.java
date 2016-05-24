@@ -71,9 +71,13 @@ public class TaxiFragment extends Fragment {
     }
 
     public void lockUI(){
+        clearViews();
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void clearViews(){
         initDataSet();
         displayData();
-        progressBar.setVisibility(View.VISIBLE);
     }
 
     public void releaseUI(){
