@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -143,7 +144,6 @@ public class NewOrderActivity extends LocationActivity {
                              runOnUiThread(new Runnable() {
                                  @Override
                                  public void run() {
-                                     textViewFrom.setText("");
                                      Toast.makeText(NewOrderActivity.this, "Location is not available", Toast.LENGTH_SHORT).show();
                                  }
                              });
@@ -180,7 +180,6 @@ public class NewOrderActivity extends LocationActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        textViewTo.setText("");
                                         Toast.makeText(NewOrderActivity.this, "Location is not available", Toast.LENGTH_SHORT).show();
                                     }
                                 });
@@ -244,6 +243,14 @@ public class NewOrderActivity extends LocationActivity {
         String to = textViewTo.getText().toString();
 
         if(from!=null && to!=null && from.length()>0 && to.length()>0){
+            if(from.equals(to)){
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle("Invalid entry!");
+                alertDialogBuilder.setMessage("Starting point and destination cannot be same");
+                alertDialogBuilder.setPositiveButton("Ok", null);
+                alertDialogBuilder.create().show();
+                return;
+            }
             TaxiType taxiType = null;
             if(tabLayout.getSelectedTabPosition()==0)
                 taxiType = TaxiType.NANO;

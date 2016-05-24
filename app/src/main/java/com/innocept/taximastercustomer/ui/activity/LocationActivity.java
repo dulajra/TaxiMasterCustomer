@@ -80,7 +80,9 @@ public abstract class LocationActivity extends AppCompatActivity implements Goog
     @Override
     protected void onPause() {
         super.onPause();
-        stopLocationUpdates();
+        if (mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
     }
 
     /**

@@ -32,6 +32,9 @@
         <activity android:name=".ui.activity.NewOrderActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.activity.PlaceOrderActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
