@@ -6,33 +6,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/text_model"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/text_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            style="@style/TaxiListItemTime"
+            android:text="10 mins" />
 
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_no_of_seats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_model"
+                style="@style/TaxiListItem"
+                android:text="Toyota Prius" />
+
+            <TextView
+                android:id="@+id/text_distance"
+                style="@style/TaxiListItem"
+                android:text="1.5 Km" />
+
+            <TextView
+                android:id="@+id/text_name"
+                style="@style/TaxiListItem"
+                android:text="Driver Name" />
+
+            <TextView
+                android:id="@+id/text_no_of_seats"
+                style="@style/TaxiListItem"
+                android:text="4 Passengers" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -81,7 +81,7 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
         viewHolder.textViewDistance.setText(dataSet.get(position).getDistance());
         viewHolder.textViewDuration.setText(dataSet.get(position).getDuration());
         viewHolder.textViewName.setText(dataSet.get(position).getDriver().getFirstName() + " " + dataSet.get(position).getDriver().getLastName());
-        viewHolder.textViewNoOfSeats.setText(String.valueOf(dataSet.get(position).getNoOfSeats()));
+        viewHolder.textViewNoOfSeats.setText(dataSet.get(position).getNoOfSeats() + " Passengers");
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -8,15 +8,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -36,9 +33,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.TaxiType;
 import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
-import com.innocept.taximastercustomer.ui.fragment.CarFragment;
-import com.innocept.taximastercustomer.ui.fragment.NanoCabFragment;
-import com.innocept.taximastercustomer.ui.fragment.VanFragment;
+import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
 
 /**
  * Created by Dulaj on 17-Apr-16.
@@ -50,6 +45,7 @@ import com.innocept.taximastercustomer.ui.fragment.VanFragment;
 public class NewOrderActivity extends LocationActivity {
 
     private final String DEBUG_TAG = NewOrderActivity.class.getSimpleName();
+
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM = 1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE_TO = 2;
 
@@ -71,12 +67,21 @@ public class NewOrderActivity extends LocationActivity {
     LatLng latLngFrom;
     LatLng latLngTo;
 
-    public NanoCabFragment nanoCabFragment;
+    public TaxiFragment nanoCabFragment;
+    public TaxiFragment carFragment;
+    public TaxiFragment vanFragment;
+
+    boolean isTouchable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         if (newOrderPresenter == null) {
             newOrderPresenter = NewOrderPresenter.getInstance();
@@ -186,10 +191,22 @@ public class NewOrderActivity extends LocationActivity {
             }
         });
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                submit();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void searchPlace(int REQUEST_CODE){
@@ -250,8 +267,8 @@ public class NewOrderActivity extends LocationActivity {
                 Place placeFrom = PlaceAutocomplete.getPlace(this, data);
                 if(placeFrom!=null){
                     if(placeFrom.getName()!=null && placeFrom.getLatLng()!=null){
-                        textViewFrom.setText(placeFrom.getName());
                         latLngFrom = placeFrom.getLatLng();
+                        textViewFrom.setText(placeFrom.getName());
                     }
                     else{
                         textViewFrom.setText("");
@@ -297,10 +314,12 @@ public class NewOrderActivity extends LocationActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        nanoCabFragment = new NanoCabFragment();
+        nanoCabFragment = new TaxiFragment();
+        carFragment = new TaxiFragment();
+        vanFragment = new TaxiFragment();
         adapter.addFragment(nanoCabFragment, "NANO");
-        adapter.addFragment(new NanoCabFragment(), "CAR");
-        adapter.addFragment(new NanoCabFragment(), "VAN");
+        adapter.addFragment(carFragment, "CAR");
+        adapter.addFragment(vanFragment, "VAN");
         viewPager.setAdapter(adapter);
     }
 
@@ -341,5 +360,21 @@ public class NewOrderActivity extends LocationActivity {
             String message = "Lat: " + mLastLocation.getLatitude() + ", Lng: " + mLastLocation.getLongitude() + ", Accu: " + mLastLocation.getAccuracy();
             Log.i(DEBUG_TAG, message);
         }
+    }
+
+    public void lockUI(){
+        this.isTouchable = false;
+    }
+
+    public void releaseUI(){
+        this.isTouchable = true;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(isTouchable){
+            return super.dispatchTouchEvent(ev);
+        }
+        return false;
     }
 }

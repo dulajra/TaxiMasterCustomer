@@ -47,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         };
 
 //        Splash screen is closed after 2000 milliseconds
-        timer.schedule(timerTask, 2000);
+        timer.schedule(timerTask, 10);
     }
 }
 

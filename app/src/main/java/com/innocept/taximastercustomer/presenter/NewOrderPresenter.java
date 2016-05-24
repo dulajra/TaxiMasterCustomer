@@ -1,15 +1,14 @@
 package com.innocept.taximastercustomer.presenter;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.model.Communicator;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
 import com.innocept.taximastercustomer.model.foundation.TaxiType;
 import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
+import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
 
 import java.util.List;
 
@@ -22,8 +21,14 @@ import java.util.List;
  */
 public class NewOrderPresenter {
 
+    private final String DEBUG_TAG = NewOrderPresenter.class.getSimpleName();
+
     private static NewOrderPresenter instance = null;
     private NewOrderActivity view;
+
+    private TaxiFragment nanoCabFragment;
+    private TaxiFragment carFragment;
+    private TaxiFragment vanFragment;
 
     private NewOrderPresenter() {
     }
@@ -37,6 +42,9 @@ public class NewOrderPresenter {
 
     public void setView(NewOrderActivity view) {
         this.view = view;
+        this.nanoCabFragment = view.nanoCabFragment;
+        this.carFragment = view.carFragment;
+        this.vanFragment = view.vanFragment;
     }
 
     public void getAvailableTaxis(final LatLng origin, final TaxiType taxiType){
@@ -50,6 +58,18 @@ public class NewOrderPresenter {
             protected void onPreExecute() {
                 super.onPreExecute();
                 communicator = new Communicator();
+
+                view.lockUI();
+
+                if(taxiType == TaxiType.NANO){
+                    nanoCabFragment.lockUI();
+                }
+                else if(taxiType == TaxiType.CAR){
+                    carFragment.lockUI();
+                }
+                else if(taxiType == TaxiType.VAN){
+                    vanFragment.lockUI();
+                }
             }
 
             @Override
@@ -61,7 +81,21 @@ public class NewOrderPresenter {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                view.nanoCabFragment.test(taxiList);
+
+                view.releaseUI();
+
+                if(taxiType == TaxiType.NANO){
+                    nanoCabFragment.setData(taxiList);
+                    nanoCabFragment.releaseUI();
+                }
+                else if(taxiType == TaxiType.CAR){
+                    carFragment.setData(taxiList);
+                    carFragment.releaseUI();
+                }
+                else if(taxiType == TaxiType.VAN){
+                    vanFragment.setData(taxiList);
+                    vanFragment.releaseUI();
+                }
             }
 
         }.execute();
