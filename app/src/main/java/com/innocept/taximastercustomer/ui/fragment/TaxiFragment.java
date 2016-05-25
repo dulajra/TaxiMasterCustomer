@@ -45,8 +45,8 @@ public class TaxiFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_taxi, container, false);
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progressbar_nano_list);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_nano_list);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progressbar_taxi_list);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_taxi_list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);

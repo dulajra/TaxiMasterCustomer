@@ -62,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + TABLE_MY_ORDERS + " WHERE " + COLUMN_STATE + "=?";
         SQLiteDatabase rdb;
         rdb = this.getReadableDatabase();
-        Cursor cursor = rdb.rawQuery(selectQuery, new String[]{orderList.toString()});
+        Cursor cursor = rdb.rawQuery(selectQuery, new String[]{orderState.toString()});
         if (cursor.moveToFirst()) {
             do {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
