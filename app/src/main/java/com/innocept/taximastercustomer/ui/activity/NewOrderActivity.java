@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -32,6 +33,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.innocept.taximastercustomer.R;
+import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.TaxiType;
 import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
@@ -50,7 +52,7 @@ public class NewOrderActivity extends LocationActivity {
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM = 1;
     private final int PLACE_AUTOCOMPLETE_REQUEST_CODE_TO = 2;
 
-    NewOrderPresenter newOrderPresenter;
+    public NewOrderPresenter newOrderPresenter;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -377,7 +379,20 @@ public class NewOrderActivity extends LocationActivity {
         this.isTouchable = true;
     }
 
+    public void placeOrder(Date time, String note, int driverId){
+        Order order = new Order();
+        order.setOrigin(textViewFrom.getText().toString());
+        order.setDestination(textViewTo.getText().toString());
+        order.setOriginCoordinates(new com.innocept.taximastercustomer.model.foundation.Location(latLngFrom.latitude, latLngFrom.longitude));
+        order.setDestinationCoordinates(new com.innocept.taximastercustomer.model.foundation.Location(latLngTo.latitude, latLngTo.longitude));
+        order.setTime(time);
+        order.setNote(note);
+        order.setDriverId(driverId);
+        newOrderPresenter.placeOrder(order);
+    }
+
     @Override
+
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if(isTouchable){
             return super.dispatchTouchEvent(ev);

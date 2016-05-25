@@ -12,15 +12,8 @@ import com.innocept.taximastercustomer.R;
  */
 public class PlaceOrderActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inflater_alert_dialog_place_order);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Place an order");
-        setSupportActionBar(toolbar);
     }
 }

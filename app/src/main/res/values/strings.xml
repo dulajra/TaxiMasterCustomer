@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Taxi Master Customer</string>
+
+    <string-array name="spinner_time_entries">
+        <item>ASAP</item>
+        <item>Pick a time...</item>
+
+    </string-array>
+    <string name="spinner_time_prompt">Order time</string>
+
 </resources>

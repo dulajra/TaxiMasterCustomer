@@ -19,6 +19,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC4j_LRXzLBu3_ANhztr0YV8dUevvgADJE" />
 
+        <meta-data android:name="com.onesignal.NotificationOpened.DEFAULT" android:value="DISABLE" />
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait">

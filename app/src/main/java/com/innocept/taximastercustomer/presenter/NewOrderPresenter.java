@@ -1,10 +1,12 @@
 package com.innocept.taximastercustomer.presenter;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.innocept.taximastercustomer.model.Communicator;
 import com.innocept.taximastercustomer.model.foundation.Location;
+import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
 import com.innocept.taximastercustomer.model.foundation.TaxiType;
 import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
@@ -96,6 +98,34 @@ public class NewOrderPresenter {
                     vanFragment.setData(taxiList);
                     vanFragment.releaseUI();
                 }
+            }
+
+        }.execute();
+    }
+
+    public void placeOrder(final Order order){
+
+        new AsyncTask<Void, Void, Void>(){
+
+            Communicator communicator;
+            boolean result;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                communicator = new Communicator();
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                result = communicator.placeOrder(order);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Log.i("placeOrder", result + " >>>>>>>>>>>>>>>");
             }
 
         }.execute();

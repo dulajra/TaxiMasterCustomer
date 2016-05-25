@@ -2,6 +2,13 @@ package com.innocept.taximastercustomer;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+import com.innocept.taximastercustomer.ui.activity.PlaceOrderActivity;
+import com.onesignal.OneSignal;
+
+import org.json.JSONObject;
 
 /**
  * Created by Dulaj on 14-Apr-16.
@@ -10,7 +17,7 @@ import android.content.Context;
 /**
  * ApplicationContext is used to get the context of the application from any where.
  */
-public class ApplicationContext extends Application{
+public class ApplicationContext extends Application {
 
     private static Context context;
 
@@ -18,9 +25,49 @@ public class ApplicationContext extends Application{
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        OneSignal.startInit(this)
+                .setNotificationOpenedHandler(new ExampleNotificationOpenedHandler())
+                .init();
+
+        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+            @Override
+            public void idsAvailable(String userId, String registrationId) {
+                Log.d("debug", "User:" + userId);
+                if (registrationId != null)
+                    Log.d("debug", "registrationId:" + registrationId);
+            }
+        });
+
+        OneSignal.sendTag("userType", "customer");
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
+    }
+
+    // This fires when a notification is opened by tapping on it or one is received while the app is running.
+    private class ExampleNotificationOpenedHandler implements OneSignal.NotificationOpenedHandler {
+
+        @Override
+        public void notificationOpened(String message, JSONObject additionalData, boolean isActive) {
+            try {
+                if (additionalData != null) {
+                    if (additionalData.has("actionSelected")) {
+                        Log.i("OneSignalExample", "Full additionalData:\n" + additionalData.toString());
+                    }
+                }
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
+
+            // The following can be used to open an Activity of your choose.
+
+            Intent intent = new Intent(context, PlaceOrderActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            // Follow the instructions in the link below to prevent the launcher Activity from starting.
+            // https://documentation.onesignal.com/docs/android-notification-customizations#changing-the-open-action-of-a-notification
+        }
     }
 }
