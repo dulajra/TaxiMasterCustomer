@@ -21,26 +21,71 @@
             android:layout_height="100dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_model"
+            <LinearLayout
                 style="@style/TaxiListItem"
-                android:text="Toyota Prius" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/text_distance"
+                <TextView
+                    style="@style/TaxiListItem"
+                    android:text="Model: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_model"
+                    style="@style/TaxiListItem"
+                    android:text="Toyota Prius" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 style="@style/TaxiListItem"
-                android:text="1.5 Km" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/text_name"
+                <TextView
+                    style="@style/TaxiListItem"
+                    android:text="Distance: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_distance"
+                    style="@style/TaxiListItem"
+                    android:text="1.5 Km" />
+            </LinearLayout>
+
+            <LinearLayout
                 style="@style/TaxiListItem"
-                android:text="Driver Name" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/text_no_of_seats"
+                <TextView
+                    style="@style/TaxiListItem"
+                    android:text="Driver: "
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_name"
+                    style="@style/TaxiListItem"
+                    android:text="Driver Name" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 style="@style/TaxiListItem"
-                android:text="4 Passengers" />
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/TaxiListItem"
+                    android:text="Capacity: "
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/text_no_of_seats"
+                    style="@style/TaxiListItem"
+                    android:text="4 Passengers" />
+
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

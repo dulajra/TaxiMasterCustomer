@@ -1,13 +1,9 @@
-package com.innocept.taximastercustomer.model;
+package com.innocept.taximastercustomer.model.network;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
@@ -69,7 +65,7 @@ public class Communicator{
         values.put("destinationLongitude", order.getDestinationCoordinates().getLatitude());
         values.put("destinationLongitude", order.getDestinationCoordinates().getLatitude());
         values.put("note", order.getNote());
-        values.put("driverId", order.getDriverId());
+        values.put("driverId", order.getDriver().getId());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
         String time = sdf.format(order.getTime());

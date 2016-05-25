@@ -1,10 +1,9 @@
 package com.innocept.taximastercustomer.presenter;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.innocept.taximastercustomer.model.Communicator;
+import com.innocept.taximastercustomer.model.network.Communicator;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
@@ -113,6 +112,7 @@ public class NewOrderPresenter {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                view.showProgressDialog("Placing the order");
                 communicator = new Communicator();
             }
 
@@ -125,7 +125,8 @@ public class NewOrderPresenter {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                Log.i("placeOrder", result + " >>>>>>>>>>>>>>>");
+                view.closeProgressDialog();
+                view.onPlaceOrderSuccess(order);
             }
 
         }.execute();

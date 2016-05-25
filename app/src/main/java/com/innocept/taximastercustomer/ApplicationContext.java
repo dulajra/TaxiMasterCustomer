@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.innocept.taximastercustomer.ui.activity.PlaceOrderActivity;
+
 import com.onesignal.OneSignal;
 
 import org.json.JSONObject;
@@ -62,7 +62,7 @@ public class ApplicationContext extends Application {
 
             // The following can be used to open an Activity of your choose.
 
-            Intent intent = new Intent(context, PlaceOrderActivity.class);
+            Intent intent = new Intent(context, null);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
 

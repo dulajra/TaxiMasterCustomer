@@ -1,5 +1,6 @@
 package com.innocept.taximastercustomer.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.innocept.taximastercustomer.R;
+import com.innocept.taximastercustomer.model.foundation.Driver;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.TaxiType;
 import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
@@ -75,6 +77,8 @@ public class NewOrderActivity extends LocationActivity {
     public TaxiFragment vanFragment;
 
     boolean isTouchable = true;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -379,7 +383,7 @@ public class NewOrderActivity extends LocationActivity {
         this.isTouchable = true;
     }
 
-    public void placeOrder(Date time, String note, int driverId){
+    public void placeOrder(Date time, String note, Driver driver){
         Order order = new Order();
         order.setOrigin(textViewFrom.getText().toString());
         order.setDestination(textViewTo.getText().toString());
@@ -387,7 +391,8 @@ public class NewOrderActivity extends LocationActivity {
         order.setDestinationCoordinates(new com.innocept.taximastercustomer.model.foundation.Location(latLngTo.latitude, latLngTo.longitude));
         order.setTime(time);
         order.setNote(note);
-        order.setDriverId(driverId);
+        order.setDriver(driver);
+        order.setOrderState(Order.OrderState.PENDING);
         newOrderPresenter.placeOrder(order);
     }
 
@@ -398,5 +403,21 @@ public class NewOrderActivity extends LocationActivity {
             return super.dispatchTouchEvent(ev);
         }
         return false;
+    }
+
+    public void showProgressDialog(String message){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+
+    public void closeProgressDialog(){
+        progressDialog.dismiss();
+    }
+
+    public void onPlaceOrderSuccess(Order order){
+        Intent intent = new Intent(NewOrderActivity.this, MyOrdersActivity.class);
+        intent.putExtra("order", order);
+        startActivity(intent);
     }
 }

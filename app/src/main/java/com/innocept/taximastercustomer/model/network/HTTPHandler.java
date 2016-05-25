@@ -1,4 +1,4 @@
-package com.innocept.taximastercustomer.model;
+package com.innocept.taximastercustomer.model.network;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.innocept.taximastercustomer.ApplicationContext;
-
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

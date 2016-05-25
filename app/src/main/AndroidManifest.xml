@@ -34,7 +34,7 @@
         <activity android:name=".ui.activity.NewOrderActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.activity.PlaceOrderActivity"
+        <activity android:name=".ui.activity.MyOrdersActivity"
             android:screenOrientation="portrait"/>
 
     </application>

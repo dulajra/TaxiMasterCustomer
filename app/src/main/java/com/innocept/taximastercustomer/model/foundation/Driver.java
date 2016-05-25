@@ -1,9 +1,11 @@
 package com.innocept.taximastercustomer.model.foundation;
 
+import java.io.Serializable;
+
 /**
  * Created by Dulaj on 16-Apr-16.
  */
-public class Driver {
+public class Driver implements Serializable{
 
     private int id;
     private String firstName;

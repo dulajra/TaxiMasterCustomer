@@ -3,10 +3,8 @@ package com.innocept.taximastercustomer.ui.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +21,9 @@ import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
 import com.innocept.taximastercustomer.R;
-import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
 import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
-import com.innocept.taximastercustomer.ui.activity.PlaceOrderActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -87,10 +82,11 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final ViewHolder viewHolder = (ViewHolder) holder;
 
+        String[] time = dataSet.get(position).getDuration().split(" ");
         viewHolder.textViewModel.setText(dataSet.get(position).getModel());
         viewHolder.textViewDistance.setText(dataSet.get(position).getDistance());
-        viewHolder.textViewDuration.setText(dataSet.get(position).getDuration());
-        viewHolder.textViewName.setText(dataSet.get(position).getDriver().getFirstName() + " " + dataSet.get(position).getDriver().getLastName());
+        viewHolder.textViewDuration.setText(time[0] + '\n' + time[1]);
+        viewHolder.textViewName.setText(dataSet.get(position).getDriver().getFirstName());
         viewHolder.textViewNoOfSeats.setText(dataSet.get(position).getNoOfSeats() + " Passengers");
 
         viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +185,7 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                         calendar.set(Calendar.MINUTE, min);
 
                         String note = editTextNote.getText().toString();
-                        ((NewOrderActivity)context).placeOrder(calendar.getTime(), note, dataSet.get(position).getDriver().getId());
+                        ((NewOrderActivity)context).placeOrder(calendar.getTime(), note, dataSet.get(position).getDriver());
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null);
