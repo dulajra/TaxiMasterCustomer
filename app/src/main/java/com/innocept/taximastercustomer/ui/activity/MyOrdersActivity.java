@@ -2,20 +2,19 @@ package com.innocept.taximastercustomer.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.ProgressBar;
+import android.support.v7.widget.Toolbar;
 
-import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.R;
-import com.innocept.taximastercustomer.model.data.DatabaseHandler;
-import com.innocept.taximastercustomer.model.foundation.Order;
-import com.innocept.taximastercustomer.model.foundation.Taxi;
-import com.innocept.taximastercustomer.ui.adapters.MyOrderAdapter;
-import com.innocept.taximastercustomer.ui.adapters.TaxiListAdapter;
+import com.innocept.taximastercustomer.ui.fragment.FinishedOrderFragment;
+import com.innocept.taximastercustomer.ui.fragment.OnGoingOrderFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,31 +24,61 @@ public class MyOrdersActivity extends AppCompatActivity {
 
     private final String DEBUG_TAG = MyOrdersActivity.class.getSimpleName();
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-
-    private List<Order> dataSet;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_orders);
 
-        DatabaseHandler db = new DatabaseHandler(ApplicationContext.getContext());
-        db.saveOrder((Order)getIntent().getSerializableExtra("order"));
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitle("My Orders");
 
-        dataSet = db.getAllOrders(Order.OrderState.PENDING);
+        viewPager = (ViewPager) findViewById(R.id.viewpager_my_orders);
+        setupViewPager(viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
-        Log.i(DEBUG_TAG, dataSet.size() + " >>>>>>>>>>>>");
-        for (Order order:dataSet){
-            Log.i(DEBUG_TAG, order.getOrigin());
-        }
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_my_orders);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new MyOrderAdapter(this, dataSet);
-        recyclerView.setAdapter(adapter);
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OnGoingOrderFragment(), "FINISHED");
+        adapter.addFragment(new FinishedOrderFragment(), "ON GOING");
+        viewPager.setAdapter(adapter);
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
 }

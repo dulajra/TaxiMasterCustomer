@@ -35,7 +35,8 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.activity.MyOrdersActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activity.NewOrderActivity"/>
 
     </application>
 

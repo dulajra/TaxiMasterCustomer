@@ -60,14 +60,9 @@ public class ApplicationContext extends Application {
                 t.printStackTrace();
             }
 
-            // The following can be used to open an Activity of your choose.
-
             Intent intent = new Intent(context, null);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
-            // Follow the instructions in the link below to prevent the launcher Activity from starting.
-            // https://documentation.onesignal.com/docs/android-notification-customizations#changing-the-open-action-of-a-notification
         }
     }
 }
