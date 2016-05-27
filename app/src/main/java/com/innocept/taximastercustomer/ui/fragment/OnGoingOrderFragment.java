@@ -48,7 +48,7 @@ public class OnGoingOrderFragment extends Fragment {
             db.saveOrder((Order)(intent.getSerializableExtra("order")));
         }
 
-        dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.PENDING, Order.OrderState.ACCEPTED});
+        dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.PENDING, Order.OrderState.ACCEPTED, Order.OrderState.REJECTED});
     }
 
     @Override

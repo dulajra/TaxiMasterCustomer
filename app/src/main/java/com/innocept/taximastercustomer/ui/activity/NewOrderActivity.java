@@ -1,11 +1,14 @@
 package com.innocept.taximastercustomer.ui.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,6 +36,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Driver;
 import com.innocept.taximastercustomer.model.foundation.Order;
@@ -62,8 +66,8 @@ public class NewOrderActivity extends LocationActivity {
 
     RelativeLayout relativeLayoutFrom;
     RelativeLayout relativeLayoutTo;
-    TextView textViewFrom;
-    TextView textViewTo;
+    public TextView textViewFrom;
+    public TextView textViewTo;
     ImageButton imageButtonMyLocationFrom;
     ImageButton imageButtonMyLocationTo;
     ImageButton imageButtonMapFrom;

@@ -96,8 +96,13 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                 LayoutInflater inflater = LayoutInflater.from(context);
                 View alertDialogView = inflater.inflate(R.layout.inflater_alert_dialog_place_order, null);
 
+                final EditText editTextFrom = (EditText) alertDialogView.findViewById(R.id.edit_from);
+                final EditText editTextTo = (EditText) alertDialogView.findViewById(R.id.edit_to);
                 final EditText editTextNote = (EditText) alertDialogView.findViewById(R.id.text_note);
                 final EditText editTextContact = (EditText) alertDialogView.findViewById(R.id.text_contact);
+
+                editTextFrom.setText(((NewOrderActivity)context).textViewFrom.getText().toString());
+                editTextTo.setText(((NewOrderActivity)context).textViewTo.getText().toString());
 
                 final ArrayList<String> spinnerDateArray = new ArrayList<String>();
                 spinnerDateArray.add("Today");

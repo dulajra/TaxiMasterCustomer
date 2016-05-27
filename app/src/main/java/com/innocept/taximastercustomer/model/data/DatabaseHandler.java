@@ -125,7 +125,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void updateOrderState(int id, boolean response) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_STATE, Order.OrderState.ACCEPTED.toString());
+        if(response){
+            values.put(COLUMN_STATE, Order.OrderState.ACCEPTED.toString());
+        }
+        else{
+            values.put(COLUMN_STATE, Order.OrderState.REJECTED.toString());
+        }
 
         int numOfRowsEffected = db.update(TABLE_MY_ORDERS, values, COLUMN_ID + "='" + id + "'", null);
         db.close();

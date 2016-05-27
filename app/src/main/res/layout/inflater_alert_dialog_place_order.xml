@@ -5,14 +5,14 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/text_from"
+        android:id="@+id/edit_from"
         style="@style/PlaceOrderDialogViewItem"
         android:enabled="false"
         android:text="From: Moratuwa" />
 
 
     <EditText
-        android:id="@+id/text_to"
+        android:id="@+id/edit_to"
         style="@style/PlaceOrderDialogViewItem"
         android:enabled="false"
         android:text="To: Bambalapitiya" />

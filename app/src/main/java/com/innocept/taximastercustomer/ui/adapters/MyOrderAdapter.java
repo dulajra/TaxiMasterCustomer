@@ -66,10 +66,13 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
         Order.OrderState orderState = orderList.get(position).getOrderState();
         if(orderState == Order.OrderState.PENDING){
-            viewHolder.textState.setTextColor(Color.RED);
+            viewHolder.textState.setTextColor(Color.BLUE);
         }
         else if(orderState == Order.OrderState.ACCEPTED){
             viewHolder.textState.setTextColor(Color.GREEN);
+        }
+        else if(orderState == Order.OrderState.REJECTED){
+            viewHolder.textState.setTextColor(Color.RED);
         }
         viewHolder.textState.setText(orderState.toString());
 
