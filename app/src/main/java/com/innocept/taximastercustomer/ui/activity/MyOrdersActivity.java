@@ -1,5 +1,6 @@
 package com.innocept.taximastercustomer.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.ui.fragment.FinishedOrderFragment;
@@ -35,7 +37,6 @@ public class MyOrdersActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("My Orders");
 
         viewPager = (ViewPager) findViewById(R.id.viewpager_my_orders);
@@ -46,9 +47,13 @@ public class MyOrdersActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OnGoingOrderFragment(), "FINISHED");
-        adapter.addFragment(new FinishedOrderFragment(), "ON GOING");
+        adapter.addFragment(new OnGoingOrderFragment(), "ON GOING");
+        adapter.addFragment(new FinishedOrderFragment(), "FINISHED");
         viewPager.setAdapter(adapter);
+    }
+
+    public void openNewOrderActivity(View view) {
+        startActivity(new Intent(MyOrdersActivity.this, NewOrderActivity.class));
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

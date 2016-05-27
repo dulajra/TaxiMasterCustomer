@@ -336,6 +336,10 @@ public class NewOrderActivity extends LocationActivity {
         viewPager.setAdapter(adapter);
     }
 
+    public void openMyOrdersActivity(View view) {
+        startActivity(new Intent(NewOrderActivity.this, MyOrdersActivity.class));
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -418,6 +422,7 @@ public class NewOrderActivity extends LocationActivity {
 
     public void onPlaceOrderSuccess(Order order){
         Intent intent = new Intent(NewOrderActivity.this, MyOrdersActivity.class);
+        intent.putExtra("isNewOrder", true);
         intent.putExtra("order", order);
         startActivity(intent);
     }

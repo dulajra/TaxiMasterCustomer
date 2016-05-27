@@ -3,6 +3,7 @@ package com.innocept.taximastercustomer.ui.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         TextView textFromTo;
         TextView textTime;
         TextView textDriverName;
+        TextView textDriverPhone;
         TextView textState;
 
         public ViewHolder(View itemView) {
@@ -41,6 +43,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             textFromTo = (TextView) itemView.findViewById(R.id.text_my_orderfrom_to);
             textTime = (TextView) itemView.findViewById(R.id.text_my_order_time);
             textDriverName = (TextView)itemView.findViewById(R.id.text_my_order_name);
+            textDriverPhone = (TextView)itemView.findViewById(R.id.text_my_order_phone);
             textState = (TextView)itemView.findViewById(R.id.text_my_order_state);
         }
     }
@@ -63,6 +66,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         viewHolder.textFromTo.setText(orderList.get(position).getOrigin() + " to " + orderList.get(position).getDestination());
         viewHolder.textTime.setText(new SimpleDateFormat("yyyy-MM-dd HH-mm").format(orderList.get(position).getTime()));
         viewHolder.textDriverName.setText(orderList.get(position).getDriver().getFirstName());
+        viewHolder.textDriverPhone.setText(orderList.get(position).getDriver().getPhone());
 
         Order.OrderState orderState = orderList.get(position).getOrderState();
         if(orderState == Order.OrderState.PENDING){

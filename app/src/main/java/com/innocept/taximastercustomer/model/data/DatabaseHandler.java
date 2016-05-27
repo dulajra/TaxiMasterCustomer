@@ -37,10 +37,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_ORIGIN = "origin";
     private static final String COLUMN_DESTINATION = "destination";
     private static final String COLUMN_DRIVER_NAME = "driverName";
+    private static final String COLUMN_DRIVER_PHONE = "driverPhone";
     private static final String COLUMN_STATE = "state";
 
     // Create queries
-    private static final String CREATE_TABLE_MY_ORDERS = "CREATE TABLE " + TABLE_MY_ORDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_TIME + " TEXT NOT NULL, " + COLUMN_ORIGIN + " TEXT NOT NULL, " + COLUMN_DESTINATION + " TEXT NOT NULL, " + COLUMN_DRIVER_NAME + " TEXT NOT NULL, " + COLUMN_STATE + " TEXT NOT NULL)";
+    private static final String CREATE_TABLE_MY_ORDERS = "CREATE TABLE " + TABLE_MY_ORDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_TIME + " TEXT NOT NULL, " + COLUMN_ORIGIN + " TEXT NOT NULL, " + COLUMN_DESTINATION + " TEXT NOT NULL, " + COLUMN_DRIVER_NAME + " TEXT NOT NULL, " + COLUMN_DRIVER_PHONE + " TEXT NOT NULL, " + COLUMN_STATE + " TEXT NOT NULL)";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -93,8 +94,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 Driver driver = new Driver();
                 driver.setFirstName(cursor.getString(4));
+                driver.setPhone(cursor.getString(5));
                 order.setDriver(driver);
-                order.setOrderState(Order.OrderState.valueOf(cursor.getString(5)));
+                order.setOrderState(Order.OrderState.valueOf(cursor.getString(6)));
                 orderList.add(order);
             } while (cursor.moveToNext());
         }
@@ -117,6 +119,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_DESTINATION, order.getDestination());
         values.put(COLUMN_STATE, order.getOrderState().toString());
         values.put(COLUMN_DRIVER_NAME, order.getDriver().getFirstName());
+        values.put(COLUMN_DRIVER_PHONE, order.getDriver().getPhone());
         wdb = this.getWritableDatabase();
         wdb.insert(TABLE_MY_ORDERS, null, values);
         wdb.close();

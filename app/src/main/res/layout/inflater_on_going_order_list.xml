@@ -16,28 +16,40 @@
             android:id="@+id/text_my_orderfrom_to"
             style="@style/TaxiListItem"
             android:text="Colombo to Moratuwa"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:maxLines="1"/>
 
 
         <TextView
             android:id="@+id/text_my_order_time"
             style="@style/TaxiListItem"
-            android:text="2016-01-01 13:30" />
+            android:text="2016-01-01 13:30"
+            android:maxLines="1"/>
+
+
+        <TextView
+            android:id="@+id/text_my_order_name"
+            style="@style/TaxiListItem"
+            android:text="Driver Name"
+            android:maxLines="1"/>
 
         <LinearLayout
             style="@style/TaxiListItem"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/text_my_order_name"
+                android:id="@+id/text_my_order_phone"
                 style="@style/TaxiListItem"
-                android:text="Driver Name" />
+                android:text="0712755777"
+                android:autoLink="phone"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/text_my_order_state"
                 style="@style/TaxiListItem"
                 android:gravity="right"
-                android:text="Driver Name" />
+                android:text="Driver Name"
+                android:maxLines="1"/>
 
         </LinearLayout>
 

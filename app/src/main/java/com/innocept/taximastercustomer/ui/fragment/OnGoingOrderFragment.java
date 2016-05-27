@@ -44,7 +44,7 @@ public class OnGoingOrderFragment extends Fragment {
         if(intent.getBooleanExtra("isUpdate", false)){
             db.updateOrderState(intent.getIntExtra("id", -1), intent.getBooleanExtra("response", false));
         }
-        else{
+        else if(intent.getBooleanExtra("isNewOrder", false)){
             db.saveOrder((Order)(intent.getSerializableExtra("order")));
         }
 
