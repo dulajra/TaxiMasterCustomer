@@ -107,7 +107,7 @@ public class NewOrderPresenter {
         new AsyncTask<Void, Void, Void>(){
 
             Communicator communicator;
-            boolean result;
+            int result;
 
             @Override
             protected void onPreExecute() {
@@ -126,7 +126,14 @@ public class NewOrderPresenter {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 view.closeProgressDialog();
-                view.onPlaceOrderSuccess(order);
+
+                if(result==-1){
+
+                }
+                else{
+                    order.setId(result);
+                    view.onPlaceOrderSuccess(order);
+                }
             }
 
         }.execute();

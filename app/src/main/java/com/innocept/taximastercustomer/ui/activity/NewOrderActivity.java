@@ -269,10 +269,6 @@ public class NewOrderActivity extends LocationActivity {
         }
     }
 
-    public void showTaxis(){
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM) {
@@ -383,7 +379,7 @@ public class NewOrderActivity extends LocationActivity {
         this.isTouchable = true;
     }
 
-    public void placeOrder(Date time, String note, Driver driver){
+    public void placeOrder(Date time, String note, Driver driver, String contact){
         Order order = new Order();
         order.setOrigin(textViewFrom.getText().toString());
         order.setDestination(textViewTo.getText().toString());
@@ -391,6 +387,7 @@ public class NewOrderActivity extends LocationActivity {
         order.setDestinationCoordinates(new com.innocept.taximastercustomer.model.foundation.Location(latLngTo.latitude, latLngTo.longitude));
         order.setTime(time);
         order.setNote(note);
+        order.setContact(contact);
         order.setDriver(driver);
         order.setOrderState(Order.OrderState.PENDING);
         newOrderPresenter.placeOrder(order);

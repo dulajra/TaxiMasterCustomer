@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_STATE = "state";
 
     // Create queries
-    private static final String CREATE_TABLE_MY_ORDERS = "CREATE TABLE " + TABLE_MY_ORDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TIME + " TEXT NOT NULL, " + COLUMN_ORIGIN + " TEXT NOT NULL, " + COLUMN_DESTINATION + " TEXT NOT NULL, " + COLUMN_DRIVER_NAME + " TEXT NOT NULL, " + COLUMN_STATE + " TEXT NOT NULL)";
+    private static final String CREATE_TABLE_MY_ORDERS = "CREATE TABLE " + TABLE_MY_ORDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_TIME + " TEXT NOT NULL, " + COLUMN_ORIGIN + " TEXT NOT NULL, " + COLUMN_DESTINATION + " TEXT NOT NULL, " + COLUMN_DRIVER_NAME + " TEXT NOT NULL, " + COLUMN_STATE + " TEXT NOT NULL)";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,12 +57,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public List<Order> getAllOrders(Order.OrderState orderState) {
+    public List<Order> getAllOrders(Order.OrderState[] orderStates) {
         List<Order> orderList = new ArrayList<Order>();
-        String selectQuery = "SELECT * FROM " + TABLE_MY_ORDERS + " WHERE " + COLUMN_STATE + "=?";
         SQLiteDatabase rdb;
         rdb = this.getReadableDatabase();
-        Cursor cursor = rdb.rawQuery(selectQuery, new String[]{orderState.toString()});
+
+        String[] selectionArgs =  new String[orderStates.length];
+        StringBuilder inQuery = new StringBuilder();
+
+        selectionArgs[0] = orderStates[0].toString();
+        inQuery.append("?");
+
+        for(int i=1;i<orderStates.length;i++){
+            selectionArgs[i] = orderStates[i].toString();
+            inQuery.append(", ?");
+        }
+        String selectQuery = "SELECT * FROM " + TABLE_MY_ORDERS + " WHERE " + COLUMN_STATE + " IN(" + inQuery.toString() + ")";
+        Cursor cursor = rdb.rawQuery(selectQuery, selectionArgs);
+
         if (cursor.moveToFirst()) {
             do {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
@@ -99,6 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String time = sdf.format(order.getTime());
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, order.getId());
         values.put(COLUMN_TIME, time);
         values.put(COLUMN_ORIGIN, order.getOrigin());
         values.put(COLUMN_DESTINATION, order.getDestination());
@@ -109,4 +122,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         wdb.close();
     }
 
+    public void updateOrderState(int id, boolean response) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STATE, Order.OrderState.ACCEPTED.toString());
+
+        int numOfRowsEffected = db.update(TABLE_MY_ORDERS, values, COLUMN_ID + "='" + id + "'", null);
+        db.close();
+    }
 }

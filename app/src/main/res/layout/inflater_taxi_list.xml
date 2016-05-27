@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
 
         <TextView
             android:id="@+id/text_duration"
@@ -17,7 +19,7 @@
             android:text="10 mins" />
 
         <LinearLayout
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:orientation="vertical">

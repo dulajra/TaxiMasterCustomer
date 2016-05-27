@@ -1,5 +1,6 @@
 package com.innocept.taximastercustomer.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,9 +39,16 @@ public class OnGoingOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         DatabaseHandler db = new DatabaseHandler(ApplicationContext.getContext());
-        db.saveOrder((Order)((getActivity().getIntent().getSerializableExtra("order"))));
+        Intent intent = (getActivity()).getIntent();
 
-        dataSet = db.getAllOrders(Order.OrderState.PENDING);
+        if(intent.getBooleanExtra("isUpdate", false)){
+            db.updateOrderState(intent.getIntExtra("id", -1), intent.getBooleanExtra("response", false));
+        }
+        else{
+            db.saveOrder((Order)(intent.getSerializableExtra("order")));
+        }
+
+        dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.PENDING, Order.OrderState.ACCEPTED});
     }
 
     @Override

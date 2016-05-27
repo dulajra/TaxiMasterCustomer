@@ -17,6 +17,11 @@
         android:enabled="false"
         android:text="To: Bambalapitiya" />
 
+    <EditText
+        android:id="@+id/text_contact"
+        style="@style/PlaceOrderDialogViewItem"
+        android:hint="Contact number" />
+
     <Spinner
         android:id="@+id/spinner_date"
         style="@style/PlaceOrderDialogViewItem"

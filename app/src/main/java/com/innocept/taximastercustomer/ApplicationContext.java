@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.util.Log;
 
 
+import com.innocept.taximastercustomer.ui.activity.MyOrdersActivity;
 import com.onesignal.OneSignal;
 
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Dulaj on 14-Apr-16.
@@ -26,15 +29,13 @@ public class ApplicationContext extends Application {
         super.onCreate();
         context = getApplicationContext();
         OneSignal.startInit(this)
-                .setNotificationOpenedHandler(new ExampleNotificationOpenedHandler())
+                .setNotificationOpenedHandler(new NotificationOpenedHandler())
                 .init();
 
         OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
             @Override
             public void idsAvailable(String userId, String registrationId) {
-                Log.d("debug", "User:" + userId);
-                if (registrationId != null)
-                    Log.d("debug", "registrationId:" + registrationId);
+                ApplicationPreferences.setOneSignalUserId(userId);
             }
         });
 
@@ -46,23 +47,25 @@ public class ApplicationContext extends Application {
     }
 
     // This fires when a notification is opened by tapping on it or one is received while the app is running.
-    private class ExampleNotificationOpenedHandler implements OneSignal.NotificationOpenedHandler {
+    private class NotificationOpenedHandler implements OneSignal.NotificationOpenedHandler {
 
         @Override
         public void notificationOpened(String message, JSONObject additionalData, boolean isActive) {
             try {
                 if (additionalData != null) {
-                    if (additionalData.has("actionSelected")) {
-                        Log.i("OneSignalExample", "Full additionalData:\n" + additionalData.toString());
+                    if(additionalData.getString("notificationType").equals("driverResponse")){
+                        Intent intent = new Intent(context, MyOrdersActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        intent.putExtra("isUpdate", true);
+                        intent.putExtra("id", additionalData.getInt("id"));
+                        intent.putExtra("response", additionalData.getBoolean("response"));
+                        startActivity(intent);
                     }
                 }
             } catch (Throwable t) {
                 t.printStackTrace();
             }
-
-            Intent intent = new Intent(context, null);
-            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
         }
     }
 }

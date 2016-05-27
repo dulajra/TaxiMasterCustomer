@@ -8,13 +8,15 @@
         android:id="@+id/linear_taxi_list_item"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_my_orderfrom_to"
             style="@style/TaxiListItem"
             android:text="Colombo to Moratuwa"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
 
         <TextView
@@ -22,11 +24,22 @@
             style="@style/TaxiListItem"
             android:text="2016-01-01 13:30" />
 
-
-        <TextView
-            android:id="@+id/text_my_order_name"
+        <LinearLayout
             style="@style/TaxiListItem"
-            android:text="Driver Name" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_my_order_name"
+                style="@style/TaxiListItem"
+                android:text="Driver Name" />
+
+            <TextView
+                android:id="@+id/text_my_order_state"
+                style="@style/TaxiListItem"
+                android:gravity="right"
+                android:text="Driver Name" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

@@ -38,7 +38,7 @@ public class FinishedOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         DatabaseHandler db = new DatabaseHandler(ApplicationContext.getContext());
-        dataSet = db.getAllOrders(Order.OrderState.FINISHED);
+        dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.FINISHED});
     }
 
     @Override

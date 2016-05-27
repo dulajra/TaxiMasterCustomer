@@ -8,12 +8,23 @@ import java.util.Date;
  */
 public class Order implements Serializable{
 
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String origin;
     private String destination;
     private Location originCoordinates;
     private Location destinationCoordinates;
     private Date time;
     private String note;
+    private String contact;
     private Driver driver;
     private Order.OrderState orderState;
 
@@ -82,6 +93,14 @@ public class Order implements Serializable{
 
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
     public enum OrderState {

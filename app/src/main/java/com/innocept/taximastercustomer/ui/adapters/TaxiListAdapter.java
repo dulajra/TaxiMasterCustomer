@@ -97,6 +97,7 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                 View alertDialogView = inflater.inflate(R.layout.inflater_alert_dialog_place_order, null);
 
                 final EditText editTextNote = (EditText) alertDialogView.findViewById(R.id.text_note);
+                final EditText editTextContact = (EditText) alertDialogView.findViewById(R.id.text_contact);
 
                 final ArrayList<String> spinnerDateArray = new ArrayList<String>();
                 spinnerDateArray.add("Today");
@@ -185,7 +186,7 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                         calendar.set(Calendar.MINUTE, min);
 
                         String note = editTextNote.getText().toString();
-                        ((NewOrderActivity)context).placeOrder(calendar.getTime(), note, dataSet.get(position).getDriver());
+                        ((NewOrderActivity)context).placeOrder(calendar.getTime(), note, dataSet.get(position).getDriver(),editTextContact.getText().toString());
                     }
                 });
                 alertDialogBuilder.setNegativeButton("Cancel", null);
