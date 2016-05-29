@@ -125,17 +125,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         wdb.close();
     }
 
-    public void updateOrderState(int id, boolean response) {
+    public void updateOrderState(int id, Order.OrderState orderState) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        if(response){
-            values.put(COLUMN_STATE, Order.OrderState.ACCEPTED.toString());
-        }
-        else{
-            values.put(COLUMN_STATE, Order.OrderState.REJECTED.toString());
-        }
-
-        int numOfRowsEffected = db.update(TABLE_MY_ORDERS, values, COLUMN_ID + "='" + id + "'", null);
+        values.put(COLUMN_STATE, orderState.toString());
+        db.update(TABLE_MY_ORDERS, values, COLUMN_ID + "='" + id + "'", null);
         db.close();
     }
 }

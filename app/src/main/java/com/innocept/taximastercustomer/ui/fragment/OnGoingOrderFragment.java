@@ -42,13 +42,21 @@ public class OnGoingOrderFragment extends Fragment {
         Intent intent = (getActivity()).getIntent();
 
         if(intent.getBooleanExtra("isUpdate", false)){
-            db.updateOrderState(intent.getIntExtra("id", -1), intent.getBooleanExtra("response", false));
+            if(intent.getBooleanExtra("response", false)){
+                db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.ACCEPTED);
+            }
+            else{
+                db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.REJECTED);
+            }
         }
         else if(intent.getBooleanExtra("isNewOrder", false)){
             db.saveOrder((Order)(intent.getSerializableExtra("order")));
         }
+        else if(intent.getBooleanExtra("now", false)){
+            db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.NOW);
+        }
 
-        dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.PENDING, Order.OrderState.ACCEPTED, Order.OrderState.REJECTED});
+        dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.PENDING, Order.OrderState.ACCEPTED, Order.OrderState.REJECTED, Order.OrderState.NOW});
     }
 
     @Override

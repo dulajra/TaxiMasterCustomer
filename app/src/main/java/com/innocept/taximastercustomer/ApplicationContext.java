@@ -62,6 +62,14 @@ public class ApplicationContext extends Application {
                         intent.putExtra("response", additionalData.getBoolean("response"));
                         startActivity(intent);
                     }
+                    else  if(additionalData.getString("notificationType").equals("now")){
+                        Intent intent = new Intent(context, MyOrdersActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        intent.putExtra("now", true);
+                        intent.putExtra("id", additionalData.getInt("id"));
+                        startActivity(intent);
+                    }
                 }
             } catch (Throwable t) {
                 t.printStackTrace();

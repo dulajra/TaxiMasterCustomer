@@ -1,6 +1,8 @@
 package com.innocept.taximastercustomer.ui.activity;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,7 +14,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +27,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -62,6 +69,13 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
     private Marker driverMarker;
     private float DEFAULT_ZOOM_LEVEL = 11f;
 
+    SupportMapFragment mapFragment;
+    View mapView;
+    LinearLayout linearStatusPanel;
+    FloatingActionButton fab;
+    com.github.clans.fab.FloatingActionButton fabCall;
+    private boolean isExpanded = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,12 +85,19 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         toolbar.setTitle("Going for hire");
         setSupportActionBar(toolbar);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mapView = mapFragment.getView();
+
+        linearStatusPanel = (LinearLayout) findViewById(R.id.linear_status_panel);
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fabCall = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_call);
 
         Intent intent = getIntent();
         order = (Order) intent.getSerializableExtra("order");
+
         startLatLng = new LatLng(order.getOriginCoordinates().getLatitude(), order.getOriginCoordinates().getLongitude());
+
 
     }
 
@@ -89,10 +110,10 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         }
         mMap.setMyLocationEnabled(true);
         mapUiSettings = mMap.getUiSettings();
-        mapUiSettings.setZoomControlsEnabled(true);
+        mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setRotateGesturesEnabled(true);
 
-        setStartMarker();
+//        setStartMarker();
     }
 
     private void setStartMarker() {
@@ -121,12 +142,11 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void callCustomer(){
+    private void callCustomer() {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + order.getContact()));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 100);
-        }
-        else{
+        } else {
             startActivity(intent);
         }
     }
@@ -139,4 +159,18 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
+    public void showOrHideStatusBar(View view) {
+        if(isExpanded){
+            fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_expand));
+            linearStatusPanel.setVisibility(View.VISIBLE);
+            isExpanded = false;
+            fabCall.setVisibility(View.VISIBLE);
+        }
+        else{
+            fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_action_collapse));
+            linearStatusPanel.setVisibility(View.GONE);
+            isExpanded = true;
+            fabCall.setVisibility(View.GONE);
+        }
+    }
 }
