@@ -95,6 +95,8 @@ public abstract class LocationActivity extends AppCompatActivity implements Goog
                 .addApi(LocationServices.API).build();
     }
 
+
+
     /**
      * Creating location request object
      */

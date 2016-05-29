@@ -375,7 +375,7 @@ public class NewOrderActivity extends LocationActivity {
         mLastLocation = location;
         if(mLastLocation!=null){
             String message = "Lat: " + mLastLocation.getLatitude() + ", Lng: " + mLastLocation.getLongitude() + ", Accu: " + mLastLocation.getAccuracy();
-            Log.i(DEBUG_TAG, message);
+            Log.v(DEBUG_TAG, message);
         }
     }
 

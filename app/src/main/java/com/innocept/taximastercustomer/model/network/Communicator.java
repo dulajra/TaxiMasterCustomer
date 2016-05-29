@@ -27,7 +27,7 @@ public class Communicator{
 
     private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private final String URL_ROOT = "http://3a2e2110.ngrok.io";
+    private final String URL_ROOT = "http://fd7eada1.ngrok.io";
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
 
