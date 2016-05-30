@@ -223,10 +223,16 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void setDriverMarker(){
+        if(driverMarker!=null){
+            driverMarker.remove();
+        }
         driverMarker = mMap.addMarker(new MarkerOptions().position(driverLatLng).title("Your taxi").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_taxi)));
     }
 
     private void setCustomerMarker(){
+        if(customerMarker!=null){
+            customerMarker.remove();
+        }
         customerMarker = mMap.addMarker(new MarkerOptions().position(customerLatLng).title("You").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_street_view)));
     }
 
