@@ -38,21 +38,35 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:padding="10dp"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/text_from_to"
+                style="@style/CurrentOrderStatusPanelItem"
+                android:text="From To"
+                android:maxLines="2"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/text_expected_time"
+                style="@style/CurrentOrderStatusPanelItem"
+                android:text="Expected at: "
+                android:maxLines="1"
+                />
+
+            <TextView
                 android:id="@+id/text_distance"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="1.5 Km remaining"/>
+                style="@style/CurrentOrderStatusPanelItem"
+                android:text="Calculating..."
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/text_estimated_time"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="Estimated time 20 minutes"/>
+                style="@style/CurrentOrderStatusPanelItem"
+                android:text="Calculating..."
+                android:maxLines="1"/>
 
         </LinearLayout>
 

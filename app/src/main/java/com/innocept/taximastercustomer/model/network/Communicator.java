@@ -3,6 +3,7 @@ package com.innocept.taximastercustomer.model.network;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.ApplicationPreferences;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by Dulaj on 14-Apr-16.
@@ -27,9 +29,10 @@ public class Communicator{
 
     private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private final String URL_ROOT = "http://fd7eada1.ngrok.io";
+    private final String URL_ROOT = "http://b2177c9a.ngrok.io";
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
+    private final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
 
 
     public Communicator() {
@@ -88,5 +91,29 @@ public class Communicator{
         return -1;
     }
 
+    /**
+     *
+     * @param driverId
+     * @param latLng
+     * @return new String[]{latitude, longitude, distance, duration}
+     */
+    public String[] getDriverUpdates(int driverId, LatLng latLng) {
+        ContentValues values = new ContentValues();
+        values.put("driverId", driverId);
+        values.put("latitude", latLng.latitude);
+        values.put("longitude", latLng.longitude);
+
+        String response = HTTPHandler.sendGET(URL_GET_DRIVER_UPDATE, values);
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            if(jsonObject.getBoolean("success")){
+                return new String[]{String.valueOf(jsonObject.getDouble("latitude")), String.valueOf(jsonObject.getDouble("longitude")), jsonObject.getString("distance"), jsonObject.getString("duration")};
+            }
+        } catch (JSONException e) {
+            Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
+        }
+        return null;
+    }
 }
 

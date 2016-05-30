@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -46,7 +47,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Order;
+import com.innocept.taximastercustomer.presenter.CurrentOrderPresenter;
+import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -57,24 +61,32 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
 
     private final String DEBUG_TAG = CurrentOrderActivity.class.getSimpleName();
 
+    public CurrentOrderPresenter currentOrderPresenter;
+
     private Toolbar toolbar;
     private GoogleMap mMap;
     private UiSettings mapUiSettings;
 
     private Order order;
 
-    private LatLng startLatLng;
+    private LatLng customerLatLng;
     private LatLng driverLatLng;
-    private Marker startMarker;
     private Marker driverMarker;
-    private float DEFAULT_ZOOM_LEVEL = 11f;
+    private Marker customerMarker;
+    private float DEFAULT_ZOOM_LEVEL = 10f;
 
     SupportMapFragment mapFragment;
     View mapView;
     LinearLayout linearStatusPanel;
+    private TextView textViewDistance;
+    private TextView textViewTime;
+    private TextView textViewFromTo;
+    private TextView textViewExpectedTime;
     FloatingActionButton fab;
     com.github.clans.fab.FloatingActionButton fabCall;
+
     private boolean isExpanded = false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,20 +97,59 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         toolbar.setTitle("Going for hire");
         setSupportActionBar(toolbar);
 
+        if (currentOrderPresenter == null) {
+            currentOrderPresenter = CurrentOrderPresenter.getInstance();
+        }
+        currentOrderPresenter.setView(this);
+
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
+
+        textViewDistance = (TextView)findViewById(R.id.text_distance);
+        textViewTime = (TextView)findViewById(R.id.text_estimated_time);
+        textViewFromTo = (TextView)findViewById(R.id.text_from_to);
+        textViewExpectedTime = (TextView)findViewById(R.id.text_expected_time);
 
         linearStatusPanel = (LinearLayout) findViewById(R.id.linear_status_panel);
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fabCall = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.fab_call);
 
+        fabCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callCustomer();
+            }
+        });
+
         Intent intent = getIntent();
         order = (Order) intent.getSerializableExtra("order");
 
-        startLatLng = new LatLng(order.getOriginCoordinates().getLatitude(), order.getOriginCoordinates().getLongitude());
+        customerLatLng = new LatLng(order.getOriginCoordinates().getLatitude(), order.getOriginCoordinates().getLongitude());
+        textViewFromTo.setText(order.getOrigin() + " to " + order.getDestination());
+        textViewExpectedTime.setText("Expected time: " + new SimpleDateFormat("yyyy-MM-dd hh:mm").format(order.getTime()));
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_current_order, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_refresh:
+                updateDetails();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateDetails() {
+        currentOrderPresenter.updateDriverDetails(order.getDriver().getId(), customerLatLng);
     }
 
     @Override
@@ -113,28 +164,13 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         mapUiSettings.setZoomControlsEnabled(false);
         mapUiSettings.setRotateGesturesEnabled(true);
 
-//        setStartMarker();
-    }
-
-    private void setStartMarker() {
-        startMarker = mMap.addMarker(new MarkerOptions().position(startLatLng).title(order.getOrigin()).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_street_view)).snippet("Passenger"));
+        setCustomerMarker();
+        moveAndAnimateCamera(customerLatLng, DEFAULT_ZOOM_LEVEL);
+        updateDetails();
     }
 
     private void moveAndAnimateCamera(LatLng latLng, float zoom) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(startLatLng, zoom));
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case 0:
-                callCustomer();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     @Override
@@ -143,7 +179,7 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void callCustomer() {
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + order.getContact()));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + order.getDriver().getPhone()));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 100);
         } else {
@@ -172,5 +208,30 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
             isExpanded = true;
             fabCall.setVisibility(View.GONE);
         }
+    }
+
+    public void whileGettingUpdates() {
+        Toast.makeText(CurrentOrderActivity.this, "Updating details...", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onUpdateSuccess(String[] update) {
+        driverLatLng = new LatLng(Double.parseDouble(update[0]), Double.parseDouble(update[1]));
+        setDriverMarker();
+        moveAndAnimateCamera(driverLatLng, DEFAULT_ZOOM_LEVEL);
+        setStatusPanelValues(update[2], update[3]);
+        Toast.makeText(CurrentOrderActivity.this, "Details updated...", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setDriverMarker(){
+        driverMarker = mMap.addMarker(new MarkerOptions().position(driverLatLng).title("Your taxi").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_taxi)));
+    }
+
+    private void setCustomerMarker(){
+        customerMarker = mMap.addMarker(new MarkerOptions().position(customerLatLng).title("You").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_street_view)));
+    }
+
+    private void setStatusPanelValues(String distance, String time){
+        textViewDistance.setText("Distance remaining: " + distance);
+        textViewTime.setText("Time remaining: " + time);
     }
 }

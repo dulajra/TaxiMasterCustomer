@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.innocept.taximastercustomer.model.foundation.Driver;
+import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
 
 import java.text.ParseException;
@@ -36,12 +37,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String COLUMN_TIME = "time";
     private static final String COLUMN_ORIGIN = "origin";
     private static final String COLUMN_DESTINATION = "destination";
+    private static final String COLUMN_ORIGIN_LATITUDE = "originLatitude";
+    private static final String COLUMN_ORIGIN_LONGITUDE = "originLongitude";
+    private static final String COLUMN_DESTINATION_LATITUDE = "destinationLatitude";
+    private static final String COLUMN_DESTINATION_LONGITUDE = "destinationLongitude";
+    private static final String COLUMN_DRIVER_ID = "driverId";
     private static final String COLUMN_DRIVER_NAME = "driverName";
     private static final String COLUMN_DRIVER_PHONE = "driverPhone";
     private static final String COLUMN_STATE = "state";
 
     // Create queries
-    private static final String CREATE_TABLE_MY_ORDERS = "CREATE TABLE " + TABLE_MY_ORDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_TIME + " TEXT NOT NULL, " + COLUMN_ORIGIN + " TEXT NOT NULL, " + COLUMN_DESTINATION + " TEXT NOT NULL, " + COLUMN_DRIVER_NAME + " TEXT NOT NULL, " + COLUMN_DRIVER_PHONE + " TEXT NOT NULL, " + COLUMN_STATE + " TEXT NOT NULL)";
+    private static final String CREATE_TABLE_MY_ORDERS = "CREATE TABLE " + TABLE_MY_ORDERS + "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " + COLUMN_TIME + " TEXT NOT NULL, " + COLUMN_ORIGIN + " TEXT NOT NULL, " + COLUMN_DESTINATION + " TEXT NOT NULL, " + COLUMN_ORIGIN_LATITUDE + " REAL NOT NULL, " + COLUMN_ORIGIN_LONGITUDE + " REAL NOT NULL, " + COLUMN_DESTINATION_LATITUDE + " REAL NOT NULL, " + COLUMN_DESTINATION_LONGITUDE + " REAL NOT NULL, " + COLUMN_DRIVER_ID + " INTEGER NOT NULL, " + COLUMN_DRIVER_NAME + " TEXT NOT NULL, " + COLUMN_DRIVER_PHONE + " TEXT NOT NULL, " + COLUMN_STATE + " TEXT NOT NULL)";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -91,12 +97,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 order.setTime(time);
                 order.setOrigin(cursor.getString(2));
                 order.setDestination(cursor.getString(3));
-
+                order.setOriginCoordinates(new Location(cursor.getDouble(4), cursor.getDouble(5)));
+                order.setDestinationCoordinates(new Location(cursor.getDouble(6), cursor.getDouble(7)));
                 Driver driver = new Driver();
-                driver.setFirstName(cursor.getString(4));
-                driver.setPhone(cursor.getString(5));
+                driver.setId(cursor.getInt(8));
+                driver.setFirstName(cursor.getString(9));
+                driver.setPhone(cursor.getString(10));
                 order.setDriver(driver);
-                order.setOrderState(Order.OrderState.valueOf(cursor.getString(6)));
+                order.setOrderState(Order.OrderState.valueOf(cursor.getString(11)));
                 orderList.add(order);
             } while (cursor.moveToNext());
         }
@@ -117,7 +125,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(COLUMN_TIME, time);
         values.put(COLUMN_ORIGIN, order.getOrigin());
         values.put(COLUMN_DESTINATION, order.getDestination());
+        values.put(COLUMN_ORIGIN_LATITUDE, order.getOriginCoordinates().getLatitude());
+        values.put(COLUMN_ORIGIN_LONGITUDE, order.getOriginCoordinates().getLongitude());
+        values.put(COLUMN_DESTINATION_LATITUDE, order.getDestinationCoordinates().getLatitude());
+        values.put(COLUMN_DESTINATION_LONGITUDE, order.getDestinationCoordinates().getLongitude());
         values.put(COLUMN_STATE, order.getOrderState().toString());
+        values.put(COLUMN_DRIVER_ID, order.getDriver().getId());
         values.put(COLUMN_DRIVER_NAME, order.getDriver().getFirstName());
         values.put(COLUMN_DRIVER_PHONE, order.getDriver().getPhone());
         wdb = this.getWritableDatabase();
