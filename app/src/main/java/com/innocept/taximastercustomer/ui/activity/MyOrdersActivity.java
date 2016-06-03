@@ -1,5 +1,6 @@
 package com.innocept.taximastercustomer.ui.activity;
 
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,11 @@ public class MyOrdersActivity extends AppCompatActivity {
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("finish", false)){
+            viewPager.setCurrentItem(1);
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {

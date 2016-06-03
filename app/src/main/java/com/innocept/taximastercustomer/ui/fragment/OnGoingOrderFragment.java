@@ -43,13 +43,10 @@ public class OnGoingOrderFragment extends Fragment {
         Intent intent = (getActivity()).getIntent();
 
         if(intent.getBooleanExtra("isUpdate", false)){
-            Log.i(DEBUG_TAG, "1 Called >>>>>>>>>>>>>>");
             if(intent.getBooleanExtra("response", false)){
-                Log.i(DEBUG_TAG, "2 Called >>>>>>>>>>>>>>");
                 db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.ACCEPTED);
             }
             else{
-                Log.i(DEBUG_TAG, "3 Called >>>>>>>>>>>>>>");
                 db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.REJECTED);
             }
         }

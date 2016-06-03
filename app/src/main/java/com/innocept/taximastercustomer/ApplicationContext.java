@@ -70,6 +70,14 @@ public class ApplicationContext extends Application {
                         intent.putExtra("id", additionalData.getInt("id"));
                         startActivity(intent);
                     }
+                    else  if(additionalData.getString("notificationType").equals("finishHire")){
+                        Intent intent = new Intent(context, MyOrdersActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        intent.putExtra("finish", true);
+                        intent.putExtra("id", additionalData.getInt("id"));
+                        startActivity(intent);
+                    }
                 }
             } catch (Throwable t) {
                 t.printStackTrace();

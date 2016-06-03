@@ -1,5 +1,6 @@
 package com.innocept.taximastercustomer.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,6 +39,12 @@ public class FinishedOrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         DatabaseHandler db = new DatabaseHandler(ApplicationContext.getContext());
+        Intent intent = (getActivity()).getIntent();
+
+        if(intent.getBooleanExtra("finish", false)){
+            db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.FINISHED);
+        }
+
         dataSet = db.getAllOrders(new Order.OrderState[]{Order.OrderState.FINISHED});
     }
 
