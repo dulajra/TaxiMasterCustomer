@@ -38,6 +38,7 @@
                         android:src="@drawable/ic_my_location" />
 
                     <ImageButton
+                        android:visibility="invisible"
                         android:id="@+id/image_btn_map_from"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
@@ -102,6 +103,7 @@
                         android:src="@drawable/ic_my_location" />
 
                     <ImageButton
+                        android:visibility="invisible"
                         android:id="@+id/image_btn_map_to"
                         android:layout_alignParentRight="true"
                         android:layout_width="wrap_content"
