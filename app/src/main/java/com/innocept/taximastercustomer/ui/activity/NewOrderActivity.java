@@ -338,6 +338,7 @@ public class NewOrderActivity extends LocationActivity {
 
     public void openMyOrdersActivity(View view) {
         startActivity(new Intent(NewOrderActivity.this, MyOrdersActivity.class));
+        this.finish();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -425,5 +426,6 @@ public class NewOrderActivity extends LocationActivity {
         intent.putExtra("isNewOrder", true);
         intent.putExtra("order", order);
         startActivity(intent);
+        this.finish();
     }
 }

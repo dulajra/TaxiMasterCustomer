@@ -1,5 +1,6 @@
 package com.innocept.taximastercustomer.ui.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -93,6 +94,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                     Intent intent = new Intent(context, CurrentOrderActivity.class);
                     intent.putExtra("order", dataSet.get(position));
                     context.startActivity(intent);
+                    ((Activity)context).finish();
                 }
             }
         });

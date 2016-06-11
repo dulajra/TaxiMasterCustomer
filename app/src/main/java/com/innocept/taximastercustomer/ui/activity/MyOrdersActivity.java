@@ -60,6 +60,7 @@ public class MyOrdersActivity extends AppCompatActivity {
 
     public void openNewOrderActivity(View view) {
         startActivity(new Intent(MyOrdersActivity.this, NewOrderActivity.class));
+        this.finish();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

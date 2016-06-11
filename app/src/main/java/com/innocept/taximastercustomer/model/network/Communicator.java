@@ -29,7 +29,7 @@ public class Communicator{
 
     private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private final String URL_ROOT = "http://701fafba.ngrok.io";
+    private final String URL_ROOT = "http://bf72cbf6.ngrok.io";
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
     private final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
@@ -74,7 +74,7 @@ public class Communicator{
         values.put("driverId", order.getDriver().getId());
         values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         String time = sdf.format(order.getTime());
         values.put("time", time);
 
