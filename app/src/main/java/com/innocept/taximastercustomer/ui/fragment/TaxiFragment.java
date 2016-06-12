@@ -94,7 +94,7 @@ public class TaxiFragment extends Fragment {
 
     public void releaseUI(){
         swipeRefreshLayout.setRefreshing(false);
-//        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
 }

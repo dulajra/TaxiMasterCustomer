@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -64,6 +66,7 @@ public class NewOrderActivity extends LocationActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    CoordinatorLayout coordinatorLayout;
     RelativeLayout relativeLayoutFrom;
     RelativeLayout relativeLayoutTo;
     public TextView textViewFrom;
@@ -103,6 +106,7 @@ public class NewOrderActivity extends LocationActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinator_parent);
         relativeLayoutFrom = (RelativeLayout) findViewById(R.id.relative_from);
         relativeLayoutTo = (RelativeLayout) findViewById(R.id.relative_to);
         textViewFrom = (TextView) findViewById(R.id.text_from);
@@ -423,11 +427,17 @@ public class NewOrderActivity extends LocationActivity {
     }
 
     public void onPlaceOrderSuccess(Order order){
+        closeProgressDialog();
         Intent intent = new Intent(NewOrderActivity.this, MyOrdersActivity.class);
         intent.putExtra("isNewOrder", true);
         intent.putExtra("order", order);
         startActivity(intent);
         this.finish();
+    }
+
+    public void onPlaceOrderFailed(String error){
+        closeProgressDialog();
+        Snackbar.make(coordinatorLayout, error, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

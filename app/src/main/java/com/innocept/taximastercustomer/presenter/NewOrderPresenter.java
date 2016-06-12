@@ -125,10 +125,9 @@ public class NewOrderPresenter {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                view.closeProgressDialog();
 
                 if(result==-1){
-
+                    view.onPlaceOrderFailed("Something went wrong");
                 }
                 else{
                     order.setId(result);

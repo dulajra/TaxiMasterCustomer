@@ -57,6 +57,9 @@ public class Communicator{
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json array " + e.toString());
         }
+        catch (NullPointerException e){
+            Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+        }
 
         return taxiList;
     }
@@ -77,7 +80,6 @@ public class Communicator{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = sdf.format(order.getTime());
         values.put("time", time);
-        Log.i(DEBUG_TAG, time + " >>>>>>>>>>>>");
 
         String response = HTTPHandler.sendGET(URL_PLACE_ORDER, values);
 
@@ -88,6 +90,8 @@ public class Communicator{
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
+        }catch (NullPointerException e){
+            Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
         return -1;
     }
@@ -113,6 +117,8 @@ public class Communicator{
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
+        }catch (NullPointerException e){
+            Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
         return null;
     }
