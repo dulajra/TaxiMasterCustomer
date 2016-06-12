@@ -171,6 +171,8 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                     @Override
                     public void onClick(View v) {
                         TimePickerDialog timePickerDialog = new TimePickerDialog();
+                        Calendar c = Calendar.getInstance();
+                        timePickerDialog.setStartTime(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
                         timePickerDialog.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
