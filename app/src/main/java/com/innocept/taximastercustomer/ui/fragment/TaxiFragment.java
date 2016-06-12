@@ -2,6 +2,7 @@ package com.innocept.taximastercustomer.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
+import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
 import com.innocept.taximastercustomer.ui.adapters.TaxiListAdapter;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class TaxiFragment extends Fragment {
 
     private final String DEBUG_TAG = TaxiFragment.class.getSimpleName();
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -46,12 +49,20 @@ public class TaxiFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_taxi, container, false);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progressbar_taxi_list);
+        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_taxi_list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new TaxiListAdapter(getActivity(), dataSet);
         recyclerView.setAdapter(adapter);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ((NewOrderActivity)getActivity()).submit();
+            }
+        });
 
         return rootView;
     }
@@ -72,7 +83,8 @@ public class TaxiFragment extends Fragment {
 
     public void lockUI(){
         clearViews();
-        progressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setRefreshing(true);
+//        progressBar.setVisibility(View.VISIBLE);
     }
 
     public void clearViews(){
@@ -81,7 +93,8 @@ public class TaxiFragment extends Fragment {
     }
 
     public void releaseUI(){
-        progressBar.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(false);
+//        progressBar.setVisibility(View.GONE);
     }
 
 }

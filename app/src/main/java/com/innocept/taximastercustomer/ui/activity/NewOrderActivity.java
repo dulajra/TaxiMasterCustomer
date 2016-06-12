@@ -249,7 +249,7 @@ public class NewOrderActivity extends LocationActivity {
         }
     };
 
-    private void submit() {
+    public void submit() {
         String from = textViewFrom.getText().toString();
         String to = textViewTo.getText().toString();
 
