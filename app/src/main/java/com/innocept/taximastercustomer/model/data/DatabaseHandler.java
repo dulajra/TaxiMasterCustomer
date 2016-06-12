@@ -94,6 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 }
 
                 Order order = new Order();
+                order.setId(cursor.getInt(0));
                 order.setTime(time);
                 order.setOrigin(cursor.getString(2));
                 order.setDestination(cursor.getString(3));
@@ -143,6 +144,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_STATE, orderState.toString());
         db.update(TABLE_MY_ORDERS, values, COLUMN_ID + "='" + id + "'", null);
+        db.close();
+    }
+
+    public void deleteOrder(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_MY_ORDERS, COLUMN_ID + "='" + id + "'", null);
         db.close();
     }
 }

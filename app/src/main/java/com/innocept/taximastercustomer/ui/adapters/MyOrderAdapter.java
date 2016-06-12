@@ -80,6 +80,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             viewHolder.textState.setTextColor(Color.GREEN);
         } else if (orderState == Order.OrderState.REJECTED) {
             viewHolder.textState.setTextColor(Color.RED);
+        } else if (orderState == Order.OrderState.NOW) {
+            viewHolder.textState.setTextColor(Color.YELLOW);
         }
         viewHolder.textState.setText(orderState.toString());
 

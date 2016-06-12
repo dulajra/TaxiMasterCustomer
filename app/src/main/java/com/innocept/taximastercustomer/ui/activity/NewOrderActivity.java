@@ -449,5 +449,4 @@ public class NewOrderActivity extends LocationActivity {
             }
         }, 2000);
     }
-
 }

@@ -1,14 +1,18 @@
 package com.innocept.taximastercustomer.ui.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.R;
@@ -30,6 +34,7 @@ public class OnGoingOrderFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
 
     private List<Order> dataSet;
+    DatabaseHandler db;
 
     public OnGoingOrderFragment() {
         // Required empty public constructor
@@ -39,21 +44,18 @@ public class OnGoingOrderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DatabaseHandler db = new DatabaseHandler(ApplicationContext.getContext());
+        db = new DatabaseHandler(ApplicationContext.getContext());
         Intent intent = (getActivity()).getIntent();
 
-        if(intent.getBooleanExtra("isUpdate", false)){
-            if(intent.getBooleanExtra("response", false)){
+        if (intent.getBooleanExtra("isUpdate", false)) {
+            if (intent.getBooleanExtra("response", false)) {
                 db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.ACCEPTED);
-            }
-            else{
+            } else {
                 db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.REJECTED);
             }
-        }
-        else if(intent.getBooleanExtra("isNewOrder", false)){
-            db.saveOrder((Order)(intent.getSerializableExtra("order")));
-        }
-        else if(intent.getBooleanExtra("now", false)){
+        } else if (intent.getBooleanExtra("isNewOrder", false)) {
+            db.saveOrder((Order) (intent.getSerializableExtra("order")));
+        } else if (intent.getBooleanExtra("now", false)) {
             db.updateOrderState(intent.getIntExtra("id", -1), Order.OrderState.NOW);
         }
 
@@ -70,6 +72,44 @@ public class OnGoingOrderFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MyOrderAdapter(getActivity(), dataSet);
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                final Order order = dataSet.get(viewHolder.getAdapterPosition());
+                if (order.getOrderState() == Order.OrderState.PENDING || order.getOrderState() == Order.OrderState.NOW || order.getOrderState() == Order.OrderState.ACCEPTED) {
+                    Toast.makeText(getActivity(), "Only rejected orders can be deleted", Toast.LENGTH_LONG).show();
+                    adapter.notifyDataSetChanged();
+                } else if (order.getOrderState() == Order.OrderState.REJECTED) {
+                    AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                            .setMessage("Do you want to delete the order")
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            })
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    db.deleteOrder(order.getId());
+                                    dataSet.remove(viewHolder.getAdapterPosition());
+                                    adapter.notifyDataSetChanged();
+                                }
+                            })
+                            .create();
+                    dialog.show();
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return rootView;
     }

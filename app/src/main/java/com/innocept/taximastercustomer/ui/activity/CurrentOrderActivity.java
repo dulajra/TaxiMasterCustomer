@@ -180,6 +180,7 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
 
     private void callCustomer() {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + order.getDriver().getPhone()));
+        Log.i(DEBUG_TAG, order.getDriver().getPhone() + " >>>>>>>>>>>>>>");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 100);
         } else {
