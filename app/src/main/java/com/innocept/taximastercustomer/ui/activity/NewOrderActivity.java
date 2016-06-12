@@ -81,6 +81,7 @@ public class NewOrderActivity extends LocationActivity {
     public TaxiFragment vanFragment;
 
     boolean isTouchable = true;
+    private boolean doubleBackToExitPressedOnce;
 
     private ProgressDialog progressDialog;
 
@@ -428,4 +429,25 @@ public class NewOrderActivity extends LocationActivity {
         startActivity(intent);
         this.finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finish();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT)
+                .show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
+    }
+
 }

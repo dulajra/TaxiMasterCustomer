@@ -106,10 +106,10 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
 
                 final EditText editTextFrom = (EditText) alertDialogView.findViewById(R.id.edit_from);
                 final EditText editTextTo = (EditText) alertDialogView.findViewById(R.id.edit_to);
-                final TextInputLayout textInputLayoutContact = (TextInputLayout)alertDialogView.findViewById(R.id.input_layout_contact);
+                final TextInputLayout textInputLayoutContact = (TextInputLayout) alertDialogView.findViewById(R.id.input_layout_contact);
                 final EditText editTextContact = (EditText) alertDialogView.findViewById(R.id.text_contact);
                 final Spinner spinnerDate = (Spinner) alertDialogView.findViewById(R.id.spinner_date);
-                final TextInputLayout textInputLayoutTime = (TextInputLayout)alertDialogView.findViewById(R.id.input_layout_time);
+                final TextInputLayout textInputLayoutTime = (TextInputLayout) alertDialogView.findViewById(R.id.input_layout_time);
                 final EditText editTextTime = (EditText) alertDialogView.findViewById(R.id.edit_time);
                 final EditText editTextNote = (EditText) alertDialogView.findViewById(R.id.text_note);
 //                final Spinner spinnerTime = (Spinner) alertDialogView.findViewById(R.id.spinner_time);
@@ -185,40 +185,6 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                         timePickerDialog.show(((Activity) context).getFragmentManager(), "TIME");
                     }
                 });
-/*
-                final ArrayList<String> spinnerTimeArray = new ArrayList<String>();
-                spinnerTimeArray.add("Pick a time...");
-                final ArrayAdapter<String> spinnerTimeArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerTimeArray);
-                spinnerTime.setAdapter(spinnerTimeArrayAdapter);
-                spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        switch (position) {
-                            case 0:
-                                break;
-                            case 1:
-                                TimePickerDialog timePickerDialog = new TimePickerDialog();
-                                timePickerDialog.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-                                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                        calendar.set(Calendar.MINUTE, minute);
-
-                                        spinnerTimeArray.set(1, new SimpleDateFormat("hh:mm a").format(calendar.getTime()));
-                                        spinnerTimeArrayAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                                timePickerDialog.show(((Activity) context).getFragmentManager(), "TIME");
-                                break;
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
-                });
-*/
 
                 final AlertDialog alertDialog;
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -230,33 +196,32 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                 alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog) {
-                        Button positiveButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                        Button positiveButton = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 boolean isSuccess;
-                                if (editTextContact.getText().toString().trim().length()<9) {
+                                if (editTextContact.getText().toString().trim().length() < 9) {
                                     textInputLayoutContact.setError("Invalid phone number");
                                     requestFocus(editTextContact);
                                     isSuccess = false;
-                                } else{
+                                } else {
                                     isSuccess = true;
                                     textInputLayoutContact.setErrorEnabled(false);
                                 }
 
-                                if(textInputLayoutTime.getVisibility()==View.VISIBLE){
+                                if (textInputLayoutTime.getVisibility() == View.VISIBLE) {
                                     if (editTextTime.getText().toString().trim().isEmpty()) {
                                         textInputLayoutTime.setError("Time cannot be empty");
                                         requestFocus(editTextTime);
                                         isSuccess = false;
-                                    }
-                                    else{
+                                    } else {
                                         isSuccess = true;
                                         textInputLayoutTime.setErrorEnabled(false);
                                     }
                                 }
 
-                                if(isSuccess){
+                                if (isSuccess) {
                                     ((NewOrderActivity) context).placeOrder(calendar.getTime(), editTextNote.getText().toString(), dataSet.get(position).getDriver(), editTextContact.getText().toString());
                                     alertDialog.dismiss();
                                 }
@@ -274,9 +239,10 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
     public int getItemCount() {
         return dataSet.size();
     }
+
     private void requestFocus(View view) {
         if (view.requestFocus()) {
-            ((Activity)context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            ((Activity) context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 }
