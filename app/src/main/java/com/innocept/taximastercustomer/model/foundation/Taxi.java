@@ -11,6 +11,16 @@ public class Taxi {
     private String distance;
     private String duration;
 
+    public int getDurationValue() {
+        return durationValue;
+    }
+
+    public void setDurationValue(int durationValue) {
+        this.durationValue = durationValue;
+    }
+
+    private int durationValue;
+
     public Taxi(Driver driver, String model, int noOfSeats, String distance, String duration) {
         this.driver = driver;
         this.model = model;

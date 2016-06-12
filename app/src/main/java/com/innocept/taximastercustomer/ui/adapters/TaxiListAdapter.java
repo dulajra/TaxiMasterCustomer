@@ -3,13 +3,17 @@ package com.innocept.taximastercustomer.ui.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -25,6 +29,7 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
 import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,10 +47,12 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
     private RecyclerView.LayoutManager layoutManager;
 
     private int yr, month, day, hour, min;
+    private Calendar calendar;
 
     public TaxiListAdapter(Context context, List<Taxi> dataSet) {
         this.context = context;
         this.dataSet = dataSet;
+        this.calendar = Calendar.getInstance();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -99,42 +106,57 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
 
                 final EditText editTextFrom = (EditText) alertDialogView.findViewById(R.id.edit_from);
                 final EditText editTextTo = (EditText) alertDialogView.findViewById(R.id.edit_to);
-                final EditText editTextNote = (EditText) alertDialogView.findViewById(R.id.text_note);
+                final TextInputLayout textInputLayoutContact = (TextInputLayout)alertDialogView.findViewById(R.id.input_layout_contact);
                 final EditText editTextContact = (EditText) alertDialogView.findViewById(R.id.text_contact);
+                final Spinner spinnerDate = (Spinner) alertDialogView.findViewById(R.id.spinner_date);
+                final TextInputLayout textInputLayoutTime = (TextInputLayout)alertDialogView.findViewById(R.id.input_layout_time);
+                final EditText editTextTime = (EditText) alertDialogView.findViewById(R.id.edit_time);
+                final EditText editTextNote = (EditText) alertDialogView.findViewById(R.id.text_note);
+//                final Spinner spinnerTime = (Spinner) alertDialogView.findViewById(R.id.spinner_time);
 
-                editTextFrom.setText(((NewOrderActivity)context).textViewFrom.getText().toString());
-                editTextTo.setText(((NewOrderActivity)context).textViewTo.getText().toString());
+                editTextFrom.setText(((NewOrderActivity) context).textViewFrom.getText().toString());
+                editTextTo.setText(((NewOrderActivity) context).textViewTo.getText().toString());
 
                 final ArrayList<String> spinnerDateArray = new ArrayList<String>();
+                spinnerDateArray.add("ASAP");
                 spinnerDateArray.add("Today");
                 spinnerDateArray.add("Tomorrow");
                 spinnerDateArray.add("Pick a date...");
-                final Spinner spinnerDate = (Spinner) alertDialogView.findViewById(R.id.spinner_date);
-                ArrayAdapter<String> spinnerTimeArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerDateArray);
-                spinnerDate.setAdapter(spinnerTimeArrayAdapter);
+                final ArrayAdapter<String> spinnerDateArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerDateArray);
+                spinnerDate.setAdapter(spinnerDateArrayAdapter);
                 spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         switch (position) {
                             case 0:
+                                calendar = Calendar.getInstance();
+                                calendar.add(Calendar.SECOND, dataSet.get(position).getDurationValue());
+                                textInputLayoutTime.setVisibility(View.GONE);
                                 break;
                             case 1:
+                                calendar = Calendar.getInstance();
+                                textInputLayoutTime.setVisibility(View.VISIBLE);
                                 break;
                             case 2:
-                                Log.i("Test", "Clicked >>>>>>>>>");
+                                calendar = Calendar.getInstance();
+                                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                                textInputLayoutTime.setVisibility(View.VISIBLE);
+                                break;
+                            case 3:
                                 DatePickerDialog datePickerDialog = new DatePickerDialog();
                                 datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
                                     @Override
                                     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-                                        yr = year;
-                                        month = monthOfYear;
-                                        day = dayOfMonth;
+                                        calendar.set(Calendar.YEAR, year);
+                                        calendar.set(Calendar.MONTH, monthOfYear);
+                                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                                        spinnerDateArray.set(2, dayOfMonth + "-" + monthOfYear + "-" + year);
+                                        spinnerDateArray.set(2, new SimpleDateFormat("dd-MM-yyyy").format(calendar.getTime()));
+                                        spinnerDateArrayAdapter.notifyDataSetChanged();
                                     }
                                 });
-
                                 datePickerDialog.show(((Activity) context).getFragmentManager(), "TIME");
+                                textInputLayoutTime.setVisibility(View.VISIBLE);
                                 break;
                         }
                     }
@@ -145,12 +167,27 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                     }
                 });
 
+                editTextTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TimePickerDialog timePickerDialog = new TimePickerDialog();
+                        timePickerDialog.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+                                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                calendar.set(Calendar.MINUTE, minute);
+
+                                editTextTime.setText(new SimpleDateFormat("hh:mm a").format(calendar.getTime()));
+                            }
+                        });
+                        timePickerDialog.show(((Activity) context).getFragmentManager(), "TIME");
+                    }
+                });
+/*
                 final ArrayList<String> spinnerTimeArray = new ArrayList<String>();
-                spinnerTimeArray.add("ASAP");
                 spinnerTimeArray.add("Pick a time...");
-                Spinner spinnerTime = (Spinner) alertDialogView.findViewById(R.id.spinner_time);
-                ArrayAdapter<String> spinnerDateArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerTimeArray);
-                spinnerTime.setAdapter(spinnerDateArrayAdapter);
+                final ArrayAdapter<String> spinnerTimeArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, spinnerTimeArray);
+                spinnerTime.setAdapter(spinnerTimeArrayAdapter);
                 spinnerTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -162,10 +199,11 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                                 timePickerDialog.setOnTimeSetListener(new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-                                        hour = hourOfDay;
-                                        min = minute;
+                                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                        calendar.set(Calendar.MINUTE, minute);
 
-                                        spinnerTimeArray.set(1, hourOfDay + ":" + minute);
+                                        spinnerTimeArray.set(1, new SimpleDateFormat("hh:mm a").format(calendar.getTime()));
+                                        spinnerTimeArrayAdapter.notifyDataSetChanged();
                                     }
                                 });
                                 timePickerDialog.show(((Activity) context).getFragmentManager(), "TIME");
@@ -178,26 +216,53 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
 
                     }
                 });
+*/
 
+                final AlertDialog alertDialog;
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setView(alertDialogView);
                 alertDialogBuilder.setTitle("Place new order");
-                alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setPositiveButton("Ok", null);
+                alertDialogBuilder.setNegativeButton("Cancel", null);
+                alertDialog = alertDialogBuilder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.set(Calendar.YEAR, yr);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.DAY_OF_MONTH, day);
-                        calendar.set(Calendar.HOUR_OF_DAY, hour);
-                        calendar.set(Calendar.MINUTE, min);
+                    public void onShow(DialogInterface dialog) {
+                        Button positiveButton = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                boolean isSuccess;
+                                if (editTextContact.getText().toString().trim().length()<9) {
+                                    textInputLayoutContact.setError("Invalid phone number");
+                                    requestFocus(editTextContact);
+                                    isSuccess = false;
+                                } else{
+                                    isSuccess = true;
+                                    textInputLayoutContact.setErrorEnabled(false);
+                                }
 
-                        String note = editTextNote.getText().toString();
-                        ((NewOrderActivity)context).placeOrder(calendar.getTime(), note, dataSet.get(position).getDriver(),editTextContact.getText().toString());
+                                if(textInputLayoutTime.getVisibility()==View.VISIBLE){
+                                    if (editTextTime.getText().toString().trim().isEmpty()) {
+                                        textInputLayoutTime.setError("Time cannot be empty");
+                                        requestFocus(editTextTime);
+                                        isSuccess = false;
+                                    }
+                                    else{
+                                        isSuccess = true;
+                                        textInputLayoutTime.setErrorEnabled(false);
+                                    }
+                                }
+
+                                if(isSuccess){
+                                    ((NewOrderActivity) context).placeOrder(calendar.getTime(), editTextNote.getText().toString(), dataSet.get(position).getDriver(), editTextContact.getText().toString());
+                                    alertDialog.dismiss();
+                                }
+                            }
+                        });
                     }
                 });
-                alertDialogBuilder.setNegativeButton("Cancel", null);
-                alertDialogBuilder.create().show();
+                alertDialog.show();
             }
         });
     }
@@ -206,5 +271,10 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            ((Activity)context).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
     }
 }
