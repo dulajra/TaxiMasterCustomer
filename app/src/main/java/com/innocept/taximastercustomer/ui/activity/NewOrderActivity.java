@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,9 +29,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -395,6 +399,31 @@ public class NewOrderActivity extends LocationActivity {
 
     public void placeOrder(Date time, String note, Driver driver, String contact){
         Order order = new Order();
+
+//        if(textViewFrom.getText().toString().equals("Your location")){
+//            Geocoder geocoder;
+//            List<Address> addresses = null;
+//            geocoder = new Geocoder(this, Locale.getDefault());
+//
+//            try {
+//                addresses = geocoder.getFromLocation(latLngFrom.latitude, latLngFrom.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+//            } catch (IOException e) {
+//                Log.e(DEBUG_TAG, "Error getting name form latlng " + e.toString());
+//                e.printStackTrace();
+//            }
+//
+//            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//            String city = addresses.get(0).getLocality();
+//            String state = addresses.get(0).getAdminArea();
+//            String country = addresses.get(0).getCountryName();
+//            String postalCode = addresses.get(0).getPostalCode();
+//            String knownName = addresses.get(0).getFeatureName(); //
+//
+//            Log.e(DEBUG_TAG, address + ", " + city + ", " + knownName );
+//        }
+//        else{
+//            order.setOrigin(textViewFrom.getText().toString());
+//        }
         order.setOrigin(textViewFrom.getText().toString());
         order.setDestination(textViewTo.getText().toString());
         order.setOriginCoordinates(new com.innocept.taximastercustomer.model.foundation.Location(latLngFrom.latitude, latLngFrom.longitude));
