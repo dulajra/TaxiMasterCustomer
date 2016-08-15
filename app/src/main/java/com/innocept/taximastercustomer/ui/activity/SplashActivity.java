@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 
@@ -39,17 +40,23 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(imageView);
 
         timer = new Timer();
+
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, NewOrderActivity.class);
+                Intent intent;
+                if(ApplicationPreferences.getUser()!=null){
+                    intent = new Intent(SplashActivity.this, NewOrderActivity.class);
+                }
+                else{
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                }
                 startActivity(intent);
                 finish();
             }
         };
 
-//        Splash screen is closed after 1500 milliseconds
-        timer.schedule(timerTask, 1500);
+        timer.schedule(timerTask, 15);
     }
 }
 

@@ -5,8 +5,8 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.innocept.taximastercustomer.ApplicationContext;
 import com.innocept.taximastercustomer.ApplicationPreferences;
+import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
@@ -19,7 +19,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by Dulaj on 14-Apr-16.
@@ -29,7 +28,9 @@ public class Communicator{
 
     private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private final String URL_ROOT = "http://taximaster.herokuapp.com";
+    private final String URL_ROOT = "http://77a6e000.ngrok.io";
+    private final String URL_LOGIN = URL_ROOT + "/customer/login";
+    private final String URL_LOGOUT = URL_ROOT + "/customer/logout";
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
     private final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
@@ -120,6 +121,65 @@ public class Communicator{
             Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
         return null;
+    }
+
+    public int login(String username, String password) {
+        User user = null;
+        int resultCode = -1;
+        ContentValues values = new ContentValues();
+        values.put("phone", username);
+        values.put("password", password);
+        values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
+        String response = HTTPHandler.sendPOST(URL_LOGIN, values);
+
+        if (response != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                int result = jsonObject.getInt("success");
+                switch (result) {
+                    case 0:
+                        user = new Gson().fromJson(jsonObject.getJSONObject("customer").toString(), User.class);
+                        ApplicationPreferences.saveUser(user);
+                        resultCode = 0;
+                        Log.i(DEBUG_TAG, "Login success");
+                        break;
+                    case 1:
+                        resultCode = 1;
+                        Log.i(DEBUG_TAG, "Username or password is incorrect");
+                        break;
+                }
+            } catch (JSONException e) {
+                Log.e(DEBUG_TAG, e.toString());
+            } catch (NullPointerException e) {
+                Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+            }
+        }
+        return resultCode;
+    }
+
+    public boolean logout() {
+        boolean result = false;
+        ContentValues values = new ContentValues();
+        values.put("phone", ApplicationPreferences.getUser().getPhone());
+        String response = HTTPHandler.sendPOST(URL_LOGOUT, values);
+
+        if (response != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                result = jsonObject.getBoolean("success");
+                if (result) {
+                    ApplicationPreferences.saveUser(null);
+                    Log.i(DEBUG_TAG, "Logout success");
+                } else {
+                    Log.i(DEBUG_TAG, "Logout failed");
+                }
+            } catch (JSONException e) {
+                Log.e(DEBUG_TAG, e.toString());
+            } catch (NullPointerException e) {
+                Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+            }
+        }
+        return result;
     }
 }
 

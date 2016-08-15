@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.innocept.taximastercustomer.model.foundation.User;
 
 /**
  * Created by dulaj on 5/26/16.
@@ -40,5 +41,16 @@ public class ApplicationPreferences {
         return sharedPreferences.getString("oneSignalUserId", null);
     }
 
+    public static void saveUser(User user){
+        init();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("user", new Gson().toJson(user).toString());
+        editor.commit();
+    }
+
+    public static User getUser(){
+        init();
+        return new Gson().fromJson(sharedPreferences.getString("user", null), User.class);
+    }
 
 }

@@ -4,8 +4,24 @@
     <string-array name="spinner_time_entries">
         <item>ASAP</item>
         <item>Pick a time...</item>
-
     </string-array>
+
     <string name="spinner_time_prompt">Order time</string>
+
+    <string name="hint_phone">Phone</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_sign_in">Sign In</string>
+    <string name="btn_sign_skip">SKIP</string>
+    <string name="btn_sign_up">SIGN UP</string>
+
+    <string name="err_msg_phone">Invalid phone number</string>
+    <string name="err_msg_password">Password cannot be empty</string>
+    <string name="err_msg_password_sign_up">Password too short</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="err_msg_first_name">First name cannot be empty</string>
+    <string name="err_msg_last_name">Last name cannot be empty</string>
+    <string name="err_msg_conform_password">Password mismatch</string>
 
 </resources>
