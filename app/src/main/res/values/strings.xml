@@ -25,4 +25,7 @@
     <string name="err_msg_confirm_password">Password mismatch</string>
     <string name="err_msg_password_sign_up_empty">Password cannote be empty</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 </resources>

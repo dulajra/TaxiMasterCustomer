@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 this.finish();
                 break;
             case R.id.btn_skip:
-                startActivity(new Intent(LoginActivity.this, NewOrderActivity.class));
+                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 this.finish();
                 break;
         }
@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void onSignInSuccess(){
         progressBar.setVisibility(View.GONE);
-        startActivity(new Intent(LoginActivity.this, NewOrderActivity.class));
+        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
         this.finish();
     }
 

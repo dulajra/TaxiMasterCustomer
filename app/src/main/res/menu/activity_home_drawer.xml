@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/fragment_favorites"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Favorites" />
+        <item
+            android:id="@+id/fragment_my_orders"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="My Orders" />
+        <item
+            android:id="@+id/fragment_pricing"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Pricing" />
+        <item
+            android:id="@+id/fragment_offers"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Offers" />
+    </group>
+
+    <item android:title="Communication">
+        <menu>
+            <item
+                android:id="@+id/fragment_contact_us"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Contact Us" />
+        </menu>
+    </item>
+
+    <item android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/fragment_profile"
+                android:icon="@drawable/ic_menu_send"
+                android:title="My Profile" />
+
+            <item
+                android:id="@+id/fragment_settings"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Settings" />
+
+            <item
+                android:id="@+id/fragment_log_out"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Log Out" />
+        </menu>
+    </item>
+
+</menu>

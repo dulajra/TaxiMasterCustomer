@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 Intent intent;
                 if(ApplicationPreferences.getUser()!=null){
-                    intent = new Intent(SplashActivity.this, NewOrderActivity.class);
+                    intent = new Intent(SplashActivity.this, HomeActivity.class);
                 }
                 else{
                     intent = new Intent(SplashActivity.this, LoginActivity.class);

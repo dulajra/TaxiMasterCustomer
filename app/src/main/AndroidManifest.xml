@@ -32,6 +32,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.HomeActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"/>
 
@@ -39,6 +42,7 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.activity.NewOrderActivity"
+            android:parentActivityName=".ui.activity.HomeActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.activity.MyOrdersActivity"

@@ -55,7 +55,7 @@ public class FinishedOrderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_my_order, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my_order_tab, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_my_orders);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

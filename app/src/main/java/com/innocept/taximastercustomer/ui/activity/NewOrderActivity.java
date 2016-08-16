@@ -108,6 +108,7 @@ public class NewOrderActivity extends LocationActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinator_parent);
         relativeLayoutFrom = (RelativeLayout) findViewById(R.id.relative_from);
@@ -366,25 +367,5 @@ public class NewOrderActivity extends LocationActivity {
     public void onPlaceOrderFailed(String error){
         closeProgressDialog();
         Snackbar.make(coordinatorLayout, error, Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
-            finish();
-            return;
-        }
-
-        this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT)
-                .show();
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
     }
 }

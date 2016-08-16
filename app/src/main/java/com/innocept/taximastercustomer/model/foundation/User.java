@@ -8,6 +8,15 @@ public class User {
     private String firstName;
     private String lastName;
     private String phone;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public User() {
     }
