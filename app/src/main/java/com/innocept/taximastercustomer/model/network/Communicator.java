@@ -5,7 +5,10 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.innocept.taximastercustomer.ApplicationPreferences;
+import com.innocept.taximastercustomer.model.foundation.Driver;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
@@ -16,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +29,7 @@ import java.util.List;
  * Created by Dulaj on 14-Apr-16.
  */
 
-public class Communicator{
+public class Communicator {
 
     private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
@@ -35,6 +40,7 @@ public class Communicator{
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
     private final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
+    private final String URL_GET_MY_ORDERS = URL_ROOT + "/customer/orders";
 
     public Communicator() {
     }
@@ -50,22 +56,21 @@ public class Communicator{
         try {
             JSONArray jsonArray = new JSONArray(response);
 
-            for(int i=0; i<jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 Taxi taxi = new Gson().fromJson(jsonObject.toString(), Taxi.class);
                 taxiList.add(taxi);
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json array " + e.toString());
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
 
         return taxiList;
     }
 
-    public int placeOrder(Order order){
+    public int placeOrder(Order order) {
         ContentValues values = new ContentValues();
         values.put("origin", order.getOrigin());
         values.put("destination", order.getDestination());
@@ -86,19 +91,18 @@ public class Communicator{
 
         try {
             JSONObject jsonObject = new JSONObject(response);
-            if(jsonObject.getBoolean("success")){
+            if (jsonObject.getBoolean("success")) {
                 return jsonObject.getInt("id");
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
         return -1;
     }
 
     /**
-     *
      * @param driverId
      * @param latLng
      * @return new String[]{latitude, longitude, distance, duration}
@@ -113,12 +117,12 @@ public class Communicator{
 
         try {
             JSONObject jsonObject = new JSONObject(response);
-            if(jsonObject.getBoolean("success")){
+            if (jsonObject.getBoolean("success")) {
                 return new String[]{String.valueOf(jsonObject.getDouble("latitude")), String.valueOf(jsonObject.getDouble("longitude")), jsonObject.getString("distance"), jsonObject.getString("duration")};
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
         return null;
@@ -214,6 +218,53 @@ public class Communicator{
             }
         }
         return resultCode;
+    }
+
+    public List<Order> getMyOrders(int userId, String state) {
+        List<Order> orderList = null;
+        ContentValues values = new ContentValues();
+        values.put("customerId", userId);
+        values.put("state", state);
+        String response = HTTPHandler.sendGET(URL_GET_MY_ORDERS, values);
+
+        if (response != null) {
+            try {
+                orderList = new ArrayList<Order>();
+                JSONArray jsonArray = new JSONArray(response);
+                for(int i=0;i<jsonArray.length();i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    Order order = new Order();
+                    order.setId(jsonObject.getInt("id"));
+                    order.setOrigin(jsonObject.getString("origin"));
+                    order.setOriginCoordinates(new Location(jsonObject.getDouble("originLatitude"), jsonObject.getDouble("originLongitude")));
+                    order.setDestination(jsonObject.getString("destination"));
+                    order.setDestinationCoordinates(new Location(jsonObject.getDouble("destinationLatitude"), jsonObject.getDouble("destinationLongitude")));
+
+                    if(state.equals(Order.OrderState.FINISHED.toString())){
+                        order.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(jsonObject.getString("startTime")));
+                        order.setOrderState(Order.OrderState.FINISHED);
+                    }
+                    else{
+                        order.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(jsonObject.getString("time")));
+                        order.setOrderState(Order.OrderState.valueOf(jsonObject.getString("state")));
+                        order.setNote(jsonObject.getString("note"));
+                    }
+                    order.setContact(jsonObject.getString("contact"));
+                    order.setDriver(new Driver(jsonObject.getInt("taxiDriverId")));
+
+                    orderList.add(order);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Log.v(DEBUG_TAG, "response = " + response);
+        } else {
+            Log.v(DEBUG_TAG, "Response is null");
+        }
+        return orderList;
     }
 }
 

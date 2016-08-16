@@ -9,15 +9,6 @@ import java.util.Date;
 public class Order implements Serializable{
 
     private int id;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     private String origin;
     private String destination;
     private Location originCoordinates;
@@ -101,6 +92,14 @@ public class Order implements Serializable{
 
     public void setContact(String contact) {
         this.contact = contact;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public enum OrderState {

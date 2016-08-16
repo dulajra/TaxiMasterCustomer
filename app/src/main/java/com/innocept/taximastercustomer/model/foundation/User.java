@@ -5,6 +5,7 @@ package com.innocept.taximastercustomer.model.foundation;
  */
 public class User {
 
+    private int id;
     private String firstName;
     private String lastName;
     private String phone;
@@ -53,5 +54,13 @@ public class User {
 
     public String getFullName(){
         return this.firstName + " " + this.lastName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

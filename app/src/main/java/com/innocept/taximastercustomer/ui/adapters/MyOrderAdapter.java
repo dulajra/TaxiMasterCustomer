@@ -83,6 +83,9 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         } else if (orderState == Order.OrderState.NOW) {
             viewHolder.textState.setTextColor(Color.YELLOW);
         }
+        else if (orderState == Order.OrderState.FINISHED) {
+            viewHolder.textState.setVisibility(View.INVISIBLE);
+        }
         viewHolder.textState.setText(orderState.toString());
 
         viewHolder.linearLayoutOrderListItem.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,10 @@ public class     Driver implements Serializable{
     public Driver() {
     }
 
+    public Driver(int id) {
+        this.id = id;
+    }
+
     public Driver(int id, String firstName, String lastName, String phone) {
         this.id = id;
         this.firstName = firstName;

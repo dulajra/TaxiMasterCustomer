@@ -7,12 +7,9 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 
-import com.innocept.taximastercustomer.ui.activity.MyOrdersActivity;
 import com.onesignal.OneSignal;
 
 import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 
 /**
  * Created by Dulaj on 14-Apr-16.
@@ -64,31 +61,31 @@ public class ApplicationContext extends Application {
             try {
                 if (additionalData != null) {
                     Log.i(DEBUG_TAG, additionalData.toString());
-                    if(additionalData.getString("notificationType").equals("driverResponse")){
-                        Intent intent = new Intent(context, MyOrdersActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        intent.putExtra("isUpdate", true);
-                        intent.putExtra("id", additionalData.getInt("id"));
-                        intent.putExtra("response", additionalData.getBoolean("response"));
-                        startActivity(intent);
-                    }
-                    else  if(additionalData.getString("notificationType").equals("now")){
-                        Intent intent = new Intent(context, MyOrdersActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        intent.putExtra("now", true);
-                        intent.putExtra("id", additionalData.getInt("id"));
-                        startActivity(intent);
-                    }
-                    else  if(additionalData.getString("notificationType").equals("finishHire")){
-                        Intent intent = new Intent(context, MyOrdersActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        intent.putExtra("finish", true);
-                        intent.putExtra("id", additionalData.getInt("id"));
-                        startActivity(intent);
-                    }
+//                    if(additionalData.getString("notificationType").equals("driverResponse")){
+//                        Intent intent = new Intent(context, MyOrdersActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                        intent.putExtra("isUpdate", true);
+//                        intent.putExtra("id", additionalData.getInt("id"));
+//                        intent.putExtra("response", additionalData.getBoolean("response"));
+//                        startActivity(intent);
+//                    }
+//                    else  if(additionalData.getString("notificationType").equals("now")){
+//                        Intent intent = new Intent(context, MyOrdersActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                        intent.putExtra("now", true);
+//                        intent.putExtra("id", additionalData.getInt("id"));
+//                        startActivity(intent);
+//                    }
+//                    else  if(additionalData.getString("notificationType").equals("finishHire")){
+//                        Intent intent = new Intent(context, MyOrdersActivity.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                        intent.putExtra("finish", true);
+//                        intent.putExtra("id", additionalData.getInt("id"));
+//                        startActivity(intent);
+//                    }
                 }
             } catch (Throwable t) {
                 t.printStackTrace();

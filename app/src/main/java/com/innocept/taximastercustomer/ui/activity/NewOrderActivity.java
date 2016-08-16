@@ -110,13 +110,13 @@ public class NewOrderActivity extends LocationActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.coordinator_parent);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_parent);
         relativeLayoutFrom = (RelativeLayout) findViewById(R.id.relative_from);
         relativeLayoutTo = (RelativeLayout) findViewById(R.id.relative_to);
         textViewFrom = (TextView) findViewById(R.id.text_from);
         textViewTo = (TextView) findViewById(R.id.text_to);
-        imageButtonMapFrom = (ImageButton)findViewById(R.id.image_btn_map_from);
-        imageButtonMapTo = (ImageButton)findViewById(R.id.image_btn_map_to);
+        imageButtonMapFrom = (ImageButton) findViewById(R.id.image_btn_map_from);
+        imageButtonMapTo = (ImageButton) findViewById(R.id.image_btn_map_to);
 
         relativeLayoutFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +153,7 @@ public class NewOrderActivity extends LocationActivity {
         });
     }
 
-    private void searchPlace(int REQUEST_CODE){
+    private void searchPlace(int REQUEST_CODE) {
         try {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder()
                     .setLatLngBounds(new LatLngBounds(new LatLng(5.909953, 79.678507), new LatLng(9.886534, 81.889820)));
@@ -186,8 +186,8 @@ public class NewOrderActivity extends LocationActivity {
         String from = textViewFrom.getText().toString();
         String to = textViewTo.getText().toString();
 
-        if(from!=null && to!=null && from.length()>0 && to.length()>0){
-            if(from.equals(to)){
+        if (from != null && to != null && from.length() > 0 && to.length() > 0) {
+            if (from.equals(to)) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
                 alertDialogBuilder.setTitle("Invalid entry!");
                 alertDialogBuilder.setMessage("Starting point and destination cannot be same");
@@ -196,11 +196,11 @@ public class NewOrderActivity extends LocationActivity {
                 return;
             }
             TaxiType taxiType = null;
-            if(tabLayout.getSelectedTabPosition()==0)
+            if (tabLayout.getSelectedTabPosition() == 0)
                 taxiType = TaxiType.NANO;
-            else if(tabLayout.getSelectedTabPosition()==1)
+            else if (tabLayout.getSelectedTabPosition() == 1)
                 taxiType = TaxiType.CAR;
-            else if(tabLayout.getSelectedTabPosition()==2)
+            else if (tabLayout.getSelectedTabPosition() == 2)
                 taxiType = TaxiType.VAN;
 
             newOrderPresenter.getAvailableTaxis(latLngFrom, taxiType);
@@ -212,16 +212,14 @@ public class NewOrderActivity extends LocationActivity {
         if (requestCode == PLACE_PICKER_CODE_FROM) {
             if (resultCode == RESULT_OK) {
                 Place placeFrom = PlacePicker.getPlace(data, this);
-                if(placeFrom!=null){
-                    if(placeFrom.getName()!=null && placeFrom.getLatLng()!=null){
+                if (placeFrom != null) {
+                    if (placeFrom.getName() != null && placeFrom.getLatLng() != null) {
                         latLngFrom = placeFrom.getLatLng();
                         textViewFrom.setText(placeFrom.getName());
-                    }
-                    else{
+                    } else {
                         textViewFrom.setText("");
                     }
-                }
-                else{
+                } else {
                     textViewFrom.setText("");
                 }
                 Log.i(DEBUG_TAG, "Place: " + placeFrom.getName());
@@ -232,20 +230,17 @@ public class NewOrderActivity extends LocationActivity {
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
-        }
-        else if (requestCode == PLACE_PICKER_CODE_TO) {
+        } else if (requestCode == PLACE_PICKER_CODE_TO) {
             if (resultCode == RESULT_OK) {
                 Place placeTo = PlacePicker.getPlace(data, this);
-                if(placeTo!=null){
-                    if(placeTo.getName()!=null && placeTo.getLatLng()!=null){
+                if (placeTo != null) {
+                    if (placeTo.getName() != null && placeTo.getLatLng() != null) {
                         textViewTo.setText(placeTo.getName());
                         latLngTo = placeTo.getLatLng();
-                    }
-                    else{
+                    } else {
                         textViewTo.setText("");
                     }
-                }
-                else{
+                } else {
                     textViewTo.setText("");
                 }
                 Log.i(DEBUG_TAG, "Place: " + placeTo.getName());
@@ -268,11 +263,6 @@ public class NewOrderActivity extends LocationActivity {
         adapter.addFragment(carFragment, "CAR");
         adapter.addFragment(vanFragment, "VAN");
         viewPager.setAdapter(adapter);
-    }
-
-    public void openMyOrdersActivity(View view) {
-        startActivity(new Intent(NewOrderActivity.this, MyOrdersActivity.class));
-        this.finish();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -308,21 +298,21 @@ public class NewOrderActivity extends LocationActivity {
     public void onLocationChanged(Location location) {
         super.onLocationChanged(location);
         mLastLocation = location;
-        if(mLastLocation!=null){
+        if (mLastLocation != null) {
             String message = "Lat: " + mLastLocation.getLatitude() + ", Lng: " + mLastLocation.getLongitude() + ", Accu: " + mLastLocation.getAccuracy();
             Log.v(DEBUG_TAG, message);
         }
     }
 
-    public void lockUI(){
+    public void lockUI() {
         this.isTouchable = false;
     }
 
-    public void releaseUI(){
+    public void releaseUI() {
         this.isTouchable = true;
     }
 
-    public void placeOrder(Date time, String note, Driver driver, String contact){
+    public void placeOrder(Date time, String note, Driver driver, String contact) {
         Order order = new Order();
         order.setOrigin(textViewFrom.getText().toString());
         order.setDestination(textViewTo.getText().toString());
@@ -339,32 +329,32 @@ public class NewOrderActivity extends LocationActivity {
     @Override
 
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if(isTouchable){
+        if (isTouchable) {
             return super.dispatchTouchEvent(ev);
         }
         return false;
     }
 
-    public void showProgressDialog(String message){
+    public void showProgressDialog(String message) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(message);
         progressDialog.show();
     }
 
-    public void closeProgressDialog(){
+    public void closeProgressDialog() {
         progressDialog.dismiss();
     }
 
-    public void onPlaceOrderSuccess(Order order){
+    public void onPlaceOrderSuccess(Order order) {
         closeProgressDialog();
-        Intent intent = new Intent(NewOrderActivity.this, MyOrdersActivity.class);
+        Intent intent = new Intent(NewOrderActivity.this, HomeActivity.class);
         intent.putExtra("isNewOrder", true);
         intent.putExtra("order", order);
         startActivity(intent);
         this.finish();
     }
 
-    public void onPlaceOrderFailed(String error){
+    public void onPlaceOrderFailed(String error) {
         closeProgressDialog();
         Snackbar.make(coordinatorLayout, error, Snackbar.LENGTH_LONG).show();
     }

@@ -23,6 +23,7 @@ import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
+import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.Timer;
@@ -115,9 +116,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
 
         switch (id) {
-//            case R.id.fragment_home:
-//                fragment = new FavoritesFragment();
-//                break;
+            case R.id.fragment_favorites:
+                fragment = new FavoritesFragment();
+                break;
+            case R.id.fragment_my_orders:
+                fragment = new MyOrdersFragment();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
