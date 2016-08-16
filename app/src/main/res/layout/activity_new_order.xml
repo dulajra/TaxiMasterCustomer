@@ -26,17 +26,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp">
-
-                    <ImageButton
-                        android:id="@+id/image_btn_my_location_from"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_my_location" />
 
                     <ImageButton
                         android:visibility="invisible"
@@ -48,7 +39,7 @@
                         android:src="@drawable/ic_map" />
 
                     <RelativeLayout
-                        android:layout_toRightOf="@id/image_btn_my_location_from"
+                        android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@id/image_btn_map_from"
                         android:id="@+id/relative_from"
                         android:layout_width="match_parent"
@@ -91,17 +82,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp">
-
-                    <ImageButton
-                        android:id="@+id/image_btn_my_location_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/ic_my_location" />
 
                     <ImageButton
                         android:visibility="invisible"
@@ -113,7 +95,7 @@
                         android:src="@drawable/ic_map" />
 
                     <RelativeLayout
-                        android:layout_toRightOf="@id/image_btn_my_location_to"
+                        android:layout_alignParentLeft="true"
                         android:layout_toLeftOf="@id/image_btn_map_to"
                         android:id="@+id/relative_to"
                         android:layout_width="match_parent"
@@ -146,7 +128,7 @@
                             android:padding="5dp"
                             android:paddingLeft="5dp"
                             android:textColor="@color/textColorPrimary"
-                            android:textStyle="normal" />
+                            android:textStyle="normal"/>
 
                     </RelativeLayout>
 

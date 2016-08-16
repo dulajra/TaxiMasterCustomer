@@ -40,6 +40,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.innocept.taximastercustomer.ApplicationContext;
@@ -61,8 +62,8 @@ public class NewOrderActivity extends LocationActivity {
 
     private final String DEBUG_TAG = NewOrderActivity.class.getSimpleName();
 
-    private final int PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM = 1;
-    private final int PLACE_AUTOCOMPLETE_REQUEST_CODE_TO = 2;
+    private final int PLACE_PICKER_CODE_FROM = 1;
+    private final int PLACE_PICKER_CODE_TO = 2;
 
     public NewOrderPresenter newOrderPresenter;
 
@@ -75,8 +76,6 @@ public class NewOrderActivity extends LocationActivity {
     RelativeLayout relativeLayoutTo;
     public TextView textViewFrom;
     public TextView textViewTo;
-    ImageButton imageButtonMyLocationFrom;
-    ImageButton imageButtonMyLocationTo;
     ImageButton imageButtonMapFrom;
     ImageButton imageButtonMapTo;
 
@@ -115,99 +114,25 @@ public class NewOrderActivity extends LocationActivity {
         relativeLayoutTo = (RelativeLayout) findViewById(R.id.relative_to);
         textViewFrom = (TextView) findViewById(R.id.text_from);
         textViewTo = (TextView) findViewById(R.id.text_to);
-        imageButtonMyLocationFrom = (ImageButton)findViewById(R.id.image_btn_my_location_from);
-        imageButtonMyLocationTo = (ImageButton)findViewById(R.id.image_btn_my_location_to);
         imageButtonMapFrom = (ImageButton)findViewById(R.id.image_btn_map_from);
         imageButtonMapTo = (ImageButton)findViewById(R.id.image_btn_map_to);
 
         relativeLayoutFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchPlace(PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM);
+                searchPlace(PLACE_PICKER_CODE_FROM);
             }
         });
 
         relativeLayoutTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchPlace(PLACE_AUTOCOMPLETE_REQUEST_CODE_TO);
+                searchPlace(PLACE_PICKER_CODE_TO);
             }
         });
 
         textViewFrom.addTextChangedListener(fromToTextWatcher);
         textViewTo.addTextChangedListener(fromToTextWatcher);
-
-        imageButtonMyLocationFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mLastLocation!=null && mLastLocation.getAccuracy()<50){
-                    latLngFrom = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    textViewFrom.setText("Your location");
-                }
-                else{
-                    Toast.makeText(NewOrderActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(mLastLocation!=null && mLastLocation.getAccuracy()<50){
-                                latLngFrom = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        textViewFrom.setText("Your location");
-                                        Toast.makeText(NewOrderActivity.this, "Location detected", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                            else{
-                             runOnUiThread(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     Toast.makeText(NewOrderActivity.this, "Location is not available", Toast.LENGTH_SHORT).show();
-                                 }
-                             });
-                            }
-                        }
-                    }, 10000);
-                }
-            }
-        });
-
-        imageButtonMyLocationTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mLastLocation!=null && mLastLocation.getAccuracy()<50){
-                    latLngTo = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                    textViewTo.setText("Your location");
-                }
-                else{
-                    Toast.makeText(NewOrderActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(mLastLocation!=null && mLastLocation.getAccuracy()<50){
-                                latLngTo = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        textViewTo.setText("Your location");
-                                        Toast.makeText(NewOrderActivity.this, "Location detected", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                            else{
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(NewOrderActivity.this, "Location is not available", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }
-                    }, 10000);
-                }
-            }
-        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -229,14 +154,13 @@ public class NewOrderActivity extends LocationActivity {
 
     private void searchPlace(int REQUEST_CODE){
         try {
-            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                    .setBoundsBias(new LatLngBounds(new LatLng(5.909953, 79.678507), new LatLng(9.886534, 81.889820)))
-                    .build(NewOrderActivity.this);
-            startActivityForResult(intent, REQUEST_CODE);
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder()
+                    .setLatLngBounds(new LatLngBounds(new LatLng(5.909953, 79.678507), new LatLng(9.886534, 81.889820)));
+            startActivityForResult(builder.build(this), REQUEST_CODE);
         } catch (GooglePlayServicesRepairableException e) {
-            Log.e(DEBUG_TAG, e.toString());
+            Log.e(DEBUG_TAG, "Error in place picker: " + e);
         } catch (GooglePlayServicesNotAvailableException e) {
-            Log.e(DEBUG_TAG, e.toString());
+            Log.e(DEBUG_TAG, "Error in place picker: " + e);
         }
     }
 
@@ -284,9 +208,9 @@ public class NewOrderActivity extends LocationActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE_FROM) {
+        if (requestCode == PLACE_PICKER_CODE_FROM) {
             if (resultCode == RESULT_OK) {
-                Place placeFrom = PlaceAutocomplete.getPlace(this, data);
+                Place placeFrom = PlacePicker.getPlace(data, this);
                 if(placeFrom!=null){
                     if(placeFrom.getName()!=null && placeFrom.getLatLng()!=null){
                         latLngFrom = placeFrom.getLatLng();
@@ -308,9 +232,9 @@ public class NewOrderActivity extends LocationActivity {
                 // The user canceled the operation.
             }
         }
-        else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE_TO) {
+        else if (requestCode == PLACE_PICKER_CODE_TO) {
             if (resultCode == RESULT_OK) {
-                Place placeTo = PlaceAutocomplete.getPlace(this, data);
+                Place placeTo = PlacePicker.getPlace(data, this);
                 if(placeTo!=null){
                     if(placeTo.getName()!=null && placeTo.getLatLng()!=null){
                         textViewTo.setText(placeTo.getName());
@@ -399,31 +323,6 @@ public class NewOrderActivity extends LocationActivity {
 
     public void placeOrder(Date time, String note, Driver driver, String contact){
         Order order = new Order();
-
-//        if(textViewFrom.getText().toString().equals("Your location")){
-//            Geocoder geocoder;
-//            List<Address> addresses = null;
-//            geocoder = new Geocoder(this, Locale.getDefault());
-//
-//            try {
-//                addresses = geocoder.getFromLocation(latLngFrom.latitude, latLngFrom.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-//            } catch (IOException e) {
-//                Log.e(DEBUG_TAG, "Error getting name form latlng " + e.toString());
-//                e.printStackTrace();
-//            }
-//
-//            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//            String city = addresses.get(0).getLocality();
-//            String state = addresses.get(0).getAdminArea();
-//            String country = addresses.get(0).getCountryName();
-//            String postalCode = addresses.get(0).getPostalCode();
-//            String knownName = addresses.get(0).getFeatureName(); //
-//
-//            Log.e(DEBUG_TAG, address + ", " + city + ", " + knownName );
-//        }
-//        else{
-//            order.setOrigin(textViewFrom.getText().toString());
-//        }
         order.setOrigin(textViewFrom.getText().toString());
         order.setDestination(textViewTo.getText().toString());
         order.setOriginCoordinates(new com.innocept.taximastercustomer.model.foundation.Location(latLngFrom.latitude, latLngFrom.longitude));
