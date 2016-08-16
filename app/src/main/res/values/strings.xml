@@ -16,12 +16,13 @@
 
     <string name="err_msg_phone">Invalid phone number</string>
     <string name="err_msg_password">Password cannot be empty</string>
-    <string name="err_msg_password_sign_up">Password too short</string>
+    <string name="err_msg_password_sign_up_too_short">Password too short</string>
     <string name="hint_first_name">First Name</string>
     <string name="hint_last_name">Last Name</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="err_msg_first_name">First name cannot be empty</string>
     <string name="err_msg_last_name">Last name cannot be empty</string>
-    <string name="err_msg_conform_password">Password mismatch</string>
+    <string name="err_msg_confirm_password">Password mismatch</string>
+    <string name="err_msg_password_sign_up_empty">Password cannote be empty</string>
 
 </resources>

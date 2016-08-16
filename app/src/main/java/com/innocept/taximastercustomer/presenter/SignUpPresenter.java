@@ -29,7 +29,7 @@ public class SignUpPresenter {
         this.view = view;
     }
 
-    public void signUp(User user){
+    public void signUp(final User user, final String password){
         new AsyncTask<Void, Void, Integer>(){
 
             @Override
@@ -40,7 +40,7 @@ public class SignUpPresenter {
             @Override
             protected Integer doInBackground(Void... params) {
                 Communicator communicator = new Communicator();
-                int resultCode = communicator.signUp(user);
+                int resultCode = communicator.signUp(user, password);
                 return resultCode;
             }
 
@@ -52,7 +52,7 @@ public class SignUpPresenter {
                         view.onSignInSuccess();
                         break;
                     case 1:
-                        view.onSignInFailed("Phone number or password is incorrect");
+                        view.onSignInFailed("Phone number has been already taken");
                         break;
                     default:
                         view.onSignInFailed("Something went wrong. Try again!");

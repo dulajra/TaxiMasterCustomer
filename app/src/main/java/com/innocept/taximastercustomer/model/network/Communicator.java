@@ -28,9 +28,10 @@ public class Communicator{
 
     private final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private final String URL_ROOT = "http://77a6e000.ngrok.io";
+    private final String URL_ROOT = "http://62643790.ngrok.io";
     private final String URL_LOGIN = URL_ROOT + "/customer/login";
     private final String URL_LOGOUT = URL_ROOT + "/customer/logout";
+    private final String URL_SIGN_UP = URL_ROOT + "/customer/signUp";
     private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
     private final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
@@ -123,11 +124,11 @@ public class Communicator{
         return null;
     }
 
-    public int login(String username, String password) {
+    public int login(String phone, String password) {
         User user = null;
         int resultCode = -1;
         ContentValues values = new ContentValues();
-        values.put("phone", username);
+        values.put("phone", phone);
         values.put("password", password);
         values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
         String response = HTTPHandler.sendPOST(URL_LOGIN, values);
@@ -180,6 +181,39 @@ public class Communicator{
             }
         }
         return result;
+    }
+
+    public int signUp(User user, String password) {
+        int resultCode = -1;
+        ContentValues values = new ContentValues();
+        values.put("firstName", user.getFirstName());
+        values.put("lastName", user.getLastName());
+        values.put("phone", user.getPhone());
+        values.put("password", password);
+        values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
+        String response = HTTPHandler.sendPOST(URL_SIGN_UP, values);
+
+        if (response != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                int result = jsonObject.getInt("success");
+                switch (result) {
+                    case 0:
+                        resultCode = 0;
+                        Log.i(DEBUG_TAG, "Sign up success");
+                        break;
+                    case 1:
+                        resultCode = 1;
+                        Log.i(DEBUG_TAG, "Phone number has been taken already");
+                        break;
+                }
+            } catch (JSONException e) {
+                Log.e(DEBUG_TAG, e.toString());
+            } catch (NullPointerException e) {
+                Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+            }
+        }
+        return resultCode;
     }
 }
 

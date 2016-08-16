@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.innocept.taximastercustomer.R;
+import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.presenter.SignUpPresenter;
 
 /**
@@ -60,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         inputConfirmPassword = (EditText) findViewById(R.id.input_confirm_password);
         btnSignUp = (Button) findViewById(R.id.btn_sign_up);
         coordinatorLayoutParent = (CoordinatorLayout) findViewById(R.id.coordinator_parent);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar_sign_in);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar_sign_up);
 
         inputFirstName.addTextChangedListener(new MyTextWatcher(inputFirstName));
         inputLastName.addTextChangedListener(new MyTextWatcher(inputLastName));
@@ -76,7 +77,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
      */
     private void submitForm() {
         if(!validateFirstName()) return;
-        else
+        if(!validateLastName()) return;
+        if(!validatePhone()) return;
+        if(!validatePassword()) return;
+        if(!validateConfirmPassword()) return;
 
         ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(inputConfirmPassword.getWindowToken(), 0);
 
@@ -106,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean validatePhone(){
-        if (inputFirstName.getText().toString().trim().length() < 9) {
+        if (inputPhone.getText().toString().trim().length() < 9) {
             inputLayoutPhone.setError(getString(R.string.err_msg_phone));
             requestFocus(inputPhone);
             return false;
@@ -117,11 +121,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean validatePassword(){
-        if (inputPassword.getText().toString().trim().length() < 6) {
-            inputLayoutPassword.setError(getString(R.string.err_msg_password_sign_up));
+        if (inputPassword.getText().toString().trim().isEmpty()) {
+            inputLayoutPassword.setError(getString(R.string.err_msg_password_sign_up_empty));
             requestFocus(inputPassword);
             return false;
-        } else {
+        } else if (inputPassword.getText().toString().trim().length() < 6) {
+            inputLayoutPassword.setError(getString(R.string.err_msg_password_sign_up_too_short));
+            requestFocus(inputPassword);
+            return false;
+        }else {
             inputLayoutPassword.setErrorEnabled(false);
             return true;
         }
@@ -129,8 +137,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean validateConfirmPassword(){
-        if (inputConfirmPassword.getText().toString().equals(inputPassword.getText().toString())) {
-            inputLayoutConfirmPassword.setError(getString(R.string.err_msg_conform_password));
+        if (!inputConfirmPassword.getText().toString().equals(inputPassword.getText().toString())) {
+            inputLayoutConfirmPassword.setError(getString(R.string.err_msg_confirm_password));
             requestFocus(inputConfirmPassword);
             return false;
         } else {
@@ -171,11 +179,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         public void afterTextChanged(Editable editable) {
             switch (view.getId()) {
+                case R.id.input_first_name:
+                    validateFirstName();
+                    break;
+                case R.id.input_last_name:
+                    validateLastName();
+                    break;
                 case R.id.input_phone:
                     validatePhone();
                     break;
                 case R.id.input_password:
                     validatePassword();
+                    break;
+                case R.id.input_confirm_password:
+                    validateConfirmPassword();
                     break;
             }
         }
@@ -183,12 +200,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     public void signUp() {
         progressBar.setVisibility(View.VISIBLE);
-        loginPresenter.signIn(inputPhone.getText().toString().trim(), inputPassword.getText().toString().trim());
+
+        User user = new User(inputFirstName.getText().toString(), inputLastName.getText().toString(), inputPhone.getText().toString());
+        signUpPresenter.signUp(user, inputPassword.getText().toString());
     }
 
     public void onSignInSuccess() {
         progressBar.setVisibility(View.GONE);
-        startActivity(new Intent(LoginActivity.this, NewOrderActivity.class));
+        startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
         this.finish();
     }
 

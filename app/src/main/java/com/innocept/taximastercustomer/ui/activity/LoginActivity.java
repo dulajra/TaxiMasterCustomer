@@ -29,6 +29,8 @@ import com.innocept.taximastercustomer.presenter.LoginPresenter;
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private final String DEBUG_TAG = LoginActivity.class.getSimpleName();
+
     LoginPresenter loginPresenter;;
 
     private Toolbar toolbar;
@@ -53,7 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setSupportActionBar(toolbar);
 
         inputLayoutPhone = (TextInputLayout) findViewById(R.id.input_layout_phone);
-        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_phone);
+        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
         inputPhone = (EditText) findViewById(R.id.input_phone);
         inputPassword = (EditText) findViewById(R.id.input_password);
         btnSignIn = (Button) findViewById(R.id.btn_sign_in);
@@ -66,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
 
         btnSignIn.setOnClickListener(this);
+        btnSignUp.setOnClickListener(this);
+        btnSkip.setOnClickListener(this);
     }
 
     /**
