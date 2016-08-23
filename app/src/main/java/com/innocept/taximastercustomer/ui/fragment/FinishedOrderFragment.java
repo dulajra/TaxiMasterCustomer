@@ -23,6 +23,8 @@ import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.network.Communicator;
 import com.innocept.taximastercustomer.ui.adapters.MyOrderAdapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -63,6 +65,14 @@ public class FinishedOrderFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... params) {
                 dataSet = new Communicator().getMyOrders(ApplicationPreferences.getUser().getId(), "FINISHED");
+
+                Collections.sort(dataSet, new Comparator<Order>() {
+                    @Override
+                    public int compare(Order lhs, Order rhs) {
+                        return rhs.getTime().compareTo(lhs.getTime());
+                    }
+                });
+
                 return null;
             }
 

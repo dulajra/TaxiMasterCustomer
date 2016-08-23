@@ -96,6 +96,7 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Going for hire");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (currentOrderPresenter == null) {
             currentOrderPresenter = CurrentOrderPresenter.getInstance();
@@ -124,6 +125,7 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
         order = (Order) intent.getSerializableExtra("order");
+        Log.i(DEBUG_TAG, order.getDriver().getPhone());
 
         customerLatLng = new LatLng(order.getOriginCoordinates().getLatitude(), order.getOriginCoordinates().getLongitude());
         textViewFromTo.setText(order.getOrigin() + " to " + order.getDestination());

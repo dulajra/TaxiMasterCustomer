@@ -1,12 +1,12 @@
 package com.innocept.taximastercustomer.ui.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -81,6 +81,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             textViewName.setText(user.getFullName());
             textViewPhone.setText(user.getPhone());
         }
+
+        if (savedInstanceState == null) {
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new MyOrdersFragment()).commit();
+            }
+        }
     }
 
     @Override
@@ -128,17 +134,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
-//
-//            // update selected item and title, then close the drawer
-//            drawer.setItemChecked(position, true);
-//            mDrawerList.setSelection(position);
-//            setTitle(navMenuTitles[position]);
-//            mDrawerLayout.closeDrawer(mDrawerList);
+
         } else {
-            // error in creating fragment
+             Log.e(DEBUG_TAG, "Error in creating fragment: fragment=null");
         }
 
         return true;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,14 +92,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         viewHolder.linearLayoutOrderListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dataSet.get(position).getOrderState() == Order.OrderState.ACCEPTED) {
-
-                }
                 if (dataSet.get(position).getOrderState() == Order.OrderState.NOW) {
                     Intent intent = new Intent(context, CurrentOrderActivity.class);
                     intent.putExtra("order", dataSet.get(position));
                     context.startActivity(intent);
-                    ((Activity)context).finish();
+//                    ((Activity)context).finish();
                 }
             }
         });

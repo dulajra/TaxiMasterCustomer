@@ -73,6 +73,7 @@ public class Communicator {
     public int placeOrder(Order order) {
         ContentValues values = new ContentValues();
         values.put("origin", order.getOrigin());
+        values.put("customerId",ApplicationPreferences.getUser().getId());
         values.put("destination", order.getDestination());
         values.put("originLatitude", order.getOriginCoordinates().getLatitude());
         values.put("originLongitude", order.getOriginCoordinates().getLongitude());
@@ -81,7 +82,7 @@ public class Communicator {
         values.put("note", order.getNote());
         values.put("contact", order.getContact());
         values.put("driverId", order.getDriver().getId());
-        values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
+//        values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String time = sdf.format(order.getTime());
@@ -239,6 +240,8 @@ public class Communicator {
                     order.setOriginCoordinates(new Location(jsonObject.getDouble("originLatitude"), jsonObject.getDouble("originLongitude")));
                     order.setDestination(jsonObject.getString("destination"));
                     order.setDestinationCoordinates(new Location(jsonObject.getDouble("destinationLatitude"), jsonObject.getDouble("destinationLongitude")));
+                    order.setContact(jsonObject.getString("contact"));
+                    order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
 
                     if(state.equals(Order.OrderState.FINISHED.toString())){
                         order.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(jsonObject.getString("startTime")));
@@ -250,8 +253,7 @@ public class Communicator {
                         order.setNote(jsonObject.getString("note"));
                     }
                     order.setContact(jsonObject.getString("contact"));
-                    order.setDriver(new Driver(jsonObject.getInt("taxiDriverId")));
-
+                    order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
                     orderList.add(order);
                 }
             } catch (JSONException e) {
@@ -259,8 +261,6 @@ public class Communicator {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            Log.v(DEBUG_TAG, "response = " + response);
         } else {
             Log.v(DEBUG_TAG, "Response is null");
         }

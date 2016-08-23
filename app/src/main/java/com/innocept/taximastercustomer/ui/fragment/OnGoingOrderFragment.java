@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,9 @@ import com.innocept.taximastercustomer.model.network.Communicator;
 import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
 import com.innocept.taximastercustomer.ui.adapters.MyOrderAdapter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -65,6 +69,25 @@ public class OnGoingOrderFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... params) {
                 dataSet = new Communicator().getMyOrders(ApplicationPreferences.getUser().getId(), "ANY");
+
+                Collections.sort(dataSet, new Comparator<Order>() {
+                    @Override
+                    public int compare(Order lhs, Order rhs) {
+                        return rhs.getTime().compareTo(lhs.getTime());
+                    }
+                });
+
+                List<Order> itemsToMove = new ArrayList<Order>();
+                for(Order order:dataSet){
+                    if(order.getOrderState()== Order.OrderState.NOW){
+                        itemsToMove.add(order);
+                    }
+                }
+                for (Order order:itemsToMove){
+                    dataSet.remove(order);
+                    dataSet.add(0, order);
+                }
+
                 return null;
             }
 
