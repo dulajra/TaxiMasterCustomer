@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,17 +40,11 @@ public class MyOrdersFragment extends Fragment {
         setupViewPager(viewPager);
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        Intent intent = getActivity().getIntent();
-        if(intent.getBooleanExtra("finish", false)){
-            viewPager.setCurrentItem(1);
-        }
-
         return rootView;
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(((AppCompatActivity)getActivity()).getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new OnGoingOrderFragment(), "ON GOING");
         adapter.addFragment(new FinishedOrderFragment(), "FINISHED");
         viewPager.setAdapter(adapter);

@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private final String DEBUG_TAG = HomeActivity.class.getSimpleName();
 
+    private Toolbar toolbar;
     private ImageView imageViewProfilePicture;
     private TextView textViewName, textViewPhone;
     private FloatingActionButton fab;
@@ -51,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -124,15 +125,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        if (item.isChecked()) item.setChecked(false);
+        else item.setChecked(true);
+
         int id = item.getItemId();
         Fragment fragment = null;
 
         switch (id) {
+            case R.id.fragment_my_orders:
+                fragment = new MyOrdersFragment();
+                break;
             case R.id.fragment_favorites:
                 fragment = new FavoritesFragment();
                 break;
-            case R.id.fragment_my_orders:
-                fragment = new MyOrdersFragment();
+            case R.id.fragment_pricing:
+                fragment = new FavoritesFragment();
+                break;
+            case R.id.fragment_offers:
+                fragment = new FavoritesFragment();
+                break;
+            case R.id.fragment_contact_us:
+                fragment = new FavoritesFragment();
+                break;
+            case R.id.fragment_profile:
+                fragment = new FavoritesFragment();
+                break;
+            case R.id.fragment_settings:
+                fragment = new FavoritesFragment();
                 break;
             case R.id.fragment_log_out:
                 logout();
@@ -146,7 +165,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
-
+            toolbar.setTitle(item.getTitle());
         } else {
             Log.e(DEBUG_TAG, "Error in creating fragment: fragment=null");
         }
