@@ -1,5 +1,7 @@
 package com.innocept.taximastercustomer.model.foundation;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +19,7 @@ public class Order implements Serializable{
     private String note;
     private String contact;
     private Driver driver;
+    private TaxiType taxiType;
     private Order.OrderState orderState;
 
     public Order() {
@@ -100,6 +103,14 @@ public class Order implements Serializable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public TaxiType getTaxiType() {
+        return taxiType;
+    }
+
+    public void setTaxiType(TaxiType taxiType) {
+        this.taxiType = taxiType;
     }
 
     public enum OrderState {

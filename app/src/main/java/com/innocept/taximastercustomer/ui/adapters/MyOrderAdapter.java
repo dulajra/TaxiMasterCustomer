@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,9 +40,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         LinearLayout linearLayoutOrderListItem;
         TextView textFromTo;
         TextView textTime;
-        TextView textDriverName;
-        TextView textDriverPhone;
         TextView textState;
+        ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -48,9 +49,8 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             linearLayoutOrderListItem = (LinearLayout) itemView.findViewById(R.id.linear_taxi_list_item);
             textFromTo = (TextView) itemView.findViewById(R.id.text_my_orderfrom_to);
             textTime = (TextView) itemView.findViewById(R.id.text_my_order_time);
-            textDriverName = (TextView) itemView.findViewById(R.id.text_my_order_name);
-            textDriverPhone = (TextView) itemView.findViewById(R.id.text_my_order_phone);
             textState = (TextView) itemView.findViewById(R.id.text_my_order_state);
+            imageView = (ImageView)itemView.findViewById(R.id.image_taxi_type);
         }
     }
 
@@ -71,8 +71,18 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
         viewHolder.textFromTo.setText(dataSet.get(position).getOrigin() + " to " + dataSet.get(position).getDestination());
         viewHolder.textTime.setText(new SimpleDateFormat("yyyy-MM-dd HH-mm").format(dataSet.get(position).getTime()));
-        viewHolder.textDriverName.setText(dataSet.get(position).getDriver().getFirstName());
-        viewHolder.textDriverPhone.setText(dataSet.get(position).getDriver().getPhone());
+
+        switch (dataSet.get(position).getTaxiType()){
+            case NANO:
+                viewHolder.imageView.setImageResource(R.drawable.ic_nano);
+                break;
+            case CAR:
+                viewHolder.imageView.setImageResource(R.drawable.ic_car);
+                break;
+            case VAN:
+                viewHolder.imageView.setImageResource(R.drawable.ic_van);
+                break;
+        }
 
         Order.OrderState orderState = dataSet.get(position).getOrderState();
         if (orderState == Order.OrderState.PENDING) {

@@ -41,6 +41,20 @@ public class MapUtils {
         marker = map.addMarker(new MarkerOptions().position(latLng).title(title).snippet(snippet).icon(BitmapDescriptorFactory.fromResource(drawable)));
     }
 
+    public static void setMarker(GoogleMap map, Marker marker, LatLng latLng, int drawable) {
+        if (marker != null) {
+            marker.remove();
+        }
+        marker = map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(drawable)));
+    }
+
+    public static void setMarker(GoogleMap map, Marker marker, LatLng latLng) {
+        if (marker != null) {
+            marker.remove();
+        }
+        marker = map.addMarker(new MarkerOptions().position(latLng));
+    }
+
     public static void moveAndAnimateCamera(GoogleMap map, LatLng latLng, int zoomLevel){
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
     }

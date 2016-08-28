@@ -20,19 +20,34 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:id="@+id/text_location"
-            style="@style/CurrentOrderStatusPanelItem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="@color/textColorDark"
+            android:textSize="16sp"
             android:maxLines="2" />
 
         <TextView
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:id="@+id/text_distance"
-            style="@style/CurrentOrderStatusPanelItem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="@color/textColorDark"
+            android:textSize="12sp"
             android:maxLines="1"
-            android:text="Fetching data..." />
+            android:text="Fetching data..."/>
 
         <TextView
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:id="@+id/text_time"
-            style="@style/CurrentOrderStatusPanelItem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textColor="@color/textColorDark"
+            android:textSize="12sp"
             android:maxLines="1" />
 
     </LinearLayout>

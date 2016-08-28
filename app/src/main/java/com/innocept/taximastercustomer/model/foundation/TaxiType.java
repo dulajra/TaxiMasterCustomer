@@ -5,18 +5,22 @@ package com.innocept.taximastercustomer.model.foundation;
  */
 public enum TaxiType {
 
-    NANO(1),
-    CAR(2),
-    VAN(3);
+    NANO,
+    CAR,
+    VAN;
 
-    int value;
+    private final int value;
 
-    TaxiType(int v) {
-        value = v;
+    TaxiType() {
+        this.value = ordinal() + 1;
     }
 
     public int getValue() {
         return value;
+    }
+
+    public static TaxiType getEnum(int value){
+        return TaxiType.values()[value-1];
     }
 
 }

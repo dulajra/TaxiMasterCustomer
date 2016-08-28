@@ -121,8 +121,8 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
                 }
 
                 textViewLocation.setText(driverUpdate.getLocation());
-                textViewDistance.setText(driverUpdate.getDistance());
-                textViewDuration.setText(driverUpdate.getDuration());
+                textViewDistance.setText(driverUpdate.getDistance() + " away");
+                textViewDuration.setText(driverUpdate.getDuration() + " remaining");
             }
         }.execute();
     }
@@ -174,8 +174,8 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
     private void updateMap() {
         if(driverUpdate!=null){
             LatLng latLng = new LatLng(driverUpdate.getLatitude(), driverUpdate.getLongitude());
-            MapUtils.setMarker(this.map, driverMarker, latLng, driverUpdate.getLocation(), R.drawable.ic_marker_taxi);
-            MapUtils.moveAndAnimateCamera(this.map, latLng, 15);
+            MapUtils.setMarker(this.map, driverMarker, latLng, R.drawable.ic_marker_taxi);
+            MapUtils.moveAndAnimateCamera(this.map, latLng, 13);
         }
         else{
             mapReadyNotCalled = true;

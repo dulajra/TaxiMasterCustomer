@@ -246,6 +246,7 @@ public class Communicator {
                     order.setDestination(jsonObject.getString("destination"));
                     order.setDestinationCoordinates(new Location(jsonObject.getDouble("destinationLatitude"), jsonObject.getDouble("destinationLongitude")));
                     order.setContact(jsonObject.getString("contact"));
+                    order.setTaxiType(TaxiType.getEnum(jsonObject.getInt("taxiTypeId")));
                     order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
 
                     if(state.equals(Order.OrderState.FINISHED.toString())){
