@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.model.foundation.Driver;
+import com.innocept.taximastercustomer.model.foundation.DriverUpdate;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
@@ -31,21 +32,21 @@ import java.util.List;
 
 public class Communicator {
 
-    private final String DEBUG_TAG = Communicator.class.getSimpleName();
+    private static final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private final String URL_ROOT = "http://62643790.ngrok.io";
-    private final String URL_LOGIN = URL_ROOT + "/customer/login";
-    private final String URL_LOGOUT = URL_ROOT + "/customer/logout";
-    private final String URL_SIGN_UP = URL_ROOT + "/customer/signUp";
-    private final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
-    private final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
-    private final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
-    private final String URL_GET_MY_ORDERS = URL_ROOT + "/customer/orders";
+    private static final String URL_ROOT = "http://45fe1530.ngrok.io";
+    private static final String URL_LOGIN = URL_ROOT + "/customer/login";
+    private static final String URL_LOGOUT = URL_ROOT + "/customer/signOut";
+    private static final String URL_SIGN_UP = URL_ROOT + "/customer/signUp";
+    private static final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
+    private static final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
+    private static final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
+    private static final String URL_GET_MY_ORDERS = URL_ROOT + "/customer/orders";
 
     public Communicator() {
     }
 
-    public List<Taxi> getAvailableTaxis(Location location, TaxiType taxiType) {
+    public static List<Taxi> getAvailableTaxis(Location location, TaxiType taxiType) {
         ContentValues values = new ContentValues();
         values.put("taxiTypeId", taxiType.getValue());
         values.put("latitude", location.getLatitude());
@@ -70,7 +71,7 @@ public class Communicator {
         return taxiList;
     }
 
-    public int placeOrder(Order order) {
+    public static int placeOrder(Order order) {
         ContentValues values = new ContentValues();
         values.put("origin", order.getOrigin());
         values.put("customerId",ApplicationPreferences.getUser().getId());
@@ -108,7 +109,7 @@ public class Communicator {
      * @param latLng
      * @return new String[]{latitude, longitude, distance, duration}
      */
-    public String[] getDriverUpdates(int driverId, LatLng latLng) {
+    public static DriverUpdate getDriverUpdate(int driverId, LatLng latLng) {
         ContentValues values = new ContentValues();
         values.put("driverId", driverId);
         values.put("latitude", latLng.latitude);
@@ -119,7 +120,7 @@ public class Communicator {
         try {
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.getBoolean("success")) {
-                return new String[]{String.valueOf(jsonObject.getDouble("latitude")), String.valueOf(jsonObject.getDouble("longitude")), jsonObject.getString("distance"), jsonObject.getString("duration")};
+                return new Gson().fromJson(jsonObject.getJSONObject("data").toString(), DriverUpdate.class);
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
@@ -129,7 +130,7 @@ public class Communicator {
         return null;
     }
 
-    public int login(String phone, String password) {
+    public static int login(String phone, String password) {
         User user = null;
         int resultCode = -1;
         ContentValues values = new ContentValues();
@@ -163,7 +164,7 @@ public class Communicator {
         return resultCode;
     }
 
-    public boolean logout() {
+    public static boolean signOut() {
         boolean result = false;
         ContentValues values = new ContentValues();
         values.put("phone", ApplicationPreferences.getUser().getPhone());
@@ -188,7 +189,7 @@ public class Communicator {
         return result;
     }
 
-    public int signUp(User user, String password) {
+    public static int signUp(User user, String password) {
         int resultCode = -1;
         ContentValues values = new ContentValues();
         values.put("firstName", user.getFirstName());
@@ -209,7 +210,11 @@ public class Communicator {
                         break;
                     case 1:
                         resultCode = 1;
-                        Log.i(DEBUG_TAG, "Phone number has been taken already");
+                        Log.i(DEBUG_TAG, "Phone number has been already taken");
+                        break;
+                    case 2:
+                        resultCode = 2;
+                        Log.i(DEBUG_TAG, "User with the same full name already exists");
                         break;
                 }
             } catch (JSONException e) {
@@ -221,7 +226,7 @@ public class Communicator {
         return resultCode;
     }
 
-    public List<Order> getMyOrders(int userId, String state) {
+    public static List<Order> getMyOrders(int userId, String state) {
         List<Order> orderList = null;
         ContentValues values = new ContentValues();
         values.put("customerId", userId);

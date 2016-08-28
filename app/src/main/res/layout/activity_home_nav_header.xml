@@ -17,9 +17,9 @@
         android:layout_width="76dp"
         android:layout_height="76dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:civ_border_width="1dp"
+        app:civ_border_width="0dp"
         app:civ_border_color="#1A237E"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@drawable/ic_user"/>
 
     <TextView
         android:id="@+id/textViewName"

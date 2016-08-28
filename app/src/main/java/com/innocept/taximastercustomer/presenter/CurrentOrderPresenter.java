@@ -1,18 +1,12 @@
 package com.innocept.taximastercustomer.presenter;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.innocept.taximastercustomer.model.foundation.Location;
-import com.innocept.taximastercustomer.model.foundation.Order;
-import com.innocept.taximastercustomer.model.foundation.Taxi;
-import com.innocept.taximastercustomer.model.foundation.TaxiType;
+import com.innocept.taximastercustomer.model.foundation.DriverUpdate;
 import com.innocept.taximastercustomer.model.network.Communicator;
 import com.innocept.taximastercustomer.ui.activity.CurrentOrderActivity;
-import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
-import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
-
-import java.util.List;
 
 /**
  * Created by Dulaj on 17-Apr-16.
@@ -47,26 +41,25 @@ public class CurrentOrderPresenter {
         new AsyncTask<Void, Void, Void>(){
 
             Communicator communicator;
-            String[] result;
+            DriverUpdate driverUpdate;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 view.whileGettingUpdates();
-                communicator = new Communicator();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                result = communicator.getDriverUpdates(driverId, latLng);
+                driverUpdate = Communicator.getDriverUpdate(driverId, latLng);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                if(result!=null){
-                    view.onUpdateSuccess(result);
+                if(driverUpdate !=null){
+                    view.onUpdateSuccess(driverUpdate);
                 }
             }
 

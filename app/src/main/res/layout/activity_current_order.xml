@@ -17,56 +17,53 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical">
 
         <fragment
-            android:layout_weight="1"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/map"
-            tools:context=".MapsActivity"
             android:layout_marginTop="?attr/actionBarSize"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            android:layout_weight="1"
+            tools:context=".MapsActivity" />
 
         <LinearLayout
             android:id="@+id/linear_status_panel"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/text_from_to"
                 style="@style/CurrentOrderStatusPanelItem"
-                android:text="From To"
                 android:maxLines="2"
-                android:textStyle="bold"
-                />
+                android:text="From To"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_expected_time"
                 style="@style/CurrentOrderStatusPanelItem"
-                android:text="Expected at: "
                 android:maxLines="1"
-                />
+                android:text="Expected at: " />
 
             <TextView
                 android:id="@+id/text_distance"
                 style="@style/CurrentOrderStatusPanelItem"
-                android:text="Calculating..."
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:text="Calculating..." />
 
             <TextView
                 android:id="@+id/text_estimated_time"
                 style="@style/CurrentOrderStatusPanelItem"
-                android:text="Calculating..."
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:text="Calculating..." />
 
         </LinearLayout>
 
@@ -80,7 +77,7 @@
         android:onClick="showOrHideStatusBar"
         android:src="@drawable/ic_action_expand"
         app:layout_anchor="@id/map"
-        app:layout_anchorGravity="bottom|right|end"/>
+        app:layout_anchorGravity="bottom|right|end" />
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab_call"
@@ -92,6 +89,6 @@
         android:src="@drawable/ic_action_call"
         app:fab_colorNormal="#FFC107"
         app:fab_colorPressed="#FFC107"
-        app:fab_colorRipple="#FFC107"/>
+        app:fab_colorRipple="#FFC107" />
 
 </android.support.design.widget.CoordinatorLayout>

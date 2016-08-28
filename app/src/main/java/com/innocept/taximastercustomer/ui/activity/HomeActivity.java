@@ -1,5 +1,7 @@
 package com.innocept.taximastercustomer.ui.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,9 +29,6 @@ import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
 import com.squareup.picasso.Picasso;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Created by Dulaj on 16-Aug-16.
  */
@@ -43,6 +43,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
     private View headerView;
+    private ProgressDialog progressDialog;
 
     private boolean doubleBackToExitPressedOnce;
 
@@ -77,7 +78,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         User user = ApplicationPreferences.getUser();
         if (user != null) {
-            Picasso.with(HomeActivity.this).load(user.getImage()).into(imageViewProfilePicture);
+            String imageUrl = user.getImage();
+            if (imageUrl == null) {
+
+            } else {
+                Picasso.with(HomeActivity.this).load(imageUrl).into(imageViewProfilePicture);
+            }
             textViewName.setText(user.getFullName());
             textViewPhone.setText(user.getPhone());
         }
@@ -128,6 +134,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.fragment_my_orders:
                 fragment = new MyOrdersFragment();
                 break;
+            case R.id.fragment_log_out:
+                logout();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -139,10 +148,53 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.frame_container, fragment).commit();
 
         } else {
-             Log.e(DEBUG_TAG, "Error in creating fragment: fragment=null");
+            Log.e(DEBUG_TAG, "Error in creating fragment: fragment=null");
         }
 
         return true;
     }
 
+    private void logout() {
+        new AlertDialog.Builder(this)
+                .setTitle("Log out")
+                .setMessage("Are you sure?")
+                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        displayLoadingDialog(null, "Signing out...");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        closeProgressDialog();
+                                        ApplicationPreferences.saveUser(null);
+                                        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                                        finish();
+                                    }
+                                });
+                            }
+                        }, 1500);
+                    }
+                })
+                .show();
+    }
+
+    public void displayLoadingDialog(String title, String message) {
+        this.progressDialog = new ProgressDialog(this);
+        if (title != null && title.length() > 0) {
+            this.progressDialog.setTitle(title);
+        }
+        if (message != null && message.length() > 0) {
+            this.progressDialog.setMessage(message);
+        }
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    public void closeProgressDialog() {
+        this.progressDialog.dismiss();
+    }
 }

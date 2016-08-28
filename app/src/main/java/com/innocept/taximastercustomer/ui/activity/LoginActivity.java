@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private final String DEBUG_TAG = LoginActivity.class.getSimpleName();
 
-    LoginPresenter loginPresenter;;
+    LoginPresenter loginPresenter;
 
     private Toolbar toolbar;
     private EditText inputPhone, inputPassword;

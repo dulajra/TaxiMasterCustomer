@@ -39,8 +39,7 @@ public class SignUpPresenter {
 
             @Override
             protected Integer doInBackground(Void... params) {
-                Communicator communicator = new Communicator();
-                int resultCode = communicator.signUp(user, password);
+                int resultCode = Communicator.signUp(user, password);
                 return resultCode;
             }
 
@@ -53,6 +52,9 @@ public class SignUpPresenter {
                         break;
                     case 1:
                         view.onSignInFailed("Phone number has been already taken");
+                        break;
+                    case 2:
+                        view.onSignInFailed("User with the same full name already exists");
                         break;
                     default:
                         view.onSignInFailed("Something went wrong. Try again!");

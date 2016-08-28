@@ -1,39 +1,25 @@
 package com.innocept.taximastercustomer.ui.activity;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,16 +29,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.innocept.taximastercustomer.R;
+import com.innocept.taximastercustomer.model.foundation.DriverUpdate;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.presenter.CurrentOrderPresenter;
-import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by dulaj on 5/28/16.
@@ -103,7 +85,7 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         }
         currentOrderPresenter.setView(this);
 
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapView = mapFragment.getView();
 
@@ -125,8 +107,6 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
         order = (Order) intent.getSerializableExtra("order");
-        Log.i(DEBUG_TAG, order.getDriver().getPhone());
-
         customerLatLng = new LatLng(order.getOriginCoordinates().getLatitude(), order.getOriginCoordinates().getLongitude());
         textViewFromTo.setText(order.getOrigin() + " to " + order.getDestination());
         textViewExpectedTime.setText("Expected time: " + new SimpleDateFormat("yyyy-MM-dd hh:mm").format(order.getTime()));
@@ -182,7 +162,6 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
 
     private void callCustomer() {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + order.getDriver().getPhone()));
-        Log.i(DEBUG_TAG, order.getDriver().getPhone() + " >>>>>>>>>>>>>>");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 100);
         } else {
@@ -217,11 +196,11 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         Toast.makeText(CurrentOrderActivity.this, "Updating details...", Toast.LENGTH_SHORT).show();
     }
 
-    public void onUpdateSuccess(String[] update) {
-        driverLatLng = new LatLng(Double.parseDouble(update[0]), Double.parseDouble(update[1]));
+    public void onUpdateSuccess(DriverUpdate driverUpdate) {
+        driverLatLng = new LatLng(driverUpdate.getLatitude(), driverUpdate.getLongitude());
         setDriverMarker();
         moveAndAnimateCamera(driverLatLng, DEFAULT_ZOOM_LEVEL);
-        setStatusPanelValues(update[2], update[3]);
+        setStatusPanelValues(driverUpdate.getDistance(), driverUpdate.getDuration());
         Toast.makeText(CurrentOrderActivity.this, "Details updated...", Toast.LENGTH_SHORT).show();
     }
 

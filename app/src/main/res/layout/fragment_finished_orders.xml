@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,17 +12,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_my_orders"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
                 android:scrollbars="vertical"
                 android:visibility="visible" />
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
-
 
 </RelativeLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_from_edge">
+
+    <fragment
+        android:id="@+id/map_now_small_view"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_location"
+            style="@style/CurrentOrderStatusPanelItem"
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/text_distance"
+            style="@style/CurrentOrderStatusPanelItem"
+            android:maxLines="1"
+            android:text="Fetching data..." />
+
+        <TextView
+            android:id="@+id/text_time"
+            style="@style/CurrentOrderStatusPanelItem"
+            android:maxLines="1" />
+
+    </LinearLayout>
+
+</LinearLayout>

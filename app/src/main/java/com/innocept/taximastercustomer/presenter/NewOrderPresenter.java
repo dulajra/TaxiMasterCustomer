@@ -51,15 +51,11 @@ public class NewOrderPresenter {
     public void getAvailableTaxis(final LatLng origin, final TaxiType taxiType){
 
         new AsyncTask<Void, Void, Void>(){
-
-            Communicator communicator;
             List<Taxi> taxiList;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                communicator = new Communicator();
-
                 view.lockUI();
 
                 if(taxiType == TaxiType.NANO){
@@ -75,7 +71,7 @@ public class NewOrderPresenter {
 
             @Override
             protected Void doInBackground(Void... params) {
-                taxiList = communicator.getAvailableTaxis(new Location(origin.latitude, origin.longitude), taxiType);
+                taxiList = Communicator.getAvailableTaxis(new Location(origin.latitude, origin.longitude), taxiType);
                 return null;
             }
 
@@ -106,19 +102,17 @@ public class NewOrderPresenter {
 
         new AsyncTask<Void, Void, Void>(){
 
-            Communicator communicator;
             int result;
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 view.showProgressDialog("Placing the order");
-                communicator = new Communicator();
             }
 
             @Override
             protected Void doInBackground(Void... params) {
-                result = communicator.placeOrder(order);
+                result = Communicator.placeOrder(order);
                 return null;
             }
 

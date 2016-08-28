@@ -37,8 +37,7 @@ public class LoginPresenter {
 
             @Override
             protected Integer doInBackground(Void... params) {
-                Communicator communicator = new Communicator();
-                int resultCode = communicator.login(phone, password);
+                int resultCode = Communicator.login(phone, password);
                 return resultCode;
             }
 

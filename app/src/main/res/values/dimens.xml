@@ -11,4 +11,6 @@
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
 
+    <dimen name="padding_from_edge">5dp</dimen>
+
 </resources>
