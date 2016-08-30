@@ -27,6 +27,7 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
+import com.innocept.taximastercustomer.ui.fragment.PricingFragment;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -139,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new FavoritesFragment();
                 break;
             case R.id.fragment_pricing:
-                fragment = new FavoritesFragment();
+                fragment = new PricingFragment();
                 break;
             case R.id.fragment_offers:
                 fragment = new FavoritesFragment();

@@ -34,13 +34,14 @@ public class Communicator {
 
     private static final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-    private static final String URL_ROOT = "http://45fe1530.ngrok.io";
+    private static final String URL_ROOT = "http://1177bef9.ngrok.io";
     private static final String URL_LOGIN = URL_ROOT + "/customer/login";
     private static final String URL_LOGOUT = URL_ROOT + "/customer/signOut";
     private static final String URL_SIGN_UP = URL_ROOT + "/customer/signUp";
     private static final String URL_GET_AVAILABLE_TAXIS = URL_ROOT + "/customer/taxis";
     private static final String URL_PLACE_ORDER = URL_ROOT + "/customer/order/new";
     private static final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
+    private static final String URL_GET_DRIVER_LOCATION = URL_ROOT + "/customer/get/driverLocation";
     private static final String URL_GET_MY_ORDERS = URL_ROOT + "/customer/orders";
 
     public Communicator() {
@@ -121,6 +122,27 @@ public class Communicator {
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.getBoolean("success")) {
                 return new Gson().fromJson(jsonObject.getJSONObject("data").toString(), DriverUpdate.class);
+            }
+        } catch (JSONException e) {
+            Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());
+        } catch (NullPointerException e) {
+            Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+        }
+        return null;
+    }
+
+    public static DriverUpdate getDriverLocation(int driverId) {
+        ContentValues values = new ContentValues();
+        values.put("driverId", driverId);
+        String response = HTTPHandler.sendGET(URL_GET_DRIVER_LOCATION, values);
+
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            if (jsonObject.getBoolean("success")) {
+                return new Gson().fromJson(jsonObject.getJSONObject("data").toString(), DriverUpdate.class);
+            }
+            else {
+                Log.e(DEBUG_TAG, "Response is not success");
             }
         } catch (JSONException e) {
             Log.e(DEBUG_TAG, "Error converting to json object " + e.toString());

@@ -29,12 +29,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.DriverUpdate;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.presenter.CurrentOrderPresenter;
+import com.innocept.taximastercustomer.ui.MapUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by dulaj on 5/28/16.
@@ -68,7 +72,10 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
     com.github.clans.fab.FloatingActionButton fabCall;
 
     private boolean isExpanded = false;
+    private Polyline polyline = null;
 
+    private DriverUpdate driverLocation;
+    private Timer timer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,7 +83,7 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         setContentView(R.layout.activity_current_order);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Going for hire");
+        toolbar.setTitle("Current Hire");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -110,6 +117,12 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         customerLatLng = new LatLng(order.getOriginCoordinates().getLatitude(), order.getOriginCoordinates().getLongitude());
         textViewFromTo.setText(order.getOrigin() + " to " + order.getDestination());
         textViewExpectedTime.setText("Expected time: " + new SimpleDateFormat("yyyy-MM-dd hh:mm").format(order.getTime()));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
     }
 
     @Override
@@ -148,7 +161,16 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
 
         setCustomerMarker();
         moveAndAnimateCamera(customerLatLng, DEFAULT_ZOOM_LEVEL);
+
         updateDetails();
+
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                currentOrderPresenter.getDriverLocation(order.getDriver().getId());
+            }
+        }, 10000, 10000);
     }
 
     private void moveAndAnimateCamera(LatLng latLng, float zoom) {
@@ -196,15 +218,22 @@ public class CurrentOrderActivity extends AppCompatActivity implements OnMapRead
         Toast.makeText(CurrentOrderActivity.this, "Updating details...", Toast.LENGTH_SHORT).show();
     }
 
+    public void updateDriverLocation(LatLng latLng){
+        this.driverLatLng = latLng;
+        setDriverMarker();
+    }
+
     public void onUpdateSuccess(DriverUpdate driverUpdate) {
         driverLatLng = new LatLng(driverUpdate.getLatitude(), driverUpdate.getLongitude());
         setDriverMarker();
         moveAndAnimateCamera(driverLatLng, DEFAULT_ZOOM_LEVEL);
         setStatusPanelValues(driverUpdate.getDistance(), driverUpdate.getDuration());
         Toast.makeText(CurrentOrderActivity.this, "Details updated...", Toast.LENGTH_SHORT).show();
+
+        MapUtils.plotRoute(CurrentOrderActivity.this, this.mMap, polyline, driverLatLng, this.customerLatLng, getResources().getColor(R.color.routeColor));
     }
 
-    private void setDriverMarker(){
+    public void setDriverMarker(){
         if(driverMarker!=null){
             driverMarker.remove();
         }

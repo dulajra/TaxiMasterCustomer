@@ -5,7 +5,7 @@
         <item
             android:id="@+id/fragment_my_orders"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="My Orders" />
+            android:title="My Hires" />
 
         <item
             android:id="@+id/fragment_favorites"

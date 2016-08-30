@@ -12,4 +12,11 @@
     <color name="textColorAccepted">#32CD32</color>
     <color name="textColorPending">#FFA500</color>
     <color name="textColorRejected">#DC143C</color>
+
+    <color name="routeColor">#00b3fd</color>
+
+    <color name="cardNano">#78adff2f</color>
+    <color name="cardCar">#78ffff00</color>
+    <color name="cardVan">#7887cefa</color>
+
 </resources>

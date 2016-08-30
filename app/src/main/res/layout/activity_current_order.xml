@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="?attr/actionBarSize"
-            android:layout_weight="1"
+            android:layout_weight="2"
             tools:context=".MapsActivity" />
 
         <LinearLayout
@@ -45,25 +45,29 @@
                 style="@style/CurrentOrderStatusPanelItem"
                 android:maxLines="2"
                 android:text="From To"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_expected_time"
                 style="@style/CurrentOrderStatusPanelItem"
                 android:maxLines="1"
-                android:text="Expected at: " />
+                android:text="Expected at: "
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/text_distance"
                 style="@style/CurrentOrderStatusPanelItem"
                 android:maxLines="1"
-                android:text="Calculating..." />
+                android:text="Calculating..."
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/text_estimated_time"
                 style="@style/CurrentOrderStatusPanelItem"
                 android:maxLines="1"
-                android:text="Calculating..." />
+                android:text="Calculating..."
+                android:textSize="14sp" />
 
         </LinearLayout>
 

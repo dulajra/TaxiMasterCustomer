@@ -74,7 +74,7 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                if (swipeRefreshLayout != null){
+                if (swipeRefreshLayout != null) {
                     swipeRefreshLayout.setRefreshing(true);
                 }
             }
@@ -91,17 +91,17 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
                 });
 
                 List<Order> itemsToMove = new ArrayList<Order>();
-                for(Order order:dataSet){
-                    if(order.getOrderState()== Order.OrderState.NOW){
+                for (Order order : dataSet) {
+                    if (order.getOrderState() == Order.OrderState.NOW) {
                         itemsToMove.add(order);
                     }
                 }
-                for (Order order:itemsToMove){
+                for (Order order : itemsToMove) {
                     dataSet.remove(order);
                     dataSet.add(0, order);
                 }
 
-                if(dataSet.get(0).getOrderState()== Order.OrderState.NOW){
+                if (dataSet.get(0).getOrderState() == Order.OrderState.NOW) {
                     orderNow = dataSet.remove(0);
                 }
                 driverUpdate = Communicator.getDriverUpdate(orderNow.getDriver().getId(), new LatLng(orderNow.getDestinationCoordinates().getLatitude(), orderNow.getDestinationCoordinates().getLongitude()));
@@ -117,10 +117,9 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
                     swipeRefreshLayout.setRefreshing(false);
                 }
 
-                if(mapReadyNotCalled){
+                if (mapReadyNotCalled) {
                     updateMap();
                 }
-
                 textViewLocation.setText(driverUpdate.getLocation());
                 textViewDistance.setText(driverUpdate.getDistance() + " away");
                 textViewDuration.setText(driverUpdate.getDuration() + " remaining");
@@ -131,7 +130,6 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(DEBUG_TAG, "Called 1 >>>>>>>>>>");
         View rootView = inflater.inflate(R.layout.fragment_ongoing_orders, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_my_orders);
@@ -139,10 +137,10 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        cardViewNow = (CardView)rootView.findViewById(R.id.card_view_now);
-        textViewLocation = (TextView)rootView.findViewById(R.id.text_location);
-        textViewDistance = (TextView)rootView.findViewById(R.id.text_distance);
-        textViewDuration = (TextView)rootView.findViewById(R.id.text_time);
+        cardViewNow = (CardView) rootView.findViewById(R.id.card_view_now);
+        textViewLocation = (TextView) rootView.findViewById(R.id.text_location);
+        textViewDistance = (TextView) rootView.findViewById(R.id.text_distance);
+        textViewDuration = (TextView) rootView.findViewById(R.id.text_time);
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_now_small_view);
         mapFragment.getMapAsync(this);
@@ -158,9 +156,11 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
         cardViewNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CurrentOrderActivity.class);
-                intent.putExtra("order", orderNow);
-                startActivity(intent);
+                if (orderNow != null) {
+                    Intent intent = new Intent(getActivity(), CurrentOrderActivity.class);
+                    intent.putExtra("order", orderNow);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -174,12 +174,11 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
     }
 
     private void updateMap() {
-        if(driverUpdate!=null){
+        if (driverUpdate != null) {
             LatLng latLng = new LatLng(driverUpdate.getLatitude(), driverUpdate.getLongitude());
             MapUtils.setMarker(this.map, driverMarker, latLng, R.drawable.ic_marker_taxi);
             MapUtils.moveAndAnimateCamera(this.map, latLng, 13);
-        }
-        else{
+        } else {
             mapReadyNotCalled = true;
         }
     }

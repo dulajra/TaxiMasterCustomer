@@ -65,4 +65,33 @@ public class CurrentOrderPresenter {
 
         }.execute();
     }
+
+    public void getDriverLocation(final int driverId){
+
+        new AsyncTask<Void, Void, Void>(){
+
+            Communicator communicator;
+            DriverUpdate driverUpdate;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                driverUpdate = Communicator.getDriverLocation(driverId);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if(driverUpdate !=null){
+                    view.updateDriverLocation(new LatLng(driverUpdate.getLatitude(), driverUpdate.getLongitude()));
+                }
+            }
+
+        }.execute();
+    }
 }
