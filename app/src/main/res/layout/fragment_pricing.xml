@@ -82,7 +82,7 @@
 
                 <TextView
                     style="@style/PricingTextItem"
-                    android:text="Rs. 32/= per 1 km"
+                    android:text="Rs. 60/= per 1 km"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -119,12 +119,12 @@
 
                 <TextView
                     style="@style/PricingTextItem"
-                    android:text="Rs. 32/= per 1 km"
+                    android:text="Rs. 72/= per 1 km"
                     android:textStyle="bold"/>
 
                 <TextView
                     style="@style/PricingTextItem"
-                    android:text="4 passengers" />
+                    android:text="11 passengers" />
 
                 <TextView
                     style="@style/PricingTextItem"

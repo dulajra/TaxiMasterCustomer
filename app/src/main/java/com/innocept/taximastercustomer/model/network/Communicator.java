@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.model.foundation.Driver;
 import com.innocept.taximastercustomer.model.foundation.DriverUpdate;
+import com.innocept.taximastercustomer.model.foundation.Offer;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
@@ -43,6 +44,7 @@ public class Communicator {
     private static final String URL_GET_DRIVER_UPDATE = URL_ROOT + "/customer/get/driverUpdate";
     private static final String URL_GET_DRIVER_LOCATION = URL_ROOT + "/customer/get/driverLocation";
     private static final String URL_GET_MY_ORDERS = URL_ROOT + "/customer/orders";
+    private static final String URL_GET_OFFERS = URL_ROOT + "/offers";
 
     public Communicator() {
     }
@@ -293,6 +295,24 @@ public class Communicator {
             Log.v(DEBUG_TAG, "Response is null");
         }
         return orderList;
+    }
+
+    public static List<Offer> getOffers() {
+        List<Offer> offerList = new ArrayList<>();
+        ContentValues values = new ContentValues();
+        String response = HTTPHandler.sendGET(URL_GET_OFFERS, values);
+
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                offerList.add(new Gson().fromJson(jsonArray.get(i).toString(), Offer.class));
+            }
+        } catch (JSONException e) {
+            Log.e(DEBUG_TAG, "Error converting json array " + e.toString());
+        } catch (NullPointerException e) {
+            Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+        }
+        return offerList;
     }
 }
 

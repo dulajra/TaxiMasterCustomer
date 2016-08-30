@@ -8,7 +8,7 @@
     <color name="colorAccent">#42A5F5</color>
 
     <color name="textColorDark">#de000000</color>
-    <color name="textColorLight">#bebebe</color>
+    <color name="textColorLight">#7b7b7b</color>
     <color name="textColorAccepted">#32CD32</color>
     <color name="textColorPending">#FFA500</color>
     <color name="textColorRejected">#DC143C</color>

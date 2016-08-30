@@ -27,6 +27,7 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
+import com.innocept.taximastercustomer.ui.fragment.OfferFragment;
 import com.innocept.taximastercustomer.ui.fragment.PricingFragment;
 import com.squareup.picasso.Picasso;
 
@@ -80,12 +81,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         User user = ApplicationPreferences.getUser();
         if (user != null) {
-            String imageUrl = user.getImage();
-            if (imageUrl == null) {
-
-            } else {
-                Picasso.with(HomeActivity.this).load(imageUrl).into(imageViewProfilePicture);
-            }
+            Picasso.with(HomeActivity.this)
+                    .load(user.getImage())
+                    .placeholder(R.drawable.ic_user)
+                    .error(R.drawable.ic_user)
+                    .into(imageViewProfilePicture);
             textViewName.setText(user.getFullName());
             textViewPhone.setText(user.getPhone());
         }
@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new PricingFragment();
                 break;
             case R.id.fragment_offers:
-                fragment = new FavoritesFragment();
+                fragment = new OfferFragment();
                 break;
             case R.id.fragment_contact_us:
                 fragment = new FavoritesFragment();
