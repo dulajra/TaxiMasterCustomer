@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -40,6 +41,7 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
 
     private final String DEBUG_TAG = OnGoingOrderFragment.class.getSimpleName();
 
+    private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -123,6 +125,7 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
                 textViewLocation.setText(driverUpdate.getLocation());
                 textViewDistance.setText(driverUpdate.getDistance() + " away");
                 textViewDuration.setText(driverUpdate.getDuration() + " remaining");
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }.execute();
     }
@@ -131,6 +134,7 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ongoing_orders, container, false);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_my_orders);
         recyclerView.setHasFixedSize(true);
@@ -163,6 +167,7 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
                 }
             }
         });
+        progressBar.setVisibility(View.VISIBLE);
 
         return rootView;
     }

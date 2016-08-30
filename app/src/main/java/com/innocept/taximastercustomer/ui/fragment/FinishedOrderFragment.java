@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.R;
@@ -27,6 +28,7 @@ public class FinishedOrderFragment extends Fragment {
 
     private final String DEBUG_TAG = FinishedOrderFragment.class.getSimpleName();
 
+    private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -77,6 +79,7 @@ public class FinishedOrderFragment extends Fragment {
                 if (swipeRefreshLayout != null) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
+                progressBar.setVisibility(View.INVISIBLE);
             }
         }.execute();
     }
@@ -85,6 +88,7 @@ public class FinishedOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_finished_orders, container, false);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progressBar);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_my_orders);
         recyclerView.setHasFixedSize(true);
@@ -98,6 +102,7 @@ public class FinishedOrderFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+        progressBar.setVisibility(View.VISIBLE);
 
       /*  ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
