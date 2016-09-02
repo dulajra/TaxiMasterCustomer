@@ -48,6 +48,7 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Driver;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.foundation.TaxiType;
+import com.innocept.taximastercustomer.model.foundation.Time;
 import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
 
@@ -312,7 +313,7 @@ public class NewOrderActivity extends LocationActivity {
         this.isTouchable = true;
     }
 
-    public void placeOrder(Date time, String note, Driver driver, String contact) {
+    public void placeOrder(Time time, String note, Driver driver, String contact) {
         Order order = new Order();
         order.setOrigin(textViewFrom.getText().toString());
         order.setDestination(textViewTo.getText().toString());

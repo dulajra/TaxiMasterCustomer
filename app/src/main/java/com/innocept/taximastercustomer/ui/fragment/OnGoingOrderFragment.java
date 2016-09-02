@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.innocept.taximastercustomer.ApplicationPreferences;
@@ -175,6 +176,11 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
+        UiSettings mapUiSettings = map.getUiSettings();
+        mapUiSettings.setZoomControlsEnabled(false);
+        mapUiSettings.setRotateGesturesEnabled(false);
+        mapUiSettings.setMapToolbarEnabled(false);
+
         updateMap();
     }
 

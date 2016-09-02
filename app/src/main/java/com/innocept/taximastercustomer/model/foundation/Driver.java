@@ -5,12 +5,13 @@ import java.io.Serializable;
 /**
  * Created by Dulaj on 16-Apr-16.
  */
-public class     Driver implements Serializable{
+public class Driver implements Serializable{
 
     private int id;
     private String firstName;
     private String lastName;
     private String phone;
+    private String image;
 
     public Driver() {
     }
@@ -56,5 +57,17 @@ public class     Driver implements Serializable{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getFullName(){
+        return this.firstName + " " + this.lastName;
     }
 }

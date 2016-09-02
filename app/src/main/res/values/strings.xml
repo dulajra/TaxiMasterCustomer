@@ -27,5 +27,14 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="comment_dialog_title">Review on our service</string>
+    <string name="on_rating_success">Your review saved.</string>
+    <string name="on_rating_failed">Review not saved. Try again.</string>
+
+    <string name="rating_1">Worst service</string>
+    <string name="rating_2">Not satisfied</string>
+    <string name="rating_3">Satisfied</string>
+    <string name="rating_4">Good</string>
+    <string name="rating_5">Excellent service</string>
 
 </resources>

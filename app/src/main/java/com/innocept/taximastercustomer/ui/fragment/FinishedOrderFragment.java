@@ -13,8 +13,10 @@ import android.widget.ProgressBar;
 
 import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.R;
+import com.innocept.taximastercustomer.model.foundation.FinishedOrder;
 import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.network.Communicator;
+import com.innocept.taximastercustomer.ui.adapters.FinishedOrderAdapter;
 import com.innocept.taximastercustomer.ui.adapters.MyOrderAdapter;
 
 import java.util.Collections;
@@ -34,7 +36,7 @@ public class FinishedOrderFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private List<Order> dataSet;
+    private List<FinishedOrder> dataSet;
 
     public FinishedOrderFragment() {
         // Required empty public constructor
@@ -59,12 +61,12 @@ public class FinishedOrderFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                dataSet = new Communicator().getMyOrders(ApplicationPreferences.getUser().getId(), "FINISHED");
+                dataSet = new Communicator().getFinishedOrders(ApplicationPreferences.getUser().getId());
 
-                Collections.sort(dataSet, new Comparator<Order>() {
+                Collections.sort(dataSet, new Comparator<FinishedOrder>() {
                     @Override
-                    public int compare(Order lhs, Order rhs) {
-                        return rhs.getTime().compareTo(lhs.getTime());
+                    public int compare(FinishedOrder lhs, FinishedOrder rhs) {
+                        return rhs.getStartTime().compareTo(lhs.getStartTime());
                     }
                 });
 
@@ -74,7 +76,7 @@ public class FinishedOrderFragment extends Fragment {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                adapter = new MyOrderAdapter(getActivity(), dataSet);
+                adapter = new FinishedOrderAdapter(getActivity(), dataSet);
                 recyclerView.setAdapter(adapter);
                 if (swipeRefreshLayout != null) {
                     swipeRefreshLayout.setRefreshing(false);

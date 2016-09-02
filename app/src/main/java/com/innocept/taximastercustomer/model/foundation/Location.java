@@ -1,5 +1,7 @@
 package com.innocept.taximastercustomer.model.foundation;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -34,5 +36,9 @@ public class Location implements Serializable{
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public LatLng getLatLng(){
+        return new LatLng(this.latitude, this.longitude);
     }
 }

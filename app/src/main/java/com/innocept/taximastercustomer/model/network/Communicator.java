@@ -10,7 +10,9 @@ import com.google.gson.reflect.TypeToken;
 import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.model.foundation.Driver;
 import com.innocept.taximastercustomer.model.foundation.DriverUpdate;
+import com.innocept.taximastercustomer.model.foundation.FinishedOrder;
 import com.innocept.taximastercustomer.model.foundation.Offer;
+import com.innocept.taximastercustomer.model.foundation.Time;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.model.foundation.Location;
 import com.innocept.taximastercustomer.model.foundation.Order;
@@ -45,6 +47,7 @@ public class Communicator {
     private static final String URL_GET_DRIVER_LOCATION = URL_ROOT + "/customer/get/driverLocation";
     private static final String URL_GET_MY_ORDERS = URL_ROOT + "/customer/orders";
     private static final String URL_GET_OFFERS = URL_ROOT + "/offers";
+    private static final String URL_RATE = URL_ROOT + "/order/rate";
 
     public Communicator() {
     }
@@ -77,7 +80,7 @@ public class Communicator {
     public static int placeOrder(Order order) {
         ContentValues values = new ContentValues();
         values.put("origin", order.getOrigin());
-        values.put("customerId",ApplicationPreferences.getUser().getId());
+        values.put("customerId", ApplicationPreferences.getUser().getId());
         values.put("destination", order.getDestination());
         values.put("originLatitude", order.getOriginCoordinates().getLatitude());
         values.put("originLongitude", order.getOriginCoordinates().getLongitude());
@@ -142,8 +145,7 @@ public class Communicator {
             JSONObject jsonObject = new JSONObject(response);
             if (jsonObject.getBoolean("success")) {
                 return new Gson().fromJson(jsonObject.getJSONObject("data").toString(), DriverUpdate.class);
-            }
-            else {
+            } else {
                 Log.e(DEBUG_TAG, "Response is not success");
             }
         } catch (JSONException e) {
@@ -261,7 +263,7 @@ public class Communicator {
             try {
                 orderList = new ArrayList<Order>();
                 JSONArray jsonArray = new JSONArray(response);
-                for(int i=0;i<jsonArray.length();i++){
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Order order = new Order();
                     order.setId(jsonObject.getInt("id"));
@@ -273,17 +275,58 @@ public class Communicator {
                     order.setTaxiType(TaxiType.getEnum(jsonObject.getInt("taxiTypeId")));
                     order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
 
-                    if(state.equals(Order.OrderState.FINISHED.toString())){
-                        order.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(jsonObject.getString("startTime")));
+                    if (state.equals(Order.OrderState.FINISHED.toString())) {
+                        order.setTime(new Time(jsonObject.getString("startTime")));
                         order.setOrderState(Order.OrderState.FINISHED);
-                    }
-                    else{
-                        order.setTime(new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(jsonObject.getString("time")));
+                    } else {
+                        order.setTime(new Time(jsonObject.getString("time")));
                         order.setOrderState(Order.OrderState.valueOf(jsonObject.getString("state")));
                         order.setNote(jsonObject.getString("note"));
                     }
                     order.setContact(jsonObject.getString("contact"));
                     order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
+                    orderList.add(order);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.v(DEBUG_TAG, "Response is null");
+        }
+        return orderList;
+    }
+
+    public static List<FinishedOrder> getFinishedOrders(int userId) {
+        List<FinishedOrder> orderList = null;
+        ContentValues values = new ContentValues();
+        values.put("customerId", userId);
+        values.put("state", "FINISHED");
+        String response = HTTPHandler.sendGET(URL_GET_MY_ORDERS, values);
+
+        if (response != null) {
+            try {
+                orderList = new ArrayList<>();
+                JSONArray jsonArray = new JSONArray(response);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    FinishedOrder order = new FinishedOrder();
+                    order.setId(jsonObject.getInt("id"));
+                    order.setOrigin(jsonObject.getString("origin"));
+                    order.setOriginCoordinates(new Location(jsonObject.getDouble("originLatitude"), jsonObject.getDouble("originLongitude")));
+                    order.setDestination(jsonObject.getString("destination"));
+                    order.setDestinationCoordinates(new Location(jsonObject.getDouble("destinationLatitude"), jsonObject.getDouble("destinationLongitude")));
+                    order.setContact(jsonObject.getString("contact"));
+                    order.setTaxiType(TaxiType.getEnum(jsonObject.getInt("taxiTypeId")));
+                    order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
+                    order.setStartTime(new Time(jsonObject.getString("startTime")));
+                    order.setEndTime(new Time(jsonObject.getString("endTime")));
+                    order.setDriver(new Gson().fromJson(jsonObject.getJSONObject("taxi_driver").toString(), Driver.class));
+                    order.setRating(jsonObject.getInt("rating"));
+                    order.setComment(jsonObject.getString("comment"));
+                    order.setFare(jsonObject.getInt("fare"));
+                    order.setDistance(jsonObject.getDouble("distance"));
                     orderList.add(order);
                 }
             } catch (JSONException e) {
@@ -313,6 +356,33 @@ public class Communicator {
             Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
         }
         return offerList;
+    }
+
+    public static boolean rateOrder(int id, int rating, String comment) {
+        boolean result = false;
+        ContentValues values = new ContentValues();
+        values.put("id", id);
+        values.put("rating", rating);
+        values.put("comment", comment);
+        String response = HTTPHandler.sendPOST(URL_RATE, values);
+
+        if (response != null) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                result = jsonObject.getBoolean("success");
+                if(result){
+                    Log.i(DEBUG_TAG, "Review success");
+                }
+                else {
+                    Log.i(DEBUG_TAG, "Review failed");
+                }
+            } catch (JSONException e) {
+                Log.e(DEBUG_TAG, e.toString());
+            } catch (NullPointerException e) {
+                Log.e(DEBUG_TAG, "Server error occurred " + e.toString());
+            }
+        }
+        return result;
     }
 }
 

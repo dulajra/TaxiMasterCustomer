@@ -27,6 +27,7 @@ import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
+import com.innocept.taximastercustomer.model.foundation.Time;
 import com.innocept.taximastercustomer.ui.activity.NewOrderActivity;
 
 import java.text.SimpleDateFormat;
@@ -222,7 +223,7 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
                                 }
 
                                 if (isSuccess) {
-                                    ((NewOrderActivity) context).placeOrder(calendar.getTime(), editTextNote.getText().toString(), dataSet.get(position).getDriver(), editTextContact.getText().toString());
+                                    ((NewOrderActivity) context).placeOrder(new Time(calendar.getTime()), editTextNote.getText().toString(), dataSet.get(position).getDriver(), editTextContact.getText().toString());
                                     alertDialog.dismiss();
                                 }
                             }

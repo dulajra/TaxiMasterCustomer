@@ -1,31 +1,29 @@
 package com.innocept.taximastercustomer.model.foundation;
 
-import android.util.Log;
-
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by dulaj on 5/24/16.
  */
-public class Order implements Serializable{
+public class FinishedOrder implements Serializable{
 
     private int id;
     private String origin;
     private String destination;
     private Location originCoordinates;
     private Location destinationCoordinates;
-    private Time time;
+    private Time startTime;
+    private Time endTime;
     private String note;
     private String contact;
     private Driver driver;
     private TaxiType taxiType;
     private int fare;
     private double distance;    // in Km
-    private Order.OrderState orderState;
+    private int rating;
+    private String comment;
 
-    public Order() {
+    public FinishedOrder() {
     }
 
     public String getOrigin() {
@@ -60,12 +58,20 @@ public class Order implements Serializable{
         this.destinationCoordinates = destinationCoordinates;
     }
 
-    public Time getTime() {
-        return time;
+    public Time getStartTime() {
+        return startTime;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setStartTime(Time startTime) {
+        this.startTime = startTime;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Time endTime) {
+        this.endTime = endTime;
     }
 
     public String getNote() {
@@ -82,14 +88,6 @@ public class Order implements Serializable{
 
     public void setDriver(Driver driver) {
         this.driver = driver;
-    }
-
-    public OrderState getOrderState() {
-        return orderState;
-    }
-
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
     }
 
     public String getContact() {
@@ -130,6 +128,22 @@ public class Order implements Serializable{
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public enum OrderState {

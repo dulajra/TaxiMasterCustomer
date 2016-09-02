@@ -70,7 +70,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         final ViewHolder viewHolder = (ViewHolder) holder;
 
         viewHolder.textFromTo.setText(dataSet.get(position).getOrigin() + " to " + dataSet.get(position).getDestination());
-        viewHolder.textTime.setText(new SimpleDateFormat("yyyy-MM-dd HH-mm").format(dataSet.get(position).getTime()));
+        viewHolder.textTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(dataSet.get(position).getTime()));
 
         switch (dataSet.get(position).getTaxiType()){
             case NANO:

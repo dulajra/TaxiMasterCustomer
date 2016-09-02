@@ -49,6 +49,10 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".ui.activity.HomeActivity"/>
 
+        <activity android:name=".ui.activity.FinishedOrderActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activity.HomeActivity"/>
+
     </application>
 
 </manifest>

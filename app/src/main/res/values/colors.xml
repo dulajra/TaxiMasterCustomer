@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#448AFF</color>
-    <color name="colorPrimaryDark">#1976D2</color>
+    <!--<color name="colorPrimary">#448AFF</color>-->
+    <!--<color name="colorPrimaryDark">#1976D2</color>-->
+    <color name="colorPrimary">#283593</color>
+    <color name="colorPrimaryDark">#1A237E</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="windowBackground">#EEEEEE</color>
     <color name="navigationBarColor">#000000</color>
@@ -15,8 +17,8 @@
 
     <color name="routeColor">#00b3fd</color>
 
-    <color name="cardNano">#78adff2f</color>
-    <color name="cardCar">#78ffff00</color>
+    <color name="cardNano">#32adff2f</color>
+    <color name="cardCar">#32ffff00</color>
     <color name="cardVan">#7887cefa</color>
 
 </resources>
