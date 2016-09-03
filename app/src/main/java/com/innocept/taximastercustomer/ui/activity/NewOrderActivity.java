@@ -324,6 +324,7 @@ public class NewOrderActivity extends LocationActivity {
         order.setContact(contact);
         order.setDriver(driver);
         order.setOrderState(Order.OrderState.PENDING);
+        order.setTaxiType(TaxiType.getEnum(viewPager.getCurrentItem() + 1));
         newOrderPresenter.placeOrder(order);
     }
 

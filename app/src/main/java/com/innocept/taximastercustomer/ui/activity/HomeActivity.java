@@ -27,6 +27,7 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
+import com.innocept.taximastercustomer.ui.fragment.MyProfileFragment;
 import com.innocept.taximastercustomer.ui.fragment.OfferFragment;
 import com.innocept.taximastercustomer.ui.fragment.PricingFragment;
 import com.squareup.picasso.Picasso;
@@ -95,6 +96,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new MyOrdersFragment()).commit();
             }
         }
+
+        Intent intent = getIntent();
+        onNavigationItemSelected(navigationView.getMenu().getItem(intent.getIntExtra("navigationItem", 0)));
     }
 
     @Override
@@ -149,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new FavoritesFragment();
                 break;
             case R.id.fragment_profile:
-                fragment = new FavoritesFragment();
+                fragment = new MyProfileFragment();
                 break;
             case R.id.fragment_settings:
                 fragment = new FavoritesFragment();

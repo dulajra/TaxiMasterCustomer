@@ -162,7 +162,7 @@ public class FinishedOrderActivity extends AppCompatActivity implements OnMapRea
                     }
                 });
                 ratingBarDialog.setRating(rating);
-                if(order.getComment()!=null){
+                if(order.getComment()!=null && order.getComment().length()>0 && !order.getComment().equalsIgnoreCase("null")){
                     editTextComment.setText(order.getComment());
                 }
 

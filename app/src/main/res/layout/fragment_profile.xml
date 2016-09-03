@@ -1,0 +1,73 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/imageButtonProfileEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_action_edit" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imageViewDriverProfilePicture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_user"
+                app:civ_border_color="#1A237E"
+                app:civ_border_width="0dp" />
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <EditText
+            android:editable="false"
+            android:id="@+id/text_name"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:text="Anuradha Wickramarachchi"
+            android:textSize="20sp" />
+
+        <EditText
+            android:editable="false"
+            android:id="@+id/text_phone"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="0715944191"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

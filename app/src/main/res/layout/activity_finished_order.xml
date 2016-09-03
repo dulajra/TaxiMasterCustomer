@@ -71,6 +71,7 @@
         android:orientation="vertical">
 
         <RatingBar
+            android:paddingTop="10dp"
             android:id="@+id/ratingBar"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"

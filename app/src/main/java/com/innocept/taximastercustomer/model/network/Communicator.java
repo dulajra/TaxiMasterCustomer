@@ -89,6 +89,7 @@ public class Communicator {
         values.put("note", order.getNote());
         values.put("contact", order.getContact());
         values.put("driverId", order.getDriver().getId());
+        values.put("taxiTypeId", order.getTaxiType().getValue());
 //        values.put("oneSignalUserId", ApplicationPreferences.getOneSignalUserId());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

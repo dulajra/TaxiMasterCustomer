@@ -4,10 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/padding_from_edge"
-    android:paddingLeft="@dimen/padding_from_edge"
-    android:paddingRight="@dimen/padding_from_edge"
-    android:paddingTop="@dimen/padding_from_edge"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ui.activity.HomeActivity"
     tools:showIn="@layout/activity_home_app_bar">

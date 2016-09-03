@@ -106,8 +106,8 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
 
                 if (dataSet.get(0).getOrderState() == Order.OrderState.NOW) {
                     orderNow = dataSet.remove(0);
+                    driverUpdate = Communicator.getDriverUpdate(orderNow.getDriver().getId(), new LatLng(orderNow.getDestinationCoordinates().getLatitude(), orderNow.getDestinationCoordinates().getLongitude()));
                 }
-                driverUpdate = Communicator.getDriverUpdate(orderNow.getDriver().getId(), new LatLng(orderNow.getDestinationCoordinates().getLatitude(), orderNow.getDestinationCoordinates().getLongitude()));
                 return null;
             }
 
@@ -123,9 +123,13 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
                 if (mapReadyNotCalled) {
                     updateMap();
                 }
-                textViewLocation.setText(driverUpdate.getLocation());
-                textViewDistance.setText(driverUpdate.getDistance() + " away");
-                textViewDuration.setText(driverUpdate.getDuration() + " remaining");
+
+                if(orderNow==null){
+                    cardViewNow.setVisibility(View.GONE);
+                }
+                else {
+                    cardViewNow.setVisibility(View.VISIBLE);
+                }
                 progressBar.setVisibility(View.INVISIBLE);
             }
         }.execute();
@@ -189,6 +193,10 @@ public class OnGoingOrderFragment extends Fragment implements OnMapReadyCallback
             LatLng latLng = new LatLng(driverUpdate.getLatitude(), driverUpdate.getLongitude());
             MapUtils.setMarker(this.map, driverMarker, latLng, R.drawable.ic_marker_taxi);
             MapUtils.moveAndAnimateCamera(this.map, latLng, 13);
+
+            textViewLocation.setText(driverUpdate.getLocation());
+            textViewDistance.setText(driverUpdate.getDistance() + " away");
+            textViewDuration.setText(driverUpdate.getDuration() + " remaining");
         } else {
             mapReadyNotCalled = true;
         }
