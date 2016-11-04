@@ -27,6 +27,7 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
+import com.innocept.taximastercustomer.ui.fragment.MyPreferenceFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyProfileFragment;
 import com.innocept.taximastercustomer.ui.fragment.OfferFragment;
 import com.innocept.taximastercustomer.ui.fragment.PricingFragment;
@@ -157,7 +158,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 fragment = new MyProfileFragment();
                 break;
             case R.id.fragment_settings:
-                fragment = new FavoritesFragment();
+                startActivity(new Intent(HomeActivity.this, PreferenceActivity.class));
                 break;
             case R.id.fragment_log_out:
                 logout();

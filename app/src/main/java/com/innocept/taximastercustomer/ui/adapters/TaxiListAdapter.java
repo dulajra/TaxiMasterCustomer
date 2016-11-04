@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
+import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Taxi;
 import com.innocept.taximastercustomer.model.foundation.Time;
@@ -117,6 +118,7 @@ public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHo
 
                 editTextFrom.setText(((NewOrderActivity) context).textViewFrom.getText().toString());
                 editTextTo.setText(((NewOrderActivity) context).textViewTo.getText().toString());
+                editTextContact.setText(ApplicationPreferences.getUser().getPhone());
 
                 final ArrayList<String> spinnerDateArray = new ArrayList<String>();
                 spinnerDateArray.add("ASAP");

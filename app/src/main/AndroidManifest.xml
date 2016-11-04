@@ -53,6 +53,10 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".ui.activity.HomeActivity"/>
 
+        <activity android:name=".ui.activity.PreferenceActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activity.HomeActivity"/>
+
     </application>
 
 </manifest>
