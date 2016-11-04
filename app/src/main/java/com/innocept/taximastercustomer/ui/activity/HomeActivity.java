@@ -50,6 +50,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private ProgressDialog progressDialog;
 
     private boolean doubleBackToExitPressedOnce;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         textViewName = (TextView) headerView.findViewById(R.id.textViewName);
         textViewPhone = (TextView) headerView.findViewById(R.id.textViewPhone);
 
-        User user = ApplicationPreferences.getUser();
+        user = ApplicationPreferences.getUser();
         if (user != null) {
             Picasso.with(HomeActivity.this)
                     .load(user.getImage())
@@ -170,7 +171,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
-            toolbar.setTitle(item.getTitle());
+
+            if (fragment.getId() == R.id.fragment_profile) {
+                toolbar.setTitle(user.getFullName());
+            } else {
+                toolbar.setTitle(item.getTitle());
+            }
         } else {
             Log.e(DEBUG_TAG, "Error in creating fragment: fragment=null");
         }

@@ -38,7 +38,7 @@ public class Communicator {
     private static final String DEBUG_TAG = Communicator.class.getSimpleName();
 
 //    private static final String URL_ROOT = "http://taximaster.herokuapp.com";
-    private static final String URL_ROOT = "http://f12962c2.ngrok.io";
+    private static final String URL_ROOT = "http://92893741.ngrok.io";
 
     private static final String URL_LOGIN = URL_ROOT + "/customer/login";
     private static final String URL_LOGOUT = URL_ROOT + "/customer/signOut";

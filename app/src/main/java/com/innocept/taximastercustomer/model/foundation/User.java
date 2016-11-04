@@ -10,6 +10,8 @@ public class User {
     private String lastName;
     private String phone;
     private String image;
+    private String email;
+    private String address;
 
     public String getImage() {
         return image;
@@ -62,5 +64,21 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
