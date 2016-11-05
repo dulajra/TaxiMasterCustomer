@@ -37,8 +37,8 @@ public class Communicator {
 
     private static final String DEBUG_TAG = Communicator.class.getSimpleName();
 
-//    private static final String URL_ROOT = "http://taximaster.herokuapp.com";
-    private static final String URL_ROOT = "http://92893741.ngrok.io";
+    private static final String URL_ROOT = "http://taximaster.herokuapp.com";
+//    private static final String URL_ROOT = "http://92893741.ngrok.io";
 
     private static final String URL_LOGIN = URL_ROOT + "/customer/login";
     private static final String URL_LOGOUT = URL_ROOT + "/customer/signOut";
@@ -177,11 +177,11 @@ public class Communicator {
                         user = new Gson().fromJson(jsonObject.getJSONObject("customer").toString(), User.class);
                         ApplicationPreferences.saveUser(user);
                         resultCode = 0;
-                        Log.i(DEBUG_TAG, "Login success");
+                        Log.v(DEBUG_TAG, "Login success");
                         break;
                     case 1:
                         resultCode = 1;
-                        Log.i(DEBUG_TAG, "Username or password is incorrect");
+                        Log.w(DEBUG_TAG, "Username or password is incorrect");
                         break;
                 }
             } catch (JSONException e) {
@@ -205,9 +205,9 @@ public class Communicator {
                 result = jsonObject.getBoolean("success");
                 if (result) {
                     ApplicationPreferences.saveUser(null);
-                    Log.i(DEBUG_TAG, "Logout success");
+                    Log.v(DEBUG_TAG, "Logout success");
                 } else {
-                    Log.i(DEBUG_TAG, "Logout failed");
+                    Log.w(DEBUG_TAG, "Logout failed");
                 }
             } catch (JSONException e) {
                 Log.e(DEBUG_TAG, e.toString());
@@ -235,15 +235,15 @@ public class Communicator {
                 switch (result) {
                     case 0:
                         resultCode = 0;
-                        Log.i(DEBUG_TAG, "Sign up success");
+                        Log.v(DEBUG_TAG, "Sign up success");
                         break;
                     case 1:
                         resultCode = 1;
-                        Log.i(DEBUG_TAG, "Phone number has been already taken");
+                        Log.w(DEBUG_TAG, "Phone number has been already taken");
                         break;
                     case 2:
                         resultCode = 2;
-                        Log.i(DEBUG_TAG, "User with the same full name already exists");
+                        Log.w(DEBUG_TAG, "User with the same full name already exists");
                         break;
                 }
             } catch (JSONException e) {
@@ -332,10 +332,8 @@ public class Communicator {
                     order.setDistance(jsonObject.getDouble("distance"));
                     orderList.add(order);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ParseException e) {
-                e.printStackTrace();
+            } catch (JSONException|ParseException e) {
+                Log.e(DEBUG_TAG, "Invalid JSON", e);
             }
         } else {
             Log.v(DEBUG_TAG, "Response is null");
@@ -374,10 +372,10 @@ public class Communicator {
                 JSONObject jsonObject = new JSONObject(response);
                 result = jsonObject.getBoolean("success");
                 if(result){
-                    Log.i(DEBUG_TAG, "Review success");
+                    Log.v(DEBUG_TAG, "Review success");
                 }
                 else {
-                    Log.i(DEBUG_TAG, "Review failed");
+                    Log.w(DEBUG_TAG, "Review failed");
                 }
             } catch (JSONException e) {
                 Log.e(DEBUG_TAG, e.toString());

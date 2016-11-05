@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -27,7 +28,6 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.ui.fragment.FavoritesFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyOrdersFragment;
-import com.innocept.taximastercustomer.ui.fragment.MyPreferenceFragment;
 import com.innocept.taximastercustomer.ui.fragment.MyProfileFragment;
 import com.innocept.taximastercustomer.ui.fragment.OfferFragment;
 import com.innocept.taximastercustomer.ui.fragment.PricingFragment;
@@ -141,24 +141,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.fragment_my_orders:
                 fragment = new MyOrdersFragment();
+                setFabEnabled(true);
                 break;
             case R.id.fragment_favorites:
                 fragment = new FavoritesFragment();
+                setFabEnabled(true);
                 break;
             case R.id.fragment_pricing:
                 fragment = new PricingFragment();
+                setFabEnabled(true);
                 break;
             case R.id.fragment_offers:
                 fragment = new OfferFragment();
+                setFabEnabled(true);
                 break;
             case R.id.fragment_contact_us:
                 fragment = new FavoritesFragment();
+                setFabEnabled(false);
                 break;
             case R.id.fragment_profile:
                 fragment = new MyProfileFragment();
+                setFabEnabled(false);
                 break;
             case R.id.fragment_settings:
                 startActivity(new Intent(HomeActivity.this, PreferenceActivity.class));
+                setFabEnabled(false);
                 break;
             case R.id.fragment_log_out:
                 logout();
@@ -172,12 +179,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_container, fragment).commit();
-
-            if (fragment.getId() == R.id.fragment_profile) {
-                toolbar.setTitle(user.getFullName());
-            } else {
-                toolbar.setTitle(item.getTitle());
-            }
+            toolbar.setTitle(item.getTitle());
         } else {
             Log.e(DEBUG_TAG, "Error in creating fragment: fragment=null");
         }
@@ -227,5 +229,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void closeProgressDialog() {
         this.progressDialog.dismiss();
+    }
+
+    public void setFabEnabled(boolean isVisible) {
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        layoutParams.setAnchorId(View.NO_ID);
+        fab.setLayoutParams(layoutParams);
+        fab.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }
