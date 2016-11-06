@@ -5,7 +5,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.Serializable;
 
 /**
- * Created by Dulaj on 14-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class Location implements Serializable{
 

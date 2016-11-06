@@ -26,7 +26,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 /**
- * Created by Dulaj on 27-Aug-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class MapUtils {
 

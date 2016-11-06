@@ -3,7 +3,8 @@ package com.innocept.taximastercustomer.model.foundation;
 import java.io.Serializable;
 
 /**
- * Created by dulaj on 5/24/16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class FinishedOrder implements Serializable{
 

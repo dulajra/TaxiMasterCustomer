@@ -3,7 +3,8 @@ package com.innocept.taximastercustomer.model.foundation;
 import java.io.Serializable;
 
 /**
- * Created by Dulaj on 16-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class Driver implements Serializable{
 

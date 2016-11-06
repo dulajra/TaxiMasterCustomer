@@ -20,7 +20,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by Dulaj on 16-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class SplashActivity extends AppCompatActivity {
 

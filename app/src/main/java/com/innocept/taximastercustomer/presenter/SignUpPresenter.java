@@ -8,7 +8,8 @@ import com.innocept.taximastercustomer.ui.activity.LoginActivity;
 import com.innocept.taximastercustomer.ui.activity.SignUpActivity;
 
 /**
- * Created by Dulaj on 16-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class SignUpPresenter {
 

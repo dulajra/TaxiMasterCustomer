@@ -21,7 +21,8 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 /**
- * Created by Dulaj on 14-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class HTTPHandler {
 

@@ -9,11 +9,8 @@ import com.innocept.taximastercustomer.model.network.Communicator;
 import com.innocept.taximastercustomer.ui.activity.CurrentOrderActivity;
 
 /**
- * Created by Dulaj on 17-Apr-16.
- */
-
-/**
- * Presenter if NewOrderActivity
+ * @author dulaj
+ * @version 1.0.0
  */
 public class CurrentOrderPresenter {
 

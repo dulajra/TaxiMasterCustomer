@@ -18,11 +18,8 @@ import com.google.android.gms.location.LocationServices;
 import com.innocept.taximastercustomer.ApplicationContext;
 
 /**
- * Created by Dulaj on 17-Apr-16.
- */
-
-/**
- * LocationActivity is an abstract activity which can be inherited to listen for location updates.
+ * @author dulaj
+ * @version 1.0.0
  */
 public abstract class LocationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 

@@ -1,6 +1,5 @@
 package com.innocept.taximastercustomer.ui.fragment;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,20 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.innocept.taximastercustomer.ApplicationPreferences;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.model.foundation.Offer;
-import com.innocept.taximastercustomer.model.foundation.Order;
 import com.innocept.taximastercustomer.model.network.Communicator;
-import com.innocept.taximastercustomer.ui.adapters.MyOrderAdapter;
 import com.innocept.taximastercustomer.ui.adapters.OfferAdapter;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by dulaj on 5/24/16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class OfferFragment extends Fragment {
 

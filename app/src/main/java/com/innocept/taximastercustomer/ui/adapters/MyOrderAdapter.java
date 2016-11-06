@@ -23,7 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * Created by Dulaj on 08-Mar-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHolder> {
 

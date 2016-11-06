@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Dulaj on 01-Sep-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class Time extends Date {
 

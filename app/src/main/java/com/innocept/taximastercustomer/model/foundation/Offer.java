@@ -1,7 +1,8 @@
 package com.innocept.taximastercustomer.model.foundation;
 
 /**
- * Created by Dulaj on 30-Aug-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class Offer {
 

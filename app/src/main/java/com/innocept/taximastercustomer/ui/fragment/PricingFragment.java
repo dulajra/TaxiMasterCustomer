@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import com.innocept.taximastercustomer.R;
 
 /**
- * Created by dulaj on 8/6/16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class PricingFragment extends Fragment {
 

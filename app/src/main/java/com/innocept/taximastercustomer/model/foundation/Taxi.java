@@ -1,7 +1,8 @@
 package com.innocept.taximastercustomer.model.foundation;
 
 /**
- * Created by dulaj on 5/22/16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class Taxi {
 

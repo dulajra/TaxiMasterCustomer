@@ -6,7 +6,8 @@ import android.preference.PreferenceFragment;
 import com.innocept.taximastercustomer.R;
 
 /**
- * Created by Dulaj on 24-Mar-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class MyPreferenceFragment extends PreferenceFragment {
 

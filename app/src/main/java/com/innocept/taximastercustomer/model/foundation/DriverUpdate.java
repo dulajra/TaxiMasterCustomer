@@ -1,9 +1,8 @@
 package com.innocept.taximastercustomer.model.foundation;
 
-import com.google.android.gms.maps.model.LatLng;
-
 /**
- * Created by Dulaj on 27-Aug-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class DriverUpdate {
 

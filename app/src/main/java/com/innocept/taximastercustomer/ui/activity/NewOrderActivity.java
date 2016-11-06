@@ -53,11 +53,8 @@ import com.innocept.taximastercustomer.presenter.NewOrderPresenter;
 import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
 
 /**
- * Created by Dulaj on 17-Apr-16.
- */
-
-/**
- * New orders are placed by this activity.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class NewOrderActivity extends LocationActivity {
 

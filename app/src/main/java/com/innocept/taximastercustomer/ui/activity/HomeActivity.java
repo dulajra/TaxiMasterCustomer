@@ -34,7 +34,8 @@ import com.innocept.taximastercustomer.ui.fragment.PricingFragment;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by Dulaj on 16-Aug-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

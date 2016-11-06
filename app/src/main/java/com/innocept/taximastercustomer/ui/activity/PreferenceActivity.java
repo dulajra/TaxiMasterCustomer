@@ -7,6 +7,10 @@ import android.support.v7.widget.Toolbar;
 import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.ui.fragment.MyPreferenceFragment;
 
+/**
+ * @author dulaj
+ * @version 1.0.0
+ */
 public class PreferenceActivity extends AppCompatActivity {
 
     Toolbar toolbar;

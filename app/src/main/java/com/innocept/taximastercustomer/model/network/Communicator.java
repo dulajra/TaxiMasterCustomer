@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dulaj on 14-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
-
 public class Communicator {
 
     private static final String DEBUG_TAG = Communicator.class.getSimpleName();

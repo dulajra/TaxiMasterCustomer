@@ -41,7 +41,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by dulaj on 5/28/16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class CurrentOrderActivity extends AppCompatActivity implements OnMapReadyCallback {
 

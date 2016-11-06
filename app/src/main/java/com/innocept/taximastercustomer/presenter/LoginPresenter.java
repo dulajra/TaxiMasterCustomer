@@ -6,7 +6,8 @@ import com.innocept.taximastercustomer.model.network.Communicator;
 import com.innocept.taximastercustomer.ui.activity.LoginActivity;
 
 /**
- * Created by Dulaj on 16-Apr-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class LoginPresenter {
 

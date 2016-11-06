@@ -14,11 +14,8 @@ import com.innocept.taximastercustomer.ui.fragment.TaxiFragment;
 import java.util.List;
 
 /**
- * Created by Dulaj on 17-Apr-16.
- */
-
-/**
- * Presenter if NewOrderActivity
+ * @author dulaj
+ * @version 1.0.0
  */
 public class NewOrderPresenter {
 

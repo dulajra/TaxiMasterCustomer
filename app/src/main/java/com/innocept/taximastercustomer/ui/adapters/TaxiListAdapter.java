@@ -37,7 +37,8 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Dulaj on 30-Dec-15.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class TaxiListAdapter extends RecyclerView.Adapter<TaxiListAdapter.ViewHolder> {
 

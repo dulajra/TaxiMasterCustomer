@@ -7,7 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by dulaj on 5/24/16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class Order implements Serializable{
 

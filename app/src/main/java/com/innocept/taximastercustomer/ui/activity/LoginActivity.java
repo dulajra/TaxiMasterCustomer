@@ -21,11 +21,8 @@ import com.innocept.taximastercustomer.R;
 import com.innocept.taximastercustomer.presenter.LoginPresenter;
 
 /**
- * Created by Dulaj on 16-Apr-16.
- */
-
-/**
- * User login here
+ * @author dulaj
+ * @version 1.0.0
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 

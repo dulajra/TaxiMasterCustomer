@@ -13,11 +13,8 @@ import com.onesignal.OneSignal;
 import org.json.JSONObject;
 
 /**
- * Created by Dulaj on 14-Apr-16.
- */
-
-/**
- * ApplicationContext is used to get the context of the application from any where.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class ApplicationContext extends Application {
 

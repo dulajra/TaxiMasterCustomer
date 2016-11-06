@@ -22,7 +22,8 @@ import com.innocept.taximastercustomer.model.foundation.User;
 import com.innocept.taximastercustomer.presenter.SignUpPresenter;
 
 /**
- * Created by Dulaj on 14-Aug-16.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 

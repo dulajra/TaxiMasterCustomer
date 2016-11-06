@@ -7,11 +7,8 @@ import com.google.gson.Gson;
 import com.innocept.taximastercustomer.model.foundation.User;
 
 /**
- * Created by dulaj on 5/26/16.
- */
-
-/**
- * Actions regarding all the user preferences of the application.
+ * @author dulaj
+ * @version 1.0.0
  */
 public class ApplicationPreferences {
 
